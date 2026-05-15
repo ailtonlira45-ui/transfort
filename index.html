@@ -257,6 +257,11 @@
             box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
         }
 
+        .btn-copiar {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            margin-top: 8px;
+        }
+
         .resultado-box {
             background: rgba(16, 185, 129, 0.08);
             border: 1px solid rgba(16, 185, 129, 0.2);
@@ -413,7 +418,7 @@
                 <div class="logo-icon">🚍</div>
                 <h1 class="app-title">TRANSFORT-BR</h1>
                 <p class="app-subtitle">Movendo a simulação. Conectando motoristas.</p>
-                <span class="version-badge">🔷 v12.1 PRO • 22 Ônibus</span>
+                <span class="version-badge">🔷 v12.2 PRO • 22 Ônibus</span>
                 <br>
                 <a href="https://transfort.com.br" target="_blank" class="btn-site">
                     🌐 ACESSAR SITE OFICIAL
@@ -452,6 +457,10 @@
 
                 <button class="btn-premium btn-share" onclick="compartilharEscala()">
                     📤 ENVIAR NO WHATSAPP
+                </button>
+
+                <button class="btn-premium btn-copiar" onclick="copiarTexto()">
+                    📋 COPIAR TEXTO
                 </button>
 
                 <div class="resultado-box" id="resultadoBox">
@@ -532,6 +541,7 @@
         // ============ VARIÁVEIS ============
         let cambioSelecionado = null;
         let ultimaEscala = null;
+        let ultimaMensagem = '';
 
         // ============ ELEMENTOS ============
         const motoristaSelect = document.getElementById('motoristaSelect');
@@ -597,7 +607,7 @@
 
         const totalOnibus = frotaOnibus.manual.length + frotaOnibus.automatico.length;
         document.getElementById('contadorMotoristas').textContent = `${motoristas.length} cadastrados`;
-        document.getElementById('contadorOnibus').textContent = `${totalOnibus} veículos`;
+        document.getElementById('contadorOnibus').textContent = `${totalOnibus} veiculos`;
 
         // ============ FUNÇÕES ============
         
@@ -621,14 +631,14 @@
             }
 
             if (!cambioSelecionado) {
-                resultadoBox.innerHTML = `<div style="color:#ef4444; text-align:center;">⚠️ Escolha MANUAL ou AUTOMÁTICO!</div>`;
+                resultadoBox.innerHTML = `<div style="color:#ef4444; text-align:center;">⚠️ Escolha MANUAL ou AUTOMATICO!</div>`;
                 return;
             }
 
             const frotaFiltrada = frotaOnibus[cambioSelecionado].filter(bus => bus.status === 'Operacional');
             
             if (frotaFiltrada.length === 0) {
-                resultadoBox.innerHTML = `<div style="color:#f59e0b; text-align:center;">⚠️ Nenhum ônibus disponível!</div>`;
+                resultadoBox.innerHTML = `<div style="color:#f59e0b; text-align:center;">⚠️ Nenhum onibus disponivel!</div>`;
                 return;
             }
 
@@ -639,7 +649,7 @@
             const dataReal = agora.toLocaleDateString('pt-BR');
             
             const cambioIcone = cambioSelecionado === 'manual' ? '🕹️' : '🤖';
-            const cambioTexto = cambioSelecionado === 'manual' ? 'Manual' : 'Automático';
+            const cambioTexto = cambioSelecionado === 'manual' ? 'Manual' : 'Automatico';
             const cambioBadge = cambioSelecionado === 'manual' ? 'badge-manual' : 'badge-automatico';
             const statusBadge = onibusSorteado.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
 
@@ -650,32 +660,25 @@
                 cambioIcone: cambioIcone,
                 horaReal: horaReal,
                 dataReal: dataReal,
-                status: '✅ Escalado'
+                status: 'Escalado'
             };
 
             resultadoBox.innerHTML = `
                 <div class="resultado-titulo"><span class="pulse-dot"></span> ESCALA CONFIRMADA</div>
                 <div style="margin-top: 8px;">
                     👨‍✈️ <strong>Motorista:</strong> <span class="dado-destaque">${ultimaEscala.motorista}</span><br>
-                    🚌 <strong>Ônibus:</strong> <span class="dado-destaque">${ultimaEscala.onibus.modelo}</span><br>
+                    🚌 <strong>Onibus:</strong> <span class="dado-destaque">${ultimaEscala.onibus.modelo}</span><br>
                     🔖 <strong>Placa:</strong> <span class="dado-destaque">${ultimaEscala.onibus.placa}</span><br>
-                    ${cambioIcone} <strong>Câmbio:</strong> <span class="badge-cambio ${cambioBadge}">${ultimaEscala.cambio}</span><br>
-                    📡 <strong>Status do Veículo:</strong> <span class="badge-status ${statusBadge}">${ultimaEscala.onibus.status}</span><br>
-                    🕐 <strong>Hora da Escala:</strong> <span class="dado-destaque">${ultimaEscala.horaReal}</span><br>
+                    ${cambioIcone} <strong>Cambio:</strong> <span class="badge-cambio ${cambioBadge}">${ultimaEscala.cambio}</span><br>
+                    📡 <strong>Status Veiculo:</strong> <span class="badge-status ${statusBadge}">${ultimaEscala.onibus.status}</span><br>
+                    🕐 <strong>Hora:</strong> <span class="dado-destaque">${ultimaEscala.horaReal}</span><br>
                     📅 <strong>Data:</strong> <span class="dado-destaque">${ultimaEscala.dataReal}</span><br>
-                    📡 <strong>Situação:</strong> <span style="color:#10b981;">${ultimaEscala.status}</span>
+                    ✅ <strong>Situacao:</strong> <span style="color:#10b981;">${ultimaEscala.status}</span>
                 </div>
             `;
-        }
 
-        function compartilharEscala() {
-            if (!ultimaEscala) {
-                mostrarToast('⚠️ Gere uma escala primeiro!');
-                return;
-            }
-
-            // Montar mensagem simples e direta
-            const mensagem = 
+            // Salvar mensagem para compartilhamento
+            ultimaMensagem = 
 `🚍 *TRANSFORT-BR - ESCALA CONFIRMADA*
 
 👨‍✈️ *Motorista:* ${ultimaEscala.motorista}
@@ -685,17 +688,66 @@ ${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
 📡 *Status Veiculo:* ${ultimaEscala.onibus.status}
 🕐 *Hora:* ${ultimaEscala.horaReal}
 📅 *Data:* ${ultimaEscala.dataReal}
-📡 *Situacao:* ${ultimaEscala.status}
+✅ *Situacao:* ${ultimaEscala.status}
 
 🌐 transfort.com.br`;
+        }
 
-            // Codificar corretamente para URL
-            const textoCodificado = encodeURIComponent(mensagem);
+        function compartilharEscala() {
+            if (!ultimaEscala) {
+                mostrarToast('⚠️ Gere uma escala primeiro!');
+                return;
+            }
+
+            // Tentar abrir WhatsApp primeiro
+            const url = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(ultimaMensagem);
             
-            // Abrir WhatsApp
-            window.open('https://wa.me/?text=' + textoCodificado, '_blank');
+            // Verificar se está em dispositivo móvel
+            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                // No mobile, tentar abrir com intent
+                window.location.href = 'intent://send?text=' + encodeURIComponent(ultimaMensagem) + '#Intent;scheme=whatsapp;package=com.whatsapp;end';
+                
+                // Fallback: abrir com api.whatsapp.com
+                setTimeout(() => {
+                    window.open(url, '_blank');
+                }, 500);
+            } else {
+                // No desktop, abrir WhatsApp Web
+                window.open(url, '_blank');
+            }
             
             mostrarToast('📤 Abrindo WhatsApp...');
+        }
+
+        function copiarTexto() {
+            if (!ultimaEscala) {
+                mostrarToast('⚠️ Gere uma escala primeiro!');
+                return;
+            }
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(ultimaMensagem).then(() => {
+                    mostrarToast('📋 Texto copiado! Cole no WhatsApp');
+                }).catch(() => {
+                    fallbackCopiar();
+                });
+            } else {
+                fallbackCopiar();
+            }
+        }
+
+        function fallbackCopiar() {
+            const textarea = document.createElement('textarea');
+            textarea.value = ultimaMensagem;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            mostrarToast('📋 Texto copiado! Cole no WhatsApp');
         }
 
         function mostrarToast(mensagem) {
