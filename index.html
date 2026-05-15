@@ -373,74 +373,6 @@
 
         .footer-premium a { color: #60a5fa; text-decoration: none; }
 
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 999;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-overlay.show {
-            display: flex;
-        }
-
-        .modal-copiar {
-            background: #1e293b;
-            border: 1px solid #10b981;
-            border-radius: 20px;
-            padding: 24px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .modal-copiar h3 {
-            color: #10b981;
-            margin-bottom: 16px;
-        }
-
-        .modal-copiar textarea {
-            width: 100%;
-            height: 200px;
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            color: white;
-            padding: 12px;
-            font-size: 0.95em;
-            resize: none;
-            margin-bottom: 16px;
-            font-family: 'Segoe UI', sans-serif;
-            line-height: 1.6;
-        }
-
-        .modal-copiar button {
-            padding: 12px 30px;
-            background: #25D366;
-            border: none;
-            border-radius: 30px;
-            color: white;
-            font-weight: 700;
-            font-size: 1em;
-            cursor: pointer;
-            margin: 4px;
-            transition: all 0.3s;
-        }
-
-        .modal-copiar button:hover {
-            background: #128C7E;
-        }
-
-        .modal-copiar .btn-fechar {
-            background: #475569;
-        }
-
         .toast {
             position: fixed;
             bottom: 30px;
@@ -481,7 +413,7 @@
                 <div class="logo-icon">🚍</div>
                 <h1 class="app-title">TRANSFORT-BR</h1>
                 <p class="app-subtitle">Movendo a simulação. Conectando motoristas.</p>
-                <span class="version-badge">🔷 v12.0 PRO • 22 Ônibus</span>
+                <span class="version-badge">🔷 v12.1 PRO • 22 Ônibus</span>
                 <br>
                 <a href="https://transfort.com.br" target="_blank" class="btn-site">
                     🌐 ACESSAR SITE OFICIAL
@@ -519,7 +451,7 @@
                 </button>
 
                 <button class="btn-premium btn-share" onclick="compartilharEscala()">
-                    📤 COPIAR E ENVIAR NO WHATSAPP
+                    📤 ENVIAR NO WHATSAPP
                 </button>
 
                 <div class="resultado-box" id="resultadoBox">
@@ -556,17 +488,6 @@
         <footer class="footer-premium">
             <span>TRANSFORT-BR</span> © 2026 • <a href="https://transfort.com.br" target="_blank">transfort.com.br</a> • OMSI 2
         </footer>
-    </div>
-
-    <!-- Modal para copiar mensagem -->
-    <div class="modal-overlay" id="modalCopiar">
-        <div class="modal-copiar">
-            <h3>📤 Mensagem para WhatsApp</h3>
-            <textarea id="textoMensagem" readonly></textarea>
-            <button onclick="copiarTexto()">📋 COPIAR TEXTO</button>
-            <button onclick="abrirWhatsApp()">💬 ABRIR WHATSAPP</button>
-            <button class="btn-fechar" onclick="fecharModal()">✖ FECHAR</button>
-        </div>
     </div>
 
     <script>
@@ -619,8 +540,6 @@
         const resultadoBox = document.getElementById('resultadoBox');
         const btnManual = document.getElementById('btnManual');
         const btnAutomatico = document.getElementById('btnAutomatico');
-        const modalCopiar = document.getElementById('modalCopiar');
-        const textoMensagem = document.getElementById('textoMensagem');
 
         // ============ PREENCHER LISTAS ============
         
@@ -751,53 +670,32 @@
 
         function compartilharEscala() {
             if (!ultimaEscala) {
-                alert('⚠️ Gere uma escala primeiro!');
+                mostrarToast('⚠️ Gere uma escala primeiro!');
                 return;
             }
 
-            // Montar mensagem com emojis preservados
+            // Montar mensagem simples e direta
             const mensagem = 
-`🚍 *TRANSFORT-BR • ESCALA CONFIRMADA*
+`🚍 *TRANSFORT-BR - ESCALA CONFIRMADA*
 
 👨‍✈️ *Motorista:* ${ultimaEscala.motorista}
-🚌 *Ônibus:* ${ultimaEscala.onibus.modelo}
+🚌 *Onibus:* ${ultimaEscala.onibus.modelo}
 🔖 *Placa:* ${ultimaEscala.onibus.placa}
-${ultimaEscala.cambioIcone} *Câmbio:* ${ultimaEscala.cambio}
-📡 *Status do Veículo:* ${ultimaEscala.onibus.status}
-🕐 *Hora da Escala:* ${ultimaEscala.horaReal}
+${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
+📡 *Status Veiculo:* ${ultimaEscala.onibus.status}
+🕐 *Hora:* ${ultimaEscala.horaReal}
 📅 *Data:* ${ultimaEscala.dataReal}
-📡 *Situação:* ${ultimaEscala.status}
+📡 *Situacao:* ${ultimaEscala.status}
 
-🌐 https://transfort.com.br`;
+🌐 transfort.com.br`;
 
-            // Mostrar modal com a mensagem
-            textoMensagem.value = mensagem;
-            modalCopiar.classList.add('show');
-        }
-
-        function copiarTexto() {
-            textoMensagem.select();
-            textoMensagem.setSelectionRange(0, 99999);
+            // Codificar corretamente para URL
+            const textoCodificado = encodeURIComponent(mensagem);
             
-            try {
-                navigator.clipboard.writeText(textoMensagem.value).then(() => {
-                    mostrarToast('📋 Texto copiado! Agora cole no WhatsApp');
-                });
-            } catch (err) {
-                document.execCommand('copy');
-                mostrarToast('📋 Texto copiado! Agora cole no WhatsApp');
-            }
-        }
-
-        function abrirWhatsApp() {
-            const texto = textoMensagem.value;
-            // Usar encodeURIComponent para preservar emojis na URL
-            window.open(`https://wa.me/?text=${encodeURIComponent(texto)}`, '_blank');
-            fecharModal();
-        }
-
-        function fecharModal() {
-            modalCopiar.classList.remove('show');
+            // Abrir WhatsApp
+            window.open('https://wa.me/?text=' + textoCodificado, '_blank');
+            
+            mostrarToast('📤 Abrindo WhatsApp...');
         }
 
         function mostrarToast(mensagem) {
@@ -811,13 +709,6 @@ ${ultimaEscala.cambioIcone} *Câmbio:* ${ultimaEscala.cambio}
 
             setTimeout(() => toast.remove(), 3000);
         }
-
-        // Fechar modal ao clicar fora
-        modalCopiar.addEventListener('click', function(e) {
-            if (e.target === modalCopiar) {
-                fecharModal();
-            }
-        });
     </script>
 </body>
 </html>
