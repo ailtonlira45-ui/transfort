@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <meta name="description" content="TRANSFORT-BR - Sistema de Escalação OMSI 2" />
     <meta property="og:title" content="TRANSFORT-BR | Escalação Inteligente" />
-    <meta property="og:description" content="Sistema completo de gestão de frota com motoristas, ônibus manuais e automáticos" />
+    <meta property="og:description" content="Sistema completo de gestão de frota com motoristas e ônibus" />
     <meta property="og:type" content="website" />
     <title>🚍 TRANSFORT-BR | Escalação Inteligente</title>
     
@@ -20,7 +20,6 @@
             --text-secondary: #94a3b8;
             --manual: #f59e0b;
             --automatico: #3b82f6;
-            --oficina: #ef4444;
         }
 
         * {
@@ -32,11 +31,10 @@
         body {
             background: linear-gradient(160deg, #0a0f1e 0%, #111827 40%, #0f172a 100%);
             color: var(--text);
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             min-height: 100vh;
             padding: 0;
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
         }
 
         .app-container {
@@ -53,35 +51,11 @@
             margin-bottom: 24px;
             text-align: center;
             backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-premium::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .logo-section {
-            position: relative;
-            z-index: 1;
         }
 
         .logo-icon {
             font-size: 56px;
             margin-bottom: 8px;
-            filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.3));
             animation: float 3s ease-in-out infinite;
         }
 
@@ -97,15 +71,11 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -0.5px;
-            margin-bottom: 6px;
         }
 
         .app-subtitle {
             color: var(--text-secondary);
             font-size: 0.95em;
-            font-weight: 500;
-            letter-spacing: 0.3px;
         }
 
         .version-badge {
@@ -117,7 +87,6 @@
             font-size: 0.75em;
             font-weight: 600;
             margin-top: 8px;
-            letter-spacing: 0.5px;
         }
 
         .btn-site {
@@ -132,14 +101,13 @@
             font-size: 0.9em;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
             text-decoration: none;
             margin-top: 12px;
+            transition: all 0.3s;
         }
 
         .btn-site:hover {
             background: rgba(59, 130, 246, 0.25);
-            border-color: rgba(59, 130, 246, 0.6);
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
         }
 
@@ -162,15 +130,12 @@
             border-radius: 20px;
             padding: 24px;
             backdrop-filter: blur(16px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.3s;
         }
 
         .card-premium:hover {
             border-color: rgba(16, 185, 129, 0.3);
             transform: translateY(-2px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 60px rgba(16, 185, 129, 0.05);
         }
 
         .card-full {
@@ -203,14 +168,11 @@
         .card-title {
             font-size: 1.2em;
             font-weight: 700;
-            color: var(--text);
-            letter-spacing: -0.3px;
         }
 
         .card-count {
             font-size: 0.85em;
             color: var(--text-secondary);
-            font-weight: 500;
         }
 
         .cambio-selector {
@@ -234,23 +196,9 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            letter-spacing: 0.3px;
         }
 
-        .btn-cambio:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: rgba(255,255,255,0.2);
-        }
-
-        .btn-cambio.manual {
-            border-color: rgba(245, 158, 11, 0.3);
-        }
-
-        .btn-cambio.manual:hover {
-            border-color: rgba(245, 158, 11, 0.6);
-            background: rgba(245, 158, 11, 0.08);
-        }
-
+        .btn-cambio.manual { border-color: rgba(245, 158, 11, 0.3); }
         .btn-cambio.manual.active {
             background: rgba(245, 158, 11, 0.2);
             border-color: #f59e0b;
@@ -258,34 +206,12 @@
             box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
         }
 
-        .btn-cambio.automatico {
-            border-color: rgba(59, 130, 246, 0.3);
-        }
-
-        .btn-cambio.automatico:hover {
-            border-color: rgba(59, 130, 246, 0.6);
-            background: rgba(59, 130, 246, 0.08);
-        }
-
+        .btn-cambio.automatico { border-color: rgba(59, 130, 246, 0.3); }
         .btn-cambio.automatico.active {
             background: rgba(59, 130, 246, 0.2);
             border-color: #3b82f6;
             color: #60a5fa;
             box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
-        }
-
-        .cambio-icon {
-            font-size: 1.4em;
-        }
-
-        .cambio-label {
-            display: block;
-        }
-
-        .cambio-desc {
-            font-size: 0.7em;
-            opacity: 0.7;
-            font-weight: 400;
         }
 
         .select-premium {
@@ -296,21 +222,13 @@
             border-radius: 14px;
             color: var(--text);
             font-size: 1em;
-            font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
             appearance: none;
             -webkit-appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2310b981' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: right 16px center;
             margin-bottom: 16px;
-        }
-
-        .select-premium:focus {
-            outline: none;
-            border-color: #10b981;
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
         }
 
         .btn-premium {
@@ -324,24 +242,6 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s;
-            letter-spacing: 0.3px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-premium::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn-premium:hover::before {
-            left: 100%;
         }
 
         .btn-premium:hover {
@@ -349,17 +249,9 @@
             box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
         }
 
-        .btn-premium:active {
-            transform: translateY(0);
-        }
-
         .btn-share {
             background: linear-gradient(135deg, #3b82f6, #2563eb);
             margin-top: 12px;
-        }
-
-        .btn-share:hover {
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
         }
 
         .resultado-box {
@@ -411,15 +303,8 @@
             margin-left: 6px;
         }
 
-        .badge-manual {
-            background: rgba(245, 158, 11, 0.2);
-            color: #fbbf24;
-        }
-
-        .badge-automatico {
-            background: rgba(59, 130, 246, 0.2);
-            color: #60a5fa;
-        }
+        .badge-manual { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .badge-automatico { background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
 
         .badge-status {
             display: inline-block;
@@ -429,15 +314,8 @@
             font-weight: 600;
         }
 
-        .badge-operacional {
-            background: rgba(16, 185, 129, 0.2);
-            color: #34d399;
-        }
-
-        .badge-oficina {
-            background: rgba(239, 68, 68, 0.2);
-            color: #f87171;
-        }
+        .badge-operacional { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .badge-oficina { background: rgba(239, 68, 68, 0.2); color: #f87171; }
 
         .lista-scroll {
             max-height: 500px;
@@ -445,14 +323,7 @@
             padding-right: 6px;
         }
 
-        .lista-scroll::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .lista-scroll::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
+        .lista-scroll::-webkit-scrollbar { width: 4px; }
         .lista-scroll::-webkit-scrollbar-thumb {
             background: rgba(16, 185, 129, 0.3);
             border-radius: 4px;
@@ -465,13 +336,9 @@
             border-radius: 12px;
             margin-bottom: 8px;
             font-size: 0.90em;
-            transition: all 0.2s;
         }
 
-        .lista-item:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: rgba(16, 185, 129, 0.15);
-        }
+        .lista-item:hover { background: rgba(255,255,255,0.06); }
 
         .lista-item-header {
             display: flex;
@@ -490,10 +357,6 @@
             color: var(--text-secondary);
         }
 
-        .km-info {
-            color: #94a3b8;
-        }
-
         .secao-titulo {
             color: var(--text-secondary);
             font-size: 0.9em;
@@ -501,21 +364,9 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             margin: 16px 0 8px 0;
-            padding-left: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .secao-titulo:first-child {
-            margin-top: 0;
-        }
-
-        .secao-contador {
-            font-size: 0.85em;
-            opacity: 0.7;
-            font-weight: 400;
-        }
+        .secao-titulo:first-child { margin-top: 0; }
 
         .footer-premium {
             text-align: center;
@@ -526,20 +377,7 @@
             margin-top: 24px;
         }
 
-        .footer-premium span {
-            color: #10b981;
-            font-weight: 600;
-        }
-
-        .footer-premium a {
-            color: #60a5fa;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-premium a:hover {
-            color: #93bbfd;
-        }
+        .footer-premium a { color: #60a5fa; text-decoration: none; }
 
         .toast {
             position: fixed;
@@ -552,7 +390,7 @@
             border-radius: 30px;
             font-weight: 600;
             z-index: 1000;
-            animation: slideUp 0.4s ease-out, fadeOut 0.4s 2.6s ease-out forwards;
+            animation: slideUp 0.4s ease-out;
             box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
         }
 
@@ -561,28 +399,11 @@
             to { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
 
-        @keyframes fadeOut {
-            to { opacity: 0; transform: translateX(-50%) translateY(-10px); }
-        }
-
         @media (max-width: 600px) {
-            .app-title {
-                font-size: 1.8em;
-            }
-            .logo-icon {
-                font-size: 42px;
-            }
-            .card-premium {
-                padding: 18px;
-            }
-            .btn-premium {
-                padding: 13px;
-                font-size: 1em;
-            }
-            .btn-cambio {
-                padding: 12px 14px;
-                font-size: 0.9em;
-            }
+            .app-title { font-size: 1.8em; }
+            .logo-icon { font-size: 42px; }
+            .card-premium { padding: 18px; }
+            .btn-premium { padding: 13px; font-size: 1em; }
         }
     </style>
 </head>
@@ -594,7 +415,7 @@
                 <div class="logo-icon">🚍</div>
                 <h1 class="app-title">TRANSFORT-BR</h1>
                 <p class="app-subtitle">Movendo a simulação. Conectando motoristas.</p>
-                <span class="version-badge">🔷 v9.0 PRO • 23 Ônibus</span>
+                <span class="version-badge">🔷 v10.0 PRO • 23 Ônibus</span>
                 <br>
                 <a href="https://transfort.com.br" target="_blank" class="btn-site">
                     🌐 ACESSAR SITE OFICIAL
@@ -614,21 +435,12 @@
                     </div>
                 </div>
 
-                <!-- Seletor de Câmbio -->
                 <div class="cambio-selector">
                     <button class="btn-cambio manual" id="btnManual" onclick="selecionarCambio('manual')">
-                        <span class="cambio-icon">🕹️</span>
-                        <span class="cambio-label">
-                            MANUAL
-                            <span class="cambio-desc">Câmbio Manual</span>
-                        </span>
+                        🕹️ MANUAL
                     </button>
                     <button class="btn-cambio automatico" id="btnAutomatico" onclick="selecionarCambio('automatico')">
-                        <span class="cambio-icon">🤖</span>
-                        <span class="cambio-label">
-                            AUTOMÁTICO
-                            <span class="cambio-desc">Câmbio Automático</span>
-                        </span>
+                        🤖 AUTOMÁTICO
                     </button>
                 </div>
 
@@ -661,7 +473,7 @@
                 <div class="lista-scroll" id="listaMotoristas"></div>
             </div>
 
-            <!-- Card Ônibus - Full Width -->
+            <!-- Card Ônibus -->
             <div class="card-premium card-full">
                 <div class="card-header">
                     <div class="card-icon icon-bus">🚌</div>
@@ -676,7 +488,7 @@
         </div>
 
         <footer class="footer-premium">
-            <span>TRANSFORT-BR</span> © 2026 • <a href="https://transfort.com.br" target="_blank">transfort.com.br</a> • OMSI 2 • Todos os direitos reservados
+            <span>TRANSFORT-BR</span> © 2026 • <a href="https://transfort.com.br" target="_blank">transfort.com.br</a> • OMSI 2
         </footer>
     </div>
 
@@ -690,249 +502,42 @@
             'Capacity-Felix', 'DIEGO_SC', 'fernando br'
         ];
 
-        // FROTA COMPLETA - Sem horários nos veículos
+        // FROTA - Sem horários nos veículos
         const frotaOnibus = {
             manual: [
-                { 
-                    placa: 'KZZ-8037', 
-                    modelo: 'CAIO VIP IV OF-1721', 
-                    cambio: 'Manual',
-                    status: 'Operacional',
-                    km: '0 km',
-                    condicao: '100%',
-                    revisao: 'Em dia',
-                    origem: 'Frota Original'
-                },
-                { 
-                    placa: 'RNT-0003', 
-                    modelo: 'Apache Vip V OF-1721L', 
-                    cambio: 'Manual',
-                    status: 'Operacional',
-                    km: '0 km',
-                    condicao: '100%',
-                    revisao: 'Em dia',
-                    origem: 'Frota Original'
-                },
-                { 
-                    placa: 'RNT-0004', 
-                    modelo: 'Marcopolo Viale 2010', 
-                    cambio: 'Manual',
-                    status: 'Operacional',
-                    km: '0 km',
-                    condicao: '100%',
-                    revisao: 'Em dia',
-                    origem: 'Frota Original'
-                },
-                { 
-                    placa: 'RNT-0005', 
-                    modelo: 'Torino 2007 VW 17.230', 
-                    cambio: 'Manual',
-                    status: 'Operacional',
-                    km: '0 km',
-                    condicao: '100%',
-                    revisao: 'Em dia',
-                    origem: 'Frota Original'
-                },
-                { 
-                    placa: 'RNT-0007', 
-                    modelo: 'Apache SSA Vip V MB 1721', 
-                    cambio: 'Manual',
-                    status: 'Operacional',
-                    km: '0 km',
-                    condicao: '100%',
-                    revisao: 'Em dia',
-                    origem: 'Frota Original'
-                },
-                { 
-                    placa: 'RNT-0008', 
-                    modelo: 'Busscar Urbanus 94', 
-                    cambio: 'Manual',
-                    status: 'Operacional',
-                    km: '0 km',
-                    condicao: '100%',
-                    revisao: 'Em dia',
-                    origem: 'Frota Original'
-                },
-                { 
-                    placa: 'TFT-0016', 
-                    modelo: 'Caio by LFD Vip V VW 15.190 OD', 
-                    cambio: 'Manual',
-                    status: 'Operacional',
-                    km: '467,3 km',
-                    condicao: '96%',
-                    revisao: '21/07/2026',
-                    origem: 'Frota TFT'
-                },
-                { 
-                    placa: 'TFT-0020', 
-                    modelo: 'Marcopolo by Pk Torino S MB OF-1721', 
-                    cambio: 'Manual',
-                    status: 'Operacional',
-                    km: '2.600,5 km',
-                    condicao: '96%',
-                    revisao: '20/07/2026',
-                    origem: 'Frota TFT'
-                },
-                { 
-                    placa: 'TFT-0021', 
-                    modelo: 'Caio by LFD Vip V MB OF-1724 Euro 5', 
-                    cambio: 'Manual',
-                    status: 'Operacional',
-                    km: '514,2 km',
-                    condicao: '100%',
-                    revisao: '23/05/2026',
-                    origem: 'Frota TFT'
-                }
+                { placa: 'KZZ-8037', modelo: 'CAIO VIP IV OF-1721', cambio: 'Manual', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
+                { placa: 'RNT-0003', modelo: 'Apache Vip V OF-1721L', cambio: 'Manual', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
+                { placa: 'RNT-0004', modelo: 'Marcopolo Viale 2010', cambio: 'Manual', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
+                { placa: 'RNT-0005', modelo: 'Torino 2007 VW 17.230', cambio: 'Manual', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
+                { placa: 'RNT-0007', modelo: 'Apache SSA Vip V MB 1721', cambio: 'Manual', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
+                { placa: 'RNT-0008', modelo: 'Busscar Urbanus 94', cambio: 'Manual', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
+                { placa: 'TFT-0016', modelo: 'Caio by LFD Vip V VW 15.190 OD', cambio: 'Manual', status: 'Operacional', km: '467,3 km', condicao: '96%', revisao: '21/07/2026', origem: 'Frota TFT' },
+                { placa: 'TFT-0020', modelo: 'Marcopolo by Pk Torino S MB OF-1721', cambio: 'Manual', status: 'Operacional', km: '2.600,5 km', condicao: '96%', revisao: '20/07/2026', origem: 'Frota TFT' },
+                { placa: 'TFT-0021', modelo: 'Caio by LFD Vip V MB OF-1724 Euro 5', cambio: 'Manual', status: 'Operacional', km: '514,2 km', condicao: '100%', revisao: '23/05/2026', origem: 'Frota TFT' }
             ],
             automatico: [
-                { 
-                    placa: 'ABC-1234', 
-                    modelo: 'Mercedes-Benz S400 LE Business Series S418LE FL', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '0 km',
-                    condicao: '100%',
-                    revisao: 'Em dia',
-                    origem: 'Frota Original'
-                },
-                { 
-                    placa: 'HIT-0001', 
-                    modelo: 'MAN München Lions City', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '0 km',
-                    condicao: '100%',
-                    revisao: 'Em dia',
-                    origem: 'Frota Original'
-                },
-                { 
-                    placa: 'RNT-0006', 
-                    modelo: 'Comil Campione Invictus DD', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '0 km',
-                    condicao: '100%',
-                    revisao: 'Em dia',
-                    origem: 'Frota Original'
-                },
-                { 
-                    placa: 'RNT-0501', 
-                    modelo: 'London Citybus C400R', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '0 km',
-                    condicao: '100%',
-                    revisao: 'Em dia',
-                    origem: 'Frota Original'
-                },
-                { 
-                    placa: 'RNT-0502', 
-                    modelo: 'Caio Millennium IV', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '0 km',
-                    condicao: '100%',
-                    revisao: 'Em dia',
-                    origem: 'Frota Original'
-                },
-                { 
-                    placa: 'TFT-0012', 
-                    modelo: 'Marcopolo by Pk TORINO S 17.230ODS', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '719,9 km',
-                    condicao: '100%',
-                    revisao: '11/07/2026',
-                    origem: 'Frota TFT'
-                },
-                { 
-                    placa: 'TFT-0013', 
-                    modelo: 'Marcopolo by Pk TORINO S 17.230ODS Rio Ita', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '1.252,4 km',
-                    condicao: '79%',
-                    revisao: '20/07/2026',
-                    origem: 'Frota TFT'
-                },
-                { 
-                    placa: 'TFT-0014', 
-                    modelo: 'Caio Induscar By Edu231 Vip IV MB OF-1721L Euro 5', 
-                    cambio: 'Automático',
-                    status: 'Na Oficina',
-                    km: '1.870,9 km',
-                    condicao: '82%',
-                    revisao: '23/05/2026',
-                    origem: 'Frota TFT'
-                },
-                { 
-                    placa: 'TFT-0015', 
-                    modelo: 'Caio AI By Ian Santos Apache Vip III OF-1721L Euro 5 - 1001', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '782 km',
-                    condicao: '100%',
-                    revisao: '04/07/2026',
-                    origem: 'Frota TFT'
-                },
-                { 
-                    placa: 'TFT-0018', 
-                    modelo: 'Mercedes-Benz O530 G Citaro (3 Portas)', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '349,3 km',
-                    condicao: '84%',
-                    revisao: '12/06/2026',
-                    origem: 'Frota TFT'
-                },
-                { 
-                    placa: 'TFT-0019', 
-                    modelo: 'Scania Citywide LF CN360UA', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '3.474,7 km',
-                    condicao: '100%',
-                    revisao: '11/07/2026',
-                    origem: 'Frota TFT'
-                },
-                { 
-                    placa: 'TFT-0022', 
-                    modelo: 'MB O305G', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '375 km',
-                    condicao: '79%',
-                    revisao: '12/07/2026',
-                    origem: 'Frota TFT'
-                },
-                { 
-                    placa: 'TFT-0023', 
-                    modelo: 'Caio by LFD Vip V MB OF-1724 Euro 5', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '277,1 km',
-                    condicao: '78%',
-                    revisao: '21/07/2026',
-                    origem: 'Frota TFT'
-                },
-                { 
-                    placa: 'TFT-0024', 
-                    modelo: 'Caio by Zane Millennium IV Scania K310UA ZF Ecolife', 
-                    cambio: 'Automático',
-                    status: 'Operacional',
-                    km: '0 km',
-                    condicao: '100%',
-                    revisao: 'Em breve',
-                    origem: 'Frota TFT'
-                }
+                { placa: 'ABC-1234', modelo: 'Mercedes-Benz S400 LE Business Series', cambio: 'Automático', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
+                { placa: 'HIT-0001', modelo: 'MAN München Lions City', cambio: 'Automático', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
+                { placa: 'RNT-0006', modelo: 'Comil Campione Invictus DD', cambio: 'Automático', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
+                { placa: 'RNT-0501', modelo: 'London Citybus C400R', cambio: 'Automático', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
+                { placa: 'RNT-0502', modelo: 'Caio Millennium IV', cambio: 'Automático', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
+                { placa: 'TFT-0012', modelo: 'Marcopolo TORINO S 17.230ODS', cambio: 'Automático', status: 'Operacional', km: '719,9 km', condicao: '100%', revisao: '11/07/2026', origem: 'Frota TFT' },
+                { placa: 'TFT-0013', modelo: 'Marcopolo TORINO S 17.230ODS Rio Ita', cambio: 'Automático', status: 'Operacional', km: '1.252,4 km', condicao: '79%', revisao: '20/07/2026', origem: 'Frota TFT' },
+                { placa: 'TFT-0014', modelo: 'Caio Induscar Vip IV MB OF-1721L Euro 5', cambio: 'Automático', status: 'Na Oficina', km: '1.870,9 km', condicao: '82%', revisao: '23/05/2026', origem: 'Frota TFT' },
+                { placa: 'TFT-0015', modelo: 'Caio Apache Vip III OF-1721L Euro 5', cambio: 'Automático', status: 'Operacional', km: '782 km', condicao: '100%', revisao: '04/07/2026', origem: 'Frota TFT' },
+                { placa: 'TFT-0018', modelo: 'Mercedes-Benz O530 G Citaro', cambio: 'Automático', status: 'Operacional', km: '349,3 km', condicao: '84%', revisao: '12/06/2026', origem: 'Frota TFT' },
+                { placa: 'TFT-0019', modelo: 'Scania Citywide LF CN360UA', cambio: 'Automático', status: 'Operacional', km: '3.474,7 km', condicao: '100%', revisao: '11/07/2026', origem: 'Frota TFT' },
+                { placa: 'TFT-0022', modelo: 'MB O305G', cambio: 'Automático', status: 'Operacional', km: '375 km', condicao: '79%', revisao: '12/07/2026', origem: 'Frota TFT' },
+                { placa: 'TFT-0023', modelo: 'Caio Vip V MB OF-1724 Euro 5', cambio: 'Automático', status: 'Operacional', km: '277,1 km', condicao: '78%', revisao: '21/07/2026', origem: 'Frota TFT' },
+                { placa: 'TFT-0024', modelo: 'Caio Millennium IV Scania K310UA', cambio: 'Automático', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em breve', origem: 'Frota TFT' }
             ]
         };
 
-        // ============ VARIÁVEIS DE ESTADO ============
+        // ============ VARIÁVEIS ============
         let cambioSelecionado = null;
         let ultimaEscala = null;
 
-        // ============ ELEMENTOS DOM ============
+        // ============ ELEMENTOS ============
         const motoristaSelect = document.getElementById('motoristaSelect');
         const listaMotoristas = document.getElementById('listaMotoristas');
         const listaOnibus = document.getElementById('listaOnibus');
@@ -943,16 +548,11 @@
         // ============ PREENCHER LISTAS ============
         
         motoristas.forEach((nome, index) => {
-            const option = document.createElement('option');
-            option.value = nome;
-            option.textContent = `👨‍✈️ ${nome}`;
-            motoristaSelect.appendChild(option);
-
+            motoristaSelect.innerHTML += `<option value="${nome}">👨‍✈️ ${nome}</option>`;
             listaMotoristas.innerHTML += `
                 <div class="lista-item">
                     <div class="lista-item-header">
-                        <span>#${String(index + 1).padStart(2, '0')}</span>
-                        <span>👨‍✈️ <strong>${nome}</strong></span>
+                        #${String(index + 1).padStart(2, '0')} 👨‍✈️ <strong>${nome}</strong>
                     </div>
                 </div>
             `;
@@ -961,63 +561,43 @@
         function preencherListaOnibus() {
             listaOnibus.innerHTML = '';
             
-            const totalManuais = frotaOnibus.manual.length;
-            const manuaisOperacionais = frotaOnibus.manual.filter(b => b.status === 'Operacional').length;
-            const totalAutomaticos = frotaOnibus.automatico.length;
-            const automaticosOperacionais = frotaOnibus.automatico.filter(b => b.status === 'Operacional').length;
+            const manuaisOp = frotaOnibus.manual.filter(b => b.status === 'Operacional').length;
+            const autosOp = frotaOnibus.automatico.filter(b => b.status === 'Operacional').length;
             
-            // Seção Manuais
-            listaOnibus.innerHTML += `<div class="secao-titulo">🕹️ MANUAIS <span class="secao-contador">(${totalManuais} veículos • ${manuaisOperacionais} operacionais)</span></div>`;
-            
+            // Manuais
+            listaOnibus.innerHTML += `<div class="secao-titulo">🕹️ MANUAIS (${frotaOnibus.manual.length} • ${manuaisOp} operacionais)</div>`;
             frotaOnibus.manual.forEach(bus => {
                 const statusBadge = bus.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
-                const temDadosTFT = bus.km !== '0 km';
-                
+                const temDados = bus.km !== '0 km';
                 listaOnibus.innerHTML += `
                     <div class="lista-item">
                         <div class="lista-item-header">
-                            <span>🕹️</span>
-                            <strong>${bus.placa}</strong>
+                            🕹️ <strong>${bus.placa}</strong>
                             <span class="badge-cambio badge-manual">Manual</span>
                             <span class="badge-status ${statusBadge}">${bus.status}</span>
                             <span style="font-size:0.7em; color:#64748b;">${bus.origem}</span>
                         </div>
                         <div style="color:#cbd5e1;">${bus.modelo}</div>
-                        ${temDadosTFT ? `
-                        <div class="lista-item-detalhes">
-                            <span class="km-info">📏 ${bus.km}</span>
-                            <span class="km-info">🔧 ${bus.condicao}</span>
-                            <span class="km-info">📅 Revisão: ${bus.revisao}</span>
-                        </div>
-                        ` : ''}
+                        ${temDados ? `<div class="lista-item-detalhes">📏 ${bus.km} | 🔧 ${bus.condicao} | 📅 ${bus.revisao}</div>` : ''}
                     </div>
                 `;
             });
 
-            // Seção Automáticos
-            listaOnibus.innerHTML += `<div class="secao-titulo">🤖 AUTOMÁTICOS <span class="secao-contador">(${totalAutomaticos} veículos • ${automaticosOperacionais} operacionais)</span></div>`;
-            
+            // Automáticos
+            listaOnibus.innerHTML += `<div class="secao-titulo">🤖 AUTOMÁTICOS (${frotaOnibus.automatico.length} • ${autosOp} operacionais)</div>`;
             frotaOnibus.automatico.forEach(bus => {
                 const statusBadge = bus.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
-                const temDadosTFT = bus.km !== '0 km';
-                
+                const temDados = bus.km !== '0 km';
                 listaOnibus.innerHTML += `
                     <div class="lista-item">
                         <div class="lista-item-header">
-                            <span>🤖</span>
-                            <strong>${bus.placa}</strong>
+                            🤖 <strong>${bus.placa}</strong>
                             <span class="badge-cambio badge-automatico">Automático</span>
                             <span class="badge-status ${statusBadge}">${bus.status}</span>
                             <span style="font-size:0.7em; color:#64748b;">${bus.origem}</span>
                         </div>
                         <div style="color:#cbd5e1;">${bus.modelo}</div>
-                        ${temDadosTFT ? `
-                        <div class="lista-item-detalhes">
-                            <span class="km-info">📏 ${bus.km}</span>
-                            <span class="km-info">🔧 ${bus.condicao}</span>
-                            <span class="km-info">📅 Revisão: ${bus.revisao}</span>
-                        </div>
-                        ` : ''}
+                        ${temDados ? `<div class="lista-item-detalhes">📏 ${bus.km} | 🔧 ${bus.condicao} | 📅 ${bus.revisao}</div>` : ''}
                     </div>
                 `;
             });
@@ -1027,114 +607,85 @@
 
         const totalOnibus = frotaOnibus.manual.length + frotaOnibus.automatico.length;
         document.getElementById('contadorMotoristas').textContent = `${motoristas.length} cadastrados`;
-        document.getElementById('contadorOnibus').textContent = `${totalOnibus} veículos no total`;
+        document.getElementById('contadorOnibus').textContent = `${totalOnibus} veículos`;
 
-        // ============ FUNÇÃO DE SELEÇÃO DE CÂMBIO ============
+        // ============ FUNÇÕES ============
+        
         function selecionarCambio(tipo) {
             cambioSelecionado = tipo;
-            
             btnManual.classList.remove('active');
             btnAutomatico.classList.remove('active');
-            
             if (tipo === 'manual') {
                 btnManual.classList.add('active');
-                mostrarToast('🕹️ Câmbio MANUAL selecionado');
             } else {
                 btnAutomatico.classList.add('active');
-                mostrarToast('🤖 Câmbio AUTOMÁTICO selecionado');
             }
         }
 
-        // ============ FUNÇÃO PRINCIPAL ============
         function gerarEscala() {
             const motoristaSelecionado = motoristaSelect.value;
 
             if (!motoristaSelecionado) {
-                mostrarToast('⚠️ Selecione um motorista primeiro!');
-                resultadoBox.innerHTML = `
-                    <div style="color:#ef4444; text-align:center;">
-                        ⚠️ <strong>Selecione um motorista</strong> para gerar a escala.
-                    </div>
-                `;
+                resultadoBox.innerHTML = `<div style="color:#ef4444; text-align:center;">⚠️ Selecione um motorista!</div>`;
                 return;
             }
 
             if (!cambioSelecionado) {
-                mostrarToast('⚠️ Selecione o tipo de câmbio!');
-                resultadoBox.innerHTML = `
-                    <div style="color:#ef4444; text-align:center;">
-                        ⚠️ <strong>Escolha entre MANUAL ou AUTOMÁTICO</strong> antes de gerar a escala.
-                    </div>
-                `;
+                resultadoBox.innerHTML = `<div style="color:#ef4444; text-align:center;">⚠️ Escolha MANUAL ou AUTOMÁTICO!</div>`;
                 return;
             }
 
             const frotaFiltrada = frotaOnibus[cambioSelecionado].filter(bus => bus.status === 'Operacional');
             
             if (frotaFiltrada.length === 0) {
-                mostrarToast('⚠️ Nenhum ônibus disponível!');
-                resultadoBox.innerHTML = `
-                    <div style="color:#f59e0b; text-align:center;">
-                        ⚠️ <strong>Nenhum ônibus ${cambioSelecionado === 'manual' ? 'manual' : 'automático'} disponível</strong> no momento.
-                    </div>
-                `;
+                resultadoBox.innerHTML = `<div style="color:#f59e0b; text-align:center;">⚠️ Nenhum ônibus disponível!</div>`;
                 return;
             }
 
             const onibusSorteado = frotaFiltrada[Math.floor(Math.random() * frotaFiltrada.length)];
             
-            // Gerar horário automático para a escala
-            const horaInicio = Math.floor(Math.random() * 20) + 4; // 4h às 23h
-            const horaFim = horaInicio + 8;
-            const horarioFormatado = `${String(horaInicio).padStart(2, '0')}:00 às ${String(horaFim).padStart(2, '0')}:00`;
+            // CAPTURAR HORA REAL DO MOMENTO
+            const agora = new Date();
+            const horaReal = agora.toLocaleTimeString('pt-BR');
+            const dataReal = agora.toLocaleDateString('pt-BR');
             
             const cambioIcone = cambioSelecionado === 'manual' ? '🕹️' : '🤖';
             const cambioTexto = cambioSelecionado === 'manual' ? 'Manual' : 'Automático';
             const cambioBadge = cambioSelecionado === 'manual' ? 'badge-manual' : 'badge-automatico';
+            const temDados = onibusSorteado.km !== '0 km';
 
             ultimaEscala = {
                 motorista: motoristaSelecionado,
                 onibus: onibusSorteado,
                 cambio: cambioTexto,
-                horario: horarioFormatado,
-                data: new Date().toLocaleDateString('pt-BR'),
-                horaGeracao: new Date().toLocaleTimeString('pt-BR'),
+                horaReal: horaReal,
+                dataReal: dataReal,
                 status: '✅ Escalado'
             };
 
-            const temDadosTFT = onibusSorteado.km !== '0 km';
-
             resultadoBox.innerHTML = `
-                <div class="resultado-titulo">
-                    <span class="pulse-dot"></span> ESCALA CONFIRMADA
-                </div>
+                <div class="resultado-titulo"><span class="pulse-dot"></span> ESCALA CONFIRMADA</div>
                 <div style="margin-top: 8px;">
                     👨‍✈️ <strong>Motorista:</strong> <span class="dado-destaque">${ultimaEscala.motorista}</span><br>
                     🚌 <strong>Ônibus:</strong> <span class="dado-destaque">${ultimaEscala.onibus.modelo}</span><br>
                     🔖 <strong>Placa:</strong> <span class="dado-destaque">${ultimaEscala.onibus.placa}</span><br>
                     ${cambioIcone} <strong>Câmbio:</strong> <span class="badge-cambio ${cambioBadge}">${ultimaEscala.cambio}</span><br>
-                    🕐 <strong>Horário:</strong> <span class="dado-destaque">${ultimaEscala.horario}</span><br>
-                    ${temDadosTFT ? `
-                    📏 <strong>Km Atual:</strong> <span class="dado-destaque">${ultimaEscala.onibus.km}</span><br>
-                    🔧 <strong>Condição:</strong> <span class="dado-destaque">${ultimaEscala.onibus.condicao}</span><br>
-                    ` : ''}
-                    📅 <strong>Data:</strong> ${ultimaEscala.data}<br>
+                    🕐 <strong>Hora da Escala:</strong> <span class="dado-destaque">${ultimaEscala.horaReal}</span><br>
+                    📅 <strong>Data:</strong> <span class="dado-destaque">${ultimaEscala.dataReal}</span><br>
+                    ${temDados ? `📏 <strong>Km:</strong> ${ultimaEscala.onibus.km} | 🔧 <strong>Condição:</strong> ${ultimaEscala.onibus.condicao}<br>` : ''}
                     📡 <strong>Status:</strong> <span style="color:#10b981;">${ultimaEscala.status}</span>
                 </div>
             `;
-
-            mostrarToast('✅ Escala gerada com sucesso!');
-            resultadoBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
         function compartilharEscala() {
             if (!ultimaEscala) {
-                mostrarToast('⚠️ Gere uma escala primeiro!');
+                alert('⚠️ Gere uma escala primeiro!');
                 return;
             }
 
             const cambioIcone = ultimaEscala.cambio === 'Manual' ? '🕹️' : '🤖';
-            const temDadosTFT = ultimaEscala.onibus.km !== '0 km';
+            const temDados = ultimaEscala.onibus.km !== '0 km';
 
             let mensagem = 
                 `🚍 *TRANSFORT-BR • ESCALA CONFIRMADA*\n\n` +
@@ -1142,44 +693,18 @@
                 `🚌 *Ônibus:* ${ultimaEscala.onibus.modelo}\n` +
                 `🔖 *Placa:* ${ultimaEscala.onibus.placa}\n` +
                 `${cambioIcone} *Câmbio:* ${ultimaEscala.cambio}\n` +
-                `🕐 *Horário:* ${ultimaEscala.horario}\n`;
+                `🕐 *Hora da Escala:* ${ultimaEscala.horaReal}\n` +
+                `📅 *Data:* ${ultimaEscala.dataReal}\n`;
             
-            if (temDadosTFT) {
-                mensagem += `📏 *Km:* ${ultimaEscala.onibus.km}\n`;
-                mensagem += `🔧 *Condição:* ${ultimaEscala.onibus.condicao}\n`;
+            if (temDados) {
+                mensagem += `📏 *Km:* ${ultimaEscala.onibus.km}\n🔧 *Condição:* ${ultimaEscala.onibus.condicao}\n`;
             }
             
-            mensagem += `📅 *Data:* ${ultimaEscala.data}\n`;
             mensagem += `📡 *Status:* ${ultimaEscala.status}\n\n`;
-            mensagem += `🌐 *Site Oficial:* https://transfort.com.br\n`;
-            mensagem += `_Sistema TRANSFORT-BR • 2026_`;
+            mensagem += `🌐 https://transfort.com.br`;
 
             window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
-            mostrarToast('📤 Abrindo WhatsApp...');
         }
-
-        function mostrarToast(mensagem) {
-            const toastAntigo = document.querySelector('.toast');
-            if (toastAntigo) toastAntigo.remove();
-
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = mensagem;
-            document.body.appendChild(toast);
-
-            setTimeout(() => toast.remove(), 3000);
-        }
-
-        motoristaSelect.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                gerarEscala();
-            }
-        });
-
-        console.log('🚍 TRANSFORT-BR v9.0 PRO • Conectado ao transfort.com.br');
-        console.log(`👥 ${motoristas.length} motoristas | 🚌 ${totalOnibus} ônibus no total`);
-        console.log('🌐 Site oficial: https://transfort.com.br');
     </script>
 </body>
 </html>
