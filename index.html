@@ -12,7 +12,6 @@
     <style>
         :root {
             --primary: #10b981;
-            --primary-dark: #059669;
             --bg-dark: #0a0f1e;
             --bg-card: rgba(255, 255, 255, 0.04);
             --border: rgba(255, 255, 255, 0.08);
@@ -348,15 +347,6 @@
             flex-wrap: wrap;
         }
 
-        .lista-item-detalhes {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 4px;
-            font-size: 0.85em;
-            color: var(--text-secondary);
-        }
-
         .secao-titulo {
             color: var(--text-secondary);
             font-size: 0.9em;
@@ -415,7 +405,7 @@
                 <div class="logo-icon">🚍</div>
                 <h1 class="app-title">TRANSFORT-BR</h1>
                 <p class="app-subtitle">Movendo a simulação. Conectando motoristas.</p>
-                <span class="version-badge">🔷 v10.0 PRO • 23 Ônibus</span>
+                <span class="version-badge">🔷 v11.1 PRO • 22 Ônibus</span>
                 <br>
                 <a href="https://transfort.com.br" target="_blank" class="btn-site">
                     🌐 ACESSAR SITE OFICIAL
@@ -502,34 +492,33 @@
             'Capacity-Felix', 'DIEGO_SC', 'fernando br'
         ];
 
-        // FROTA - Sem horários nos veículos
+        // FROTA - Comil Campione Invictus DD REMOVIDO
         const frotaOnibus = {
             manual: [
-                { placa: 'KZZ-8037', modelo: 'CAIO VIP IV OF-1721', cambio: 'Manual', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
-                { placa: 'RNT-0003', modelo: 'Apache Vip V OF-1721L', cambio: 'Manual', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
-                { placa: 'RNT-0004', modelo: 'Marcopolo Viale 2010', cambio: 'Manual', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
-                { placa: 'RNT-0005', modelo: 'Torino 2007 VW 17.230', cambio: 'Manual', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
-                { placa: 'RNT-0007', modelo: 'Apache SSA Vip V MB 1721', cambio: 'Manual', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
-                { placa: 'RNT-0008', modelo: 'Busscar Urbanus 94', cambio: 'Manual', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
-                { placa: 'TFT-0016', modelo: 'Caio by LFD Vip V VW 15.190 OD', cambio: 'Manual', status: 'Operacional', km: '467,3 km', condicao: '96%', revisao: '21/07/2026', origem: 'Frota TFT' },
-                { placa: 'TFT-0020', modelo: 'Marcopolo by Pk Torino S MB OF-1721', cambio: 'Manual', status: 'Operacional', km: '2.600,5 km', condicao: '96%', revisao: '20/07/2026', origem: 'Frota TFT' },
-                { placa: 'TFT-0021', modelo: 'Caio by LFD Vip V MB OF-1724 Euro 5', cambio: 'Manual', status: 'Operacional', km: '514,2 km', condicao: '100%', revisao: '23/05/2026', origem: 'Frota TFT' }
+                { placa: 'KZZ-8037', modelo: 'CAIO VIP IV OF-1721', cambio: 'Manual', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'RNT-0003', modelo: 'Apache Vip V OF-1721L', cambio: 'Manual', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'RNT-0004', modelo: 'Marcopolo Viale 2010', cambio: 'Manual', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'RNT-0005', modelo: 'Torino 2007 VW 17.230', cambio: 'Manual', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'RNT-0007', modelo: 'Apache SSA Vip V MB 1721', cambio: 'Manual', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'RNT-0008', modelo: 'Busscar Urbanus 94', cambio: 'Manual', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'TFT-0016', modelo: 'Caio by LFD Vip V VW 15.190 OD', cambio: 'Manual', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0020', modelo: 'Marcopolo by Pk Torino S MB OF-1721', cambio: 'Manual', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0021', modelo: 'Caio by LFD Vip V MB OF-1724 Euro 5', cambio: 'Manual', status: 'Operacional', origem: 'Frota TFT' }
             ],
             automatico: [
-                { placa: 'ABC-1234', modelo: 'Mercedes-Benz S400 LE Business Series', cambio: 'Automático', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
-                { placa: 'HIT-0001', modelo: 'MAN München Lions City', cambio: 'Automático', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
-                { placa: 'RNT-0006', modelo: 'Comil Campione Invictus DD', cambio: 'Automático', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
-                { placa: 'RNT-0501', modelo: 'London Citybus C400R', cambio: 'Automático', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
-                { placa: 'RNT-0502', modelo: 'Caio Millennium IV', cambio: 'Automático', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em dia', origem: 'Frota Original' },
-                { placa: 'TFT-0012', modelo: 'Marcopolo TORINO S 17.230ODS', cambio: 'Automático', status: 'Operacional', km: '719,9 km', condicao: '100%', revisao: '11/07/2026', origem: 'Frota TFT' },
-                { placa: 'TFT-0013', modelo: 'Marcopolo TORINO S 17.230ODS Rio Ita', cambio: 'Automático', status: 'Operacional', km: '1.252,4 km', condicao: '79%', revisao: '20/07/2026', origem: 'Frota TFT' },
-                { placa: 'TFT-0014', modelo: 'Caio Induscar Vip IV MB OF-1721L Euro 5', cambio: 'Automático', status: 'Na Oficina', km: '1.870,9 km', condicao: '82%', revisao: '23/05/2026', origem: 'Frota TFT' },
-                { placa: 'TFT-0015', modelo: 'Caio Apache Vip III OF-1721L Euro 5', cambio: 'Automático', status: 'Operacional', km: '782 km', condicao: '100%', revisao: '04/07/2026', origem: 'Frota TFT' },
-                { placa: 'TFT-0018', modelo: 'Mercedes-Benz O530 G Citaro', cambio: 'Automático', status: 'Operacional', km: '349,3 km', condicao: '84%', revisao: '12/06/2026', origem: 'Frota TFT' },
-                { placa: 'TFT-0019', modelo: 'Scania Citywide LF CN360UA', cambio: 'Automático', status: 'Operacional', km: '3.474,7 km', condicao: '100%', revisao: '11/07/2026', origem: 'Frota TFT' },
-                { placa: 'TFT-0022', modelo: 'MB O305G', cambio: 'Automático', status: 'Operacional', km: '375 km', condicao: '79%', revisao: '12/07/2026', origem: 'Frota TFT' },
-                { placa: 'TFT-0023', modelo: 'Caio Vip V MB OF-1724 Euro 5', cambio: 'Automático', status: 'Operacional', km: '277,1 km', condicao: '78%', revisao: '21/07/2026', origem: 'Frota TFT' },
-                { placa: 'TFT-0024', modelo: 'Caio Millennium IV Scania K310UA', cambio: 'Automático', status: 'Operacional', km: '0 km', condicao: '100%', revisao: 'Em breve', origem: 'Frota TFT' }
+                { placa: 'ABC-1234', modelo: 'Mercedes-Benz S400 LE Business Series', cambio: 'Automático', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'HIT-0001', modelo: 'MAN München Lions City', cambio: 'Automático', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'RNT-0501', modelo: 'London Citybus C400R', cambio: 'Automático', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'RNT-0502', modelo: 'Caio Millennium IV', cambio: 'Automático', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'TFT-0012', modelo: 'Marcopolo TORINO S 17.230ODS', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0013', modelo: 'Marcopolo TORINO S 17.230ODS Rio Ita', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0014', modelo: 'Caio Induscar Vip IV MB OF-1721L Euro 5', cambio: 'Automático', status: 'Na Oficina', origem: 'Frota TFT' },
+                { placa: 'TFT-0015', modelo: 'Caio Apache Vip III OF-1721L Euro 5', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0018', modelo: 'Mercedes-Benz O530 G Citaro', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0019', modelo: 'Scania Citywide LF CN360UA', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0022', modelo: 'MB O305G', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0023', modelo: 'Caio Vip V MB OF-1724 Euro 5', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0024', modelo: 'Caio Millennium IV Scania K310UA', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' }
             ]
         };
 
@@ -568,7 +557,6 @@
             listaOnibus.innerHTML += `<div class="secao-titulo">🕹️ MANUAIS (${frotaOnibus.manual.length} • ${manuaisOp} operacionais)</div>`;
             frotaOnibus.manual.forEach(bus => {
                 const statusBadge = bus.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
-                const temDados = bus.km !== '0 km';
                 listaOnibus.innerHTML += `
                     <div class="lista-item">
                         <div class="lista-item-header">
@@ -578,7 +566,6 @@
                             <span style="font-size:0.7em; color:#64748b;">${bus.origem}</span>
                         </div>
                         <div style="color:#cbd5e1;">${bus.modelo}</div>
-                        ${temDados ? `<div class="lista-item-detalhes">📏 ${bus.km} | 🔧 ${bus.condicao} | 📅 ${bus.revisao}</div>` : ''}
                     </div>
                 `;
             });
@@ -587,7 +574,6 @@
             listaOnibus.innerHTML += `<div class="secao-titulo">🤖 AUTOMÁTICOS (${frotaOnibus.automatico.length} • ${autosOp} operacionais)</div>`;
             frotaOnibus.automatico.forEach(bus => {
                 const statusBadge = bus.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
-                const temDados = bus.km !== '0 km';
                 listaOnibus.innerHTML += `
                     <div class="lista-item">
                         <div class="lista-item-header">
@@ -597,7 +583,6 @@
                             <span style="font-size:0.7em; color:#64748b;">${bus.origem}</span>
                         </div>
                         <div style="color:#cbd5e1;">${bus.modelo}</div>
-                        ${temDados ? `<div class="lista-item-detalhes">📏 ${bus.km} | 🔧 ${bus.condicao} | 📅 ${bus.revisao}</div>` : ''}
                     </div>
                 `;
             });
@@ -644,7 +629,7 @@
 
             const onibusSorteado = frotaFiltrada[Math.floor(Math.random() * frotaFiltrada.length)];
             
-            // CAPTURAR HORA REAL DO MOMENTO
+            // HORA REAL
             const agora = new Date();
             const horaReal = agora.toLocaleTimeString('pt-BR');
             const dataReal = agora.toLocaleDateString('pt-BR');
@@ -652,7 +637,7 @@
             const cambioIcone = cambioSelecionado === 'manual' ? '🕹️' : '🤖';
             const cambioTexto = cambioSelecionado === 'manual' ? 'Manual' : 'Automático';
             const cambioBadge = cambioSelecionado === 'manual' ? 'badge-manual' : 'badge-automatico';
-            const temDados = onibusSorteado.km !== '0 km';
+            const statusBadge = onibusSorteado.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
 
             ultimaEscala = {
                 motorista: motoristaSelecionado,
@@ -670,10 +655,10 @@
                     🚌 <strong>Ônibus:</strong> <span class="dado-destaque">${ultimaEscala.onibus.modelo}</span><br>
                     🔖 <strong>Placa:</strong> <span class="dado-destaque">${ultimaEscala.onibus.placa}</span><br>
                     ${cambioIcone} <strong>Câmbio:</strong> <span class="badge-cambio ${cambioBadge}">${ultimaEscala.cambio}</span><br>
+                    📡 <strong>Status do Veículo:</strong> <span class="badge-status ${statusBadge}">${ultimaEscala.onibus.status}</span><br>
                     🕐 <strong>Hora da Escala:</strong> <span class="dado-destaque">${ultimaEscala.horaReal}</span><br>
                     📅 <strong>Data:</strong> <span class="dado-destaque">${ultimaEscala.dataReal}</span><br>
-                    ${temDados ? `📏 <strong>Km:</strong> ${ultimaEscala.onibus.km} | 🔧 <strong>Condição:</strong> ${ultimaEscala.onibus.condicao}<br>` : ''}
-                    📡 <strong>Status:</strong> <span style="color:#10b981;">${ultimaEscala.status}</span>
+                    📡 <strong>Situação:</strong> <span style="color:#10b981;">${ultimaEscala.status}</span>
                 </div>
             `;
         }
@@ -685,7 +670,6 @@
             }
 
             const cambioIcone = ultimaEscala.cambio === 'Manual' ? '🕹️' : '🤖';
-            const temDados = ultimaEscala.onibus.km !== '0 km';
 
             let mensagem = 
                 `🚍 *TRANSFORT-BR • ESCALA CONFIRMADA*\n\n` +
@@ -693,15 +677,11 @@
                 `🚌 *Ônibus:* ${ultimaEscala.onibus.modelo}\n` +
                 `🔖 *Placa:* ${ultimaEscala.onibus.placa}\n` +
                 `${cambioIcone} *Câmbio:* ${ultimaEscala.cambio}\n` +
+                `📡 *Status do Veículo:* ${ultimaEscala.onibus.status}\n` +
                 `🕐 *Hora da Escala:* ${ultimaEscala.horaReal}\n` +
-                `📅 *Data:* ${ultimaEscala.dataReal}\n`;
-            
-            if (temDados) {
-                mensagem += `📏 *Km:* ${ultimaEscala.onibus.km}\n🔧 *Condição:* ${ultimaEscala.onibus.condicao}\n`;
-            }
-            
-            mensagem += `📡 *Status:* ${ultimaEscala.status}\n\n`;
-            mensagem += `🌐 https://transfort.com.br`;
+                `📅 *Data:* ${ultimaEscala.dataReal}\n` +
+                `📡 *Situação:* ${ultimaEscala.status}\n\n` +
+                `🌐 https://transfort.com.br`;
 
             window.open(`https://wa.me/?text=${encodeURIComponent(mensagem)}`, '_blank');
         }
