@@ -257,11 +257,6 @@
             box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
         }
 
-        .btn-copiar {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            margin-top: 8px;
-        }
-
         .resultado-box {
             background: rgba(16, 185, 129, 0.08);
             border: 1px solid rgba(16, 185, 129, 0.2);
@@ -417,8 +412,8 @@
             <div class="logo-section">
                 <div class="logo-icon">🚍</div>
                 <h1 class="app-title">TRANSFORT-BR</h1>
-                <p class="app-subtitle">Movendo a simulação. Conectando motoristas.</p>
-                <span class="version-badge">🔷 v12.2 PRO • 22 Ônibus</span>
+                <p class="app-subtitle">Movendo a simulacao. Conectando motoristas.</p>
+                <span class="version-badge">🔷 v13.0 PRO • 22 Onibus</span>
                 <br>
                 <a href="https://transfort.com.br" target="_blank" class="btn-site">
                     🌐 ACESSAR SITE OFICIAL
@@ -434,7 +429,7 @@
                     <div class="card-icon icon-result">⚡</div>
                     <div>
                         <div class="card-title">Gerar Escala</div>
-                        <div class="card-count">Escolha motorista e tipo de câmbio</div>
+                        <div class="card-count">Escolha motorista e tipo de cambio</div>
                     </div>
                 </div>
 
@@ -443,7 +438,7 @@
                         🕹️ MANUAL
                     </button>
                     <button class="btn-cambio automatico" id="btnAutomatico" onclick="selecionarCambio('automatico')">
-                        🤖 AUTOMÁTICO
+                        🤖 AUTOMATICO
                     </button>
                 </div>
 
@@ -455,16 +450,12 @@
                     🎯 GERAR ESCALA AGORA
                 </button>
 
-                <button class="btn-premium btn-share" onclick="compartilharEscala()">
+                <button class="btn-premium btn-share" onclick="compartilharWhatsApp()">
                     📤 ENVIAR NO WHATSAPP
                 </button>
 
-                <button class="btn-premium btn-copiar" onclick="copiarTexto()">
-                    📋 COPIAR TEXTO
-                </button>
-
                 <div class="resultado-box" id="resultadoBox">
-                    <em style="color: #94a3b8;">Escolha o tipo de câmbio, selecione um motorista e clique em "Gerar Escala".</em>
+                    <em style="color: #94a3b8;">Escolha o tipo de cambio, selecione um motorista e clique em "Gerar Escala".</em>
                 </div>
             </div>
 
@@ -522,19 +513,19 @@
                 { placa: 'TFT-0021', modelo: 'Caio by LFD Vip V MB OF-1724 Euro 5', cambio: 'Manual', status: 'Operacional', origem: 'Frota TFT' }
             ],
             automatico: [
-                { placa: 'ABC-1234', modelo: 'Mercedes-Benz S400 LE Business Series', cambio: 'Automático', status: 'Operacional', origem: 'Frota Original' },
-                { placa: 'HIT-0001', modelo: 'MAN München Lions City', cambio: 'Automático', status: 'Operacional', origem: 'Frota Original' },
-                { placa: 'RNT-0501', modelo: 'London Citybus C400R', cambio: 'Automático', status: 'Operacional', origem: 'Frota Original' },
-                { placa: 'RNT-0502', modelo: 'Caio Millennium IV', cambio: 'Automático', status: 'Operacional', origem: 'Frota Original' },
-                { placa: 'TFT-0012', modelo: 'Marcopolo TORINO S 17.230ODS', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
-                { placa: 'TFT-0013', modelo: 'Marcopolo TORINO S 17.230ODS Rio Ita', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
-                { placa: 'TFT-0014', modelo: 'Caio Induscar Vip IV MB OF-1721L Euro 5', cambio: 'Automático', status: 'Na Oficina', origem: 'Frota TFT' },
-                { placa: 'TFT-0015', modelo: 'Caio Apache Vip III OF-1721L Euro 5', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
-                { placa: 'TFT-0018', modelo: 'Mercedes-Benz O530 G Citaro', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
-                { placa: 'TFT-0019', modelo: 'Scania Citywide LF CN360UA', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
-                { placa: 'TFT-0022', modelo: 'MB O305G', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
-                { placa: 'TFT-0023', modelo: 'Caio Vip V MB OF-1724 Euro 5', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' },
-                { placa: 'TFT-0024', modelo: 'Caio Millennium IV Scania K310UA', cambio: 'Automático', status: 'Operacional', origem: 'Frota TFT' }
+                { placa: 'ABC-1234', modelo: 'Mercedes-Benz S400 LE Business Series', cambio: 'Automatico', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'HIT-0001', modelo: 'MAN Munchen Lions City', cambio: 'Automatico', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'RNT-0501', modelo: 'London Citybus C400R', cambio: 'Automatico', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'RNT-0502', modelo: 'Caio Millennium IV', cambio: 'Automatico', status: 'Operacional', origem: 'Frota Original' },
+                { placa: 'TFT-0012', modelo: 'Marcopolo TORINO S 17.230ODS', cambio: 'Automatico', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0013', modelo: 'Marcopolo TORINO S 17.230ODS Rio Ita', cambio: 'Automatico', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0014', modelo: 'Caio Induscar Vip IV MB OF-1721L Euro 5', cambio: 'Automatico', status: 'Na Oficina', origem: 'Frota TFT' },
+                { placa: 'TFT-0015', modelo: 'Caio Apache Vip III OF-1721L Euro 5', cambio: 'Automatico', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0018', modelo: 'Mercedes-Benz O530 G Citaro', cambio: 'Automatico', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0019', modelo: 'Scania Citywide LF CN360UA', cambio: 'Automatico', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0022', modelo: 'MB O305G', cambio: 'Automatico', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0023', modelo: 'Caio Vip V MB OF-1724 Euro 5', cambio: 'Automatico', status: 'Operacional', origem: 'Frota TFT' },
+                { placa: 'TFT-0024', modelo: 'Caio Millennium IV Scania K310UA', cambio: 'Automatico', status: 'Operacional', origem: 'Frota TFT' }
             ]
         };
 
@@ -586,14 +577,14 @@
                 `;
             });
 
-            listaOnibus.innerHTML += `<div class="secao-titulo">🤖 AUTOMÁTICOS (${frotaOnibus.automatico.length} • ${autosOp} operacionais)</div>`;
+            listaOnibus.innerHTML += `<div class="secao-titulo">🤖 AUTOMATICOS (${frotaOnibus.automatico.length} • ${autosOp} operacionais)</div>`;
             frotaOnibus.automatico.forEach(bus => {
                 const statusBadge = bus.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
                 listaOnibus.innerHTML += `
                     <div class="lista-item">
                         <div class="lista-item-header">
                             🤖 <strong>${bus.placa}</strong>
-                            <span class="badge-cambio badge-automatico">Automático</span>
+                            <span class="badge-cambio badge-automatico">Automatico</span>
                             <span class="badge-status ${statusBadge}">${bus.status}</span>
                             <span style="font-size:0.7em; color:#64748b;">${bus.origem}</span>
                         </div>
@@ -659,8 +650,7 @@
                 cambio: cambioTexto,
                 cambioIcone: cambioIcone,
                 horaReal: horaReal,
-                dataReal: dataReal,
-                status: 'Escalado'
+                dataReal: dataReal
             };
 
             resultadoBox.innerHTML = `
@@ -670,84 +660,61 @@
                     🚌 <strong>Onibus:</strong> <span class="dado-destaque">${ultimaEscala.onibus.modelo}</span><br>
                     🔖 <strong>Placa:</strong> <span class="dado-destaque">${ultimaEscala.onibus.placa}</span><br>
                     ${cambioIcone} <strong>Cambio:</strong> <span class="badge-cambio ${cambioBadge}">${ultimaEscala.cambio}</span><br>
-                    📡 <strong>Status Veiculo:</strong> <span class="badge-status ${statusBadge}">${ultimaEscala.onibus.status}</span><br>
+                    📡 <strong>Status:</strong> <span class="badge-status ${statusBadge}">${ultimaEscala.onibus.status}</span><br>
                     🕐 <strong>Hora:</strong> <span class="dado-destaque">${ultimaEscala.horaReal}</span><br>
-                    📅 <strong>Data:</strong> <span class="dado-destaque">${ultimaEscala.dataReal}</span><br>
-                    ✅ <strong>Situacao:</strong> <span style="color:#10b981;">${ultimaEscala.status}</span>
+                    📅 <strong>Data:</strong> <span class="dado-destaque">${ultimaEscala.dataReal}</span>
                 </div>
             `;
 
-            // Salvar mensagem para compartilhamento
+            // Construir mensagem para WhatsApp (sem acentos e caracteres especiais)
             ultimaMensagem = 
-`🚍 *TRANSFORT-BR - ESCALA CONFIRMADA*
+`TRANSFORT-BR - ESCALA CONFIRMADA
 
-👨‍✈️ *Motorista:* ${ultimaEscala.motorista}
-🚌 *Onibus:* ${ultimaEscala.onibus.modelo}
-🔖 *Placa:* ${ultimaEscala.onibus.placa}
-${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
-📡 *Status Veiculo:* ${ultimaEscala.onibus.status}
-🕐 *Hora:* ${ultimaEscala.horaReal}
-📅 *Data:* ${ultimaEscala.dataReal}
-✅ *Situacao:* ${ultimaEscala.status}
+Motorista: ${ultimaEscala.motorista}
+Onibus: ${ultimaEscala.onibus.modelo}
+Placa: ${ultimaEscala.onibus.placa}
+Cambio: ${ultimaEscala.cambio}
+Status: ${ultimaEscala.onibus.status}
+Hora: ${ultimaEscala.horaReal}
+Data: ${ultimaEscala.dataReal}
 
-🌐 transfort.com.br`;
+Site: transfort.com.br`;
         }
 
-        function compartilharEscala() {
+        function compartilharWhatsApp() {
             if (!ultimaEscala) {
                 mostrarToast('⚠️ Gere uma escala primeiro!');
                 return;
             }
 
-            // Tentar abrir WhatsApp primeiro
-            const url = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(ultimaMensagem);
+            // Método 1: Tentar com intent do Android (funciona em APK)
+            const textoCodificado = encodeURIComponent(ultimaMensagem);
             
-            // Verificar se está em dispositivo móvel
-            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+            // Criar link para WhatsApp
+            const whatsappUrl = 'https://api.whatsapp.com/send?text=' + textoCodificado;
             
-            if (isMobile) {
-                // No mobile, tentar abrir com intent
-                window.location.href = 'intent://send?text=' + encodeURIComponent(ultimaMensagem) + '#Intent;scheme=whatsapp;package=com.whatsapp;end';
+            // No APK (Android), usar intent nativo
+            if (navigator.userAgent.includes('Android')) {
+                // Tentar abrir com intent://
+                const intentUrl = 'intent://send?text=' + textoCodificado + '#Intent;scheme=whatsapp;package=com.whatsapp;end';
                 
-                // Fallback: abrir com api.whatsapp.com
+                // Criar iframe para tentar abrir
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = intentUrl;
+                document.body.appendChild(iframe);
+                
                 setTimeout(() => {
-                    window.open(url, '_blank');
-                }, 500);
+                    document.body.removeChild(iframe);
+                    // Fallback: abrir no navegador
+                    window.open(whatsappUrl, '_system');
+                }, 1000);
             } else {
-                // No desktop, abrir WhatsApp Web
-                window.open(url, '_blank');
+                // Outros dispositivos: abrir direto
+                window.open(whatsappUrl, '_system');
             }
             
             mostrarToast('📤 Abrindo WhatsApp...');
-        }
-
-        function copiarTexto() {
-            if (!ultimaEscala) {
-                mostrarToast('⚠️ Gere uma escala primeiro!');
-                return;
-            }
-
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(ultimaMensagem).then(() => {
-                    mostrarToast('📋 Texto copiado! Cole no WhatsApp');
-                }).catch(() => {
-                    fallbackCopiar();
-                });
-            } else {
-                fallbackCopiar();
-            }
-        }
-
-        function fallbackCopiar() {
-            const textarea = document.createElement('textarea');
-            textarea.value = ultimaMensagem;
-            textarea.style.position = 'fixed';
-            textarea.style.left = '-9999px';
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-            mostrarToast('📋 Texto copiado! Cole no WhatsApp');
         }
 
         function mostrarToast(mensagem) {
