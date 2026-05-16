@@ -450,7 +450,7 @@
                 <a href="https://transfort.com.br" target="_blank">🌐 Site</a>
                 <a href="https://discord.gg/bEXAnSVm" target="_blank">💬 Discord</a>
                 <a href="https://chat.whatsapp.com/KdCkAdJ6nL04XtYMZLHnan" target="_blank">📱 WhatsApp</a>
-                <span class="badge-versao">v14.1 PRO</span>
+                <span class="badge-versao">v15.0 FINAL</span>
             </div>
         </header>
 
@@ -488,12 +488,12 @@
                     🎯 GERAR ESCALA AGORA
                 </button>
 
-                <button class="btn btn-whatsapp" onclick="compartilharWhatsApp()">
-                    📤 ENVIAR NO WHATSAPP
-                </button>
-
                 <button class="btn btn-copiar" onclick="copiarEscala()">
                     📋 COPIAR ESCALA
+                </button>
+
+                <button class="btn btn-whatsapp" onclick="compartilharWhatsApp()">
+                    📤 ENVIAR NO WHATSAPP
                 </button>
 
                 <div class="resultado-box" id="resultadoBox">
@@ -777,7 +777,7 @@
                 dataReal: dataReal
             };
 
-            // Montar mensagem COM ícones para WhatsApp
+            // Mensagem COM ícones para WhatsApp e cópia
             ultimaMensagem = 
 `🚍 *TRANSFORT-BR - ESCALA CONFIRMADA*
 
@@ -812,23 +812,33 @@ ${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
                 return;
             }
 
-            const textoCodificado = encodeURIComponent(ultimaMensagem);
-            
-            if (navigator.userAgent.includes('Android')) {
-                const intentUrl = 'intent://send?text=' + textoCodificado + '#Intent;scheme=whatsapp;package=com.whatsapp;end';
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.src = intentUrl;
-                document.body.appendChild(iframe);
-                setTimeout(() => {
-                    document.body.removeChild(iframe);
-                    window.open('https://api.whatsapp.com/send?text=' + textoCodificado, '_system');
-                }, 1000);
+            // Método 1: Compartilhamento nativo do Android (funciona em APK)
+            if (navigator.share) {
+                navigator.share({
+                    text: ultimaMensagem
+                }).then(() => {
+                    mostrarToast('📤 Compartilhando...');
+                }).catch(() => {
+                    // Se falhar, tenta abrir WhatsApp
+                    abrirWhatsAppFallback();
+                });
             } else {
-                window.open('https://api.whatsapp.com/send?text=' + textoCodificado, '_system');
+                abrirWhatsAppFallback();
             }
+        }
+
+        function abrirWhatsAppFallback() {
+            // Método 2: market:// para Android
+            const textoLimpo = ultimaMensagem
+                .replace(/\*/g, '') // Remove negrito
+                .replace(/_/g, ''); // Remove itálico
             
-            mostrarToast('📤 Abrindo WhatsApp...');
+            const url = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(textoLimpo);
+            
+            // Tenta abrir no app WhatsApp
+            window.open(url, '_blank');
+            
+            mostrarToast('📤 Se o WhatsApp não abrir, use o botão COPIAR ESCALA');
         }
 
         function copiarEscala() {
@@ -839,7 +849,7 @@ ${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
 
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(ultimaMensagem).then(() => {
-                    mostrarToast('📋 Escala copiada! Cole no WhatsApp');
+                    mostrarToast('📋 Escala copiada! Agora cole no WhatsApp');
                 }).catch(() => {
                     fallbackCopiar();
                 });
@@ -857,7 +867,7 @@ ${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-            mostrarToast('📋 Escala copiada! Cole no WhatsApp');
+            mostrarToast('📋 Escala copiada! Agora cole no WhatsApp');
         }
 
         function mostrarToast(mensagem) {
@@ -875,7 +885,7 @@ ${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
         // ============ INICIALIZAÇÃO ============
         async function inicializar() {
             await Promise.all([carregarMotoristas(), carregarOnibus()]);
-            console.log('🚍 TRANSFORT-BR v14.1 PRO • Integrado com APIs');
+            console.log('🚍 TRANSFORT-BR v15.0 FINAL • APK Ready');
             console.log('👥 Motoristas:', motoristasAPI.length);
             console.log('🚌 Frota:', frotaCompleta.manual.length + frotaCompleta.automatico.length);
         }
