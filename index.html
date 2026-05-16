@@ -43,7 +43,6 @@
             padding: 16px;
         }
 
-        /* HEADER - Igual ao site */
         .header-site {
             background: rgba(30, 30, 34, 0.95);
             box-shadow: 0 2px 10px rgba(0,0,0,0.6);
@@ -63,9 +62,8 @@
             gap: 12px;
         }
 
-        .header-logo img {
-            height: 45px;
-            width: auto;
+        .header-logo span {
+            font-size: 2em;
         }
 
         .header-logo h1 {
@@ -102,7 +100,6 @@
             font-weight: 600;
         }
 
-        /* HERO */
         .hero-mini {
             text-align: center;
             padding: 30px 20px;
@@ -122,7 +119,6 @@
             color: var(--texto-secundario);
         }
 
-        /* GRID */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -136,7 +132,6 @@
             }
         }
 
-        /* CARDS */
         .card {
             background: var(--cinza-claro);
             border: 1px solid #333;
@@ -184,7 +179,6 @@
             color: var(--texto-secundario);
         }
 
-        /* SELETOR DE CÂMBIO */
         .cambio-selector {
             display: flex;
             gap: 12px;
@@ -222,7 +216,6 @@
             color: #60a5fa;
         }
 
-        /* SELECT */
         .select-premium {
             width: 100%;
             padding: 14px 16px;
@@ -240,7 +233,6 @@
             margin-bottom: 16px;
         }
 
-        /* BOTÕES */
         .btn {
             width: 100%;
             padding: 15px;
@@ -274,7 +266,16 @@
             transform: translateY(-2px);
         }
 
-        /* RESULTADO */
+        .btn-copiar {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            margin-top: 8px;
+        }
+
+        .btn-copiar:hover {
+            box-shadow: 0 10px 30px rgba(59,130,246,0.3);
+            transform: translateY(-2px);
+        }
+
         .resultado-box {
             background: rgba(76,175,80,0.08);
             border: 1px solid rgba(76,175,80,0.2);
@@ -316,7 +317,6 @@
             font-weight: 600;
         }
 
-        /* BADGES */
         .badge {
             display: inline-block;
             padding: 4px 12px;
@@ -331,7 +331,6 @@
         .badge-operacional { background: rgba(76,175,80,0.2); color: #66bb6a; }
         .badge-oficina { background: rgba(198,40,40,0.2); color: #ef5350; }
 
-        /* LISTAS */
         .lista-scroll {
             max-height: 500px;
             overflow-y: auto;
@@ -375,7 +374,6 @@
 
         .secao-titulo:first-child { margin-top: 0; }
 
-        /* LOADING */
         .loading {
             text-align: center;
             color: var(--dourado);
@@ -393,7 +391,6 @@
             60%, 100% { content: "..."; }
         }
 
-        /* FOOTER */
         .footer-premium {
             text-align: center;
             padding: 24px;
@@ -408,7 +405,6 @@
             text-decoration: none;
         }
 
-        /* TOAST */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -445,21 +441,19 @@
 <body>
     <div class="app-container">
         
-        <!-- HEADER (estilo site) -->
         <header class="header-site">
             <div class="header-logo">
-                <span style="font-size:2em;">🚍</span>
+                <span>🚍</span>
                 <h1>Transfort-BR</h1>
             </div>
             <div class="header-links">
                 <a href="https://transfort.com.br" target="_blank">🌐 Site</a>
                 <a href="https://discord.gg/bEXAnSVm" target="_blank">💬 Discord</a>
                 <a href="https://chat.whatsapp.com/KdCkAdJ6nL04XtYMZLHnan" target="_blank">📱 WhatsApp</a>
-                <span class="badge-versao">v14.0 PRO</span>
+                <span class="badge-versao">v14.1 PRO</span>
             </div>
         </header>
 
-        <!-- HERO -->
         <div class="hero-mini">
             <h2>Escalação Inteligente</h2>
             <p>Movendo a simulação. Conectando motoristas.</p>
@@ -496,6 +490,10 @@
 
                 <button class="btn btn-whatsapp" onclick="compartilharWhatsApp()">
                     📤 ENVIAR NO WHATSAPP
+                </button>
+
+                <button class="btn btn-copiar" onclick="copiarEscala()">
+                    📋 COPIAR ESCALA
                 </button>
 
                 <div class="resultado-box" id="resultadoBox">
@@ -546,6 +544,7 @@
         // ============ VARIÁVEIS ============
         let cambioSelecionado = null;
         let ultimaEscala = null;
+        let ultimaMensagem = '';
         let motoristasAPI = [];
         let frotaCompleta = { manual: [], automatico: [] };
 
@@ -566,13 +565,11 @@
                 
                 const data = await response.json();
                 
-                // A API retorna um array de objetos
                 if (Array.isArray(data)) {
                     motoristasAPI = data.map(staff => staff.nome || staff.name || 'Sem nome');
                 } else if (data.staff) {
                     motoristasAPI = data.staff.map(staff => staff.nome || staff.name || 'Sem nome');
                 } else {
-                    // Fallback se a API mudar
                     motoristasAPI = [
                         'MayconRib808', 'Matheus_fr', 'Araujo_no_Volante', 'itsguss',
                         'ALEX_DSB', 'Bruno Nunes', 'Willian Santos', 'Guilhermeeb',
@@ -584,7 +581,6 @@
                 preencherListaMotoristas();
             } catch (error) {
                 console.error('Erro ao carregar motoristas:', error);
-                // Fallback
                 motoristasAPI = [
                     'MayconRib808', 'Matheus_fr', 'Araujo_no_Volante', 'itsguss',
                     'ALEX_DSB', 'Bruno Nunes', 'Willian Santos', 'Guilhermeeb',
@@ -604,7 +600,6 @@
                 
                 frotaCompleta = { manual: [], automatico: [] };
                 
-                // Processar dados da API
                 if (Array.isArray(data)) {
                     data.forEach(bus => {
                         const cambio = (bus.cambio || bus.transmission || '').toLowerCase();
@@ -622,7 +617,6 @@
                     });
                 }
                 
-                // Se não veio nada da API, usar frota local
                 if (frotaCompleta.manual.length === 0 && frotaCompleta.automatico.length === 0) {
                     carregarFrotaLocal();
                 }
@@ -694,7 +688,6 @@
             const totalAuto = frotaCompleta.automatico.length;
             const autoOp = frotaCompleta.automatico.filter(b => b.status === 'Operacional').length;
             
-            // Manuais
             listaOnibus.innerHTML += `<div class="secao-titulo">🕹️ MANUAIS (${totalManual} • ${manualOp} operacionais)</div>`;
             frotaCompleta.manual.forEach(bus => {
                 const statusBadge = bus.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
@@ -711,7 +704,6 @@
                 `;
             });
 
-            // Automáticos
             listaOnibus.innerHTML += `<div class="secao-titulo">🤖 AUTOMATICOS (${totalAuto} • ${autoOp} operacionais)</div>`;
             frotaCompleta.automatico.forEach(bus => {
                 const statusBadge = bus.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
@@ -785,6 +777,21 @@
                 dataReal: dataReal
             };
 
+            // Montar mensagem COM ícones para WhatsApp
+            ultimaMensagem = 
+`🚍 *TRANSFORT-BR - ESCALA CONFIRMADA*
+
+👨‍✈️ *Motorista:* ${ultimaEscala.motorista}
+🚌 *Onibus:* ${ultimaEscala.onibus.modelo}
+🔖 *Placa:* ${ultimaEscala.onibus.placa}
+${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
+📡 *Status:* ${ultimaEscala.onibus.status}
+🕐 *Hora:* ${ultimaEscala.horaReal}
+📅 *Data:* ${ultimaEscala.dataReal}
+✅ *Situacao:* Escalado
+
+🌐 transfort.com.br`;
+
             resultadoBox.innerHTML = `
                 <div class="resultado-titulo"><span class="pulse-dot"></span> ESCALA CONFIRMADA</div>
                 <div style="margin-top: 8px;">
@@ -805,20 +812,7 @@
                 return;
             }
 
-            const mensagem = 
-`TRANSFORT-BR - ESCALA CONFIRMADA
-
-Motorista: ${ultimaEscala.motorista}
-Onibus: ${ultimaEscala.onibus.modelo}
-Placa: ${ultimaEscala.onibus.placa}
-Cambio: ${ultimaEscala.cambio}
-Status: ${ultimaEscala.onibus.status}
-Hora: ${ultimaEscala.horaReal}
-Data: ${ultimaEscala.dataReal}
-
-Site: transfort.com.br`;
-
-            const textoCodificado = encodeURIComponent(mensagem);
+            const textoCodificado = encodeURIComponent(ultimaMensagem);
             
             if (navigator.userAgent.includes('Android')) {
                 const intentUrl = 'intent://send?text=' + textoCodificado + '#Intent;scheme=whatsapp;package=com.whatsapp;end';
@@ -837,6 +831,35 @@ Site: transfort.com.br`;
             mostrarToast('📤 Abrindo WhatsApp...');
         }
 
+        function copiarEscala() {
+            if (!ultimaEscala) {
+                mostrarToast('⚠️ Gere uma escala primeiro!');
+                return;
+            }
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(ultimaMensagem).then(() => {
+                    mostrarToast('📋 Escala copiada! Cole no WhatsApp');
+                }).catch(() => {
+                    fallbackCopiar();
+                });
+            } else {
+                fallbackCopiar();
+            }
+        }
+
+        function fallbackCopiar() {
+            const textarea = document.createElement('textarea');
+            textarea.value = ultimaMensagem;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            mostrarToast('📋 Escala copiada! Cole no WhatsApp');
+        }
+
         function mostrarToast(mensagem) {
             const toastAntigo = document.querySelector('.toast');
             if (toastAntigo) toastAntigo.remove();
@@ -852,9 +875,9 @@ Site: transfort.com.br`;
         // ============ INICIALIZAÇÃO ============
         async function inicializar() {
             await Promise.all([carregarMotoristas(), carregarOnibus()]);
-            console.log('🚍 TRANSFORT-BR v14.0 PRO • Integrado com APIs');
-            console.log('👥 Motoristas carregados:', motoristasAPI.length);
-            console.log('🚌 Frota carregada:', frotaCompleta.manual.length + frotaCompleta.automatico.length);
+            console.log('🚍 TRANSFORT-BR v14.1 PRO • Integrado com APIs');
+            console.log('👥 Motoristas:', motoristasAPI.length);
+            console.log('🚌 Frota:', frotaCompleta.manual.length + frotaCompleta.automatico.length);
         }
 
         inicializar();
