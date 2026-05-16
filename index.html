@@ -45,6 +45,7 @@
         .header-logo span { font-size: 1.8em; }
         .header-logo h1 { font-size: 1.2em; text-transform: uppercase; letter-spacing: 2px; color: var(--texto); }
         .badge-versao { background: var(--azul); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75em; font-weight: 600; }
+        .badge-api { background: var(--verde); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.7em; font-weight: 600; }
 
         .hero-mini {
             text-align: center;
@@ -147,6 +148,7 @@
         .btn-gerar { background: linear-gradient(135deg, var(--azul), #0d3b7a); }
         .btn-copiar { background: linear-gradient(135deg, #3b82f6, #2563eb); margin-top: 10px; }
         .btn-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); margin-top: 10px; }
+        .btn-atualizar { background: linear-gradient(135deg, #f59e0b, #d97706); margin-top: 10px; font-size: 0.85em; }
 
         .resultado-box {
             background: rgba(76,175,80,0.08);
@@ -210,6 +212,22 @@
 
         .loading { text-align: center; color: #ffd700; padding: 20px; }
 
+        .status-api {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7em;
+            margin-top: 4px;
+        }
+        .status-dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .status-online { background: #4caf50; }
+        .status-offline { background: #ef4444; }
+        .status-loading { background: #f59e0b; animation: pulse 1s infinite; }
+
         .footer-premium {
             text-align: center;
             padding: 20px;
@@ -219,7 +237,6 @@
             margin-top: 20px;
         }
 
-        /* ALERTA - Botão de fallback */
         .alerta-zap {
             display: none;
             position: fixed;
@@ -235,7 +252,7 @@
         }
         .alerta-zap.show { display: block; }
         .alerta-zap h4 { color: #25D366; margin-bottom: 8px; }
-        .alerta-zap p { color: #ccc; font-size: 0.9em; margin-bottom: 12px; }
+        .alerta-zap p { color: #ccc; font-size: 0.85em; margin-bottom: 12px; max-height: 100px; overflow-y: auto; }
         .alerta-zap button {
             padding: 12px 24px;
             background: #25D366;
@@ -264,7 +281,10 @@
                 <span>🚍</span>
                 <h1>Transfort-BR</h1>
             </div>
-            <span class="badge-versao">v17.0 KODULAR FIX</span>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <span class="badge-api" id="statusAPI">🔄 Sincronizando...</span>
+                <span class="badge-versao">v18.0 FINAL</span>
+            </div>
         </header>
 
         <div class="hero-mini">
@@ -295,6 +315,7 @@
                 <button class="btn btn-gerar" onclick="gerarEscala()">🎯 GERAR ESCALA</button>
                 <button class="btn btn-copiar" onclick="copiarEscala()">📋 COPIAR TEXTO</button>
                 <button class="btn btn-whatsapp" id="btnWhatsApp" onclick="enviarWhatsApp()">📤 ENVIAR WHATSAPP</button>
+                <button class="btn btn-atualizar" onclick="atualizarDados()">🔄 ATUALIZAR DADOS</button>
 
                 <div class="resultado-box" id="resultadoBox">
                     <em style="color: #a8a8a8;">Escolha cambio e motorista, depois clique em GERAR ESCALA.</em>
@@ -325,7 +346,6 @@
 
         </div>
 
-        <!-- Alerta flutuante de fallback -->
         <div class="alerta-zap" id="alertaZap">
             <h4>📤 ABRIR WHATSAPP</h4>
             <p id="textoAlerta"></p>
@@ -334,12 +354,12 @@
         </div>
 
         <footer class="footer-premium">
-            TRANSFORT-BR © 2026 • transfort.com.br • OMSI 2
+            TRANSFORT-BR © 2026 • transfort.com.br • OMSI 2 • Dados via API
         </footer>
     </div>
 
     <script>
-        // ============ APIS ============
+        // ============ APIs OFICIAIS ============
         const API_BUSES = 'https://pedepe.de/api/api.php?key=BE4201AB-8E20-44AF-893F-586465C860F3&request=busesjson';
         const API_STAFF = 'https://pedepe.de/api/api.php?key=BE4201AB-8E20-44AF-893F-586465C860F3&request=staffjson';
 
@@ -357,66 +377,106 @@
         const btnAutomatico = document.getElementById('btnAutomatico');
         const alertaZap = document.getElementById('alertaZap');
         const textoAlerta = document.getElementById('textoAlerta');
+        const statusAPI = document.getElementById('statusAPI');
 
-        // ============ CARREGAR DADOS ============
+        // ============ CARREGAR DADOS DAS APIs ============
+        
         async function carregarMotoristas() {
+            statusAPI.innerHTML = '<span class="status-dot status-loading"></span> Carregando motoristas...';
+            
             try {
-                const r = await fetch(API_STAFF);
-                if (!r.ok) throw new Error();
-                const d = await r.json();
-                if (Array.isArray(d)) motoristasAPI = d.map(s => s.nome || s.name || 'Sem nome');
-                else if (d.staff) motoristasAPI = d.staff.map(s => s.nome || s.name || 'Sem nome');
-                else usarFallbackM();
-            } catch(e) { usarFallbackM(); }
-            preencherM();
+                const response = await fetch(API_STAFF);
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                
+                const data = await response.json();
+                console.log('✅ API Motoristas:', data);
+                
+                if (Array.isArray(data)) {
+                    motoristasAPI = data.map(s => s.nome || s.name || 'Sem nome');
+                } else if (data.staff) {
+                    motoristasAPI = data.staff.map(s => s.nome || s.name || 'Sem nome');
+                } else {
+                    throw new Error('Formato desconhecido');
+                }
+                
+                statusAPI.innerHTML = '<span class="status-dot status-online"></span> Motoristas: ONLINE';
+            } catch (error) {
+                console.warn('⚠️ API Motoristas offline:', error.message);
+                statusAPI.innerHTML = '<span class="status-dot status-offline"></span> Motoristas: offline (local)';
+                usarMotoristasFallback();
+            }
+            
+            preencherMotoristas();
         }
 
-        function usarFallbackM() {
-            motoristasAPI = ['MayconRib808','Matheus_fr','Araujo_no_Volante','itsguss','ALEX_DSB','Bruno Nunes','Willian Santos','Guilhermeeb','Riccieri','PRADO','PF Luciano','daniel23','Capacity-Felix','DIEGO_SC','fernando br'];
+        function usarMotoristasFallback() {
+            motoristasAPI = [
+                'MayconRib808','Matheus_fr','Araujo_no_Volante','itsguss',
+                'ALEX_DSB','Bruno Nunes','Willian Santos','Guilhermeeb',
+                'Riccieri','PRADO','PF Luciano','daniel23',
+                'Capacity-Felix','DIEGO_SC','fernando br'
+            ];
         }
 
         async function carregarOnibus() {
+            statusAPI.innerHTML = '<span class="status-dot status-loading"></span> Carregando frota...';
+            
             try {
-                const r = await fetch(API_BUSES);
-                if (!r.ok) throw new Error();
-                const d = await r.json();
+                const response = await fetch(API_BUSES);
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+                
+                const data = await response.json();
+                console.log('✅ API Ônibus:', data);
+                
                 frotaCompleta = { manual: [], automatico: [] };
-                if (Array.isArray(d)) {
-                    d.forEach(b => {
-                        const c = (b.cambio || b.transmission || '').toLowerCase();
-                        const t = c.includes('manual') ? 'manual' : 'automatico';
-                        frotaCompleta[t].push({
-                            placa: b.placa || b.license_plate || 'S/PLACA',
-                            modelo: b.modelo || b.model || b.name || 'S/MODELO',
-                            cambio: t === 'manual' ? 'Manual' : 'Automatico',
-                            status: b.status || b.state || 'Operacional',
-                            origem: 'API'
+                
+                if (Array.isArray(data)) {
+                    data.forEach(bus => {
+                        const cambio = (bus.cambio || bus.transmission || '').toLowerCase();
+                        const tipo = cambio.includes('manual') ? 'manual' : 'automatico';
+                        
+                        frotaCompleta[tipo].push({
+                            placa: bus.placa || bus.license_plate || bus.numberplate || 'S/PLACA',
+                            modelo: bus.modelo || bus.model || bus.name || bus.vehicle || 'S/MODELO',
+                            cambio: tipo === 'manual' ? 'Manual' : 'Automatico',
+                            status: bus.status || bus.state || bus.condition || 'Operacional',
+                            origem: 'API ' + (bus.garage || bus.depot || 'Online')
                         });
                     });
                 }
-                if (frotaCompleta.manual.length === 0 && frotaCompleta.automatico.length === 0) usarFallbackO();
-            } catch(e) { usarFallbackO(); }
-            preencherO();
+                
+                if (frotaCompleta.manual.length === 0 && frotaCompleta.automatico.length === 0) {
+                    throw new Error('Dados vazios');
+                }
+                
+                statusAPI.innerHTML = '<span class="status-dot status-online"></span> Frota: ONLINE (' + (frotaCompleta.manual.length + frotaCompleta.automatico.length) + ' veiculos)';
+            } catch (error) {
+                console.warn('⚠️ API Ônibus offline:', error.message);
+                statusAPI.innerHTML = '<span class="status-dot status-offline"></span> Frota: offline (local)';
+                usarOnibusFallback();
+            }
+            
+            preencherOnibus();
         }
 
-        function usarFallbackO() {
+        function usarOnibusFallback() {
             frotaCompleta = {
                 manual: [
-                    { placa:'KZZ-8037', modelo:'CAIO VIP IV OF-1721', cambio:'Manual', status:'Operacional', origem:'Original' },
-                    { placa:'RNT-0003', modelo:'Apache Vip V OF-1721L', cambio:'Manual', status:'Operacional', origem:'Original' },
-                    { placa:'RNT-0004', modelo:'Marcopolo Viale 2010', cambio:'Manual', status:'Operacional', origem:'Original' },
-                    { placa:'RNT-0005', modelo:'Torino 2007 VW 17.230', cambio:'Manual', status:'Operacional', origem:'Original' },
-                    { placa:'RNT-0007', modelo:'Apache SSA Vip V MB 1721', cambio:'Manual', status:'Operacional', origem:'Original' },
-                    { placa:'RNT-0008', modelo:'Busscar Urbanus 94', cambio:'Manual', status:'Operacional', origem:'Original' },
+                    { placa:'KZZ-8037', modelo:'CAIO VIP IV OF-1721', cambio:'Manual', status:'Operacional', origem:'Local' },
+                    { placa:'RNT-0003', modelo:'Apache Vip V OF-1721L', cambio:'Manual', status:'Operacional', origem:'Local' },
+                    { placa:'RNT-0004', modelo:'Marcopolo Viale 2010', cambio:'Manual', status:'Operacional', origem:'Local' },
+                    { placa:'RNT-0005', modelo:'Torino 2007 VW 17.230', cambio:'Manual', status:'Operacional', origem:'Local' },
+                    { placa:'RNT-0007', modelo:'Apache SSA Vip V MB 1721', cambio:'Manual', status:'Operacional', origem:'Local' },
+                    { placa:'RNT-0008', modelo:'Busscar Urbanus 94', cambio:'Manual', status:'Operacional', origem:'Local' },
                     { placa:'TFT-0016', modelo:'Caio Vip V VW 15.190 OD', cambio:'Manual', status:'Operacional', origem:'TFT' },
                     { placa:'TFT-0020', modelo:'Marcopolo Torino S MB OF-1721', cambio:'Manual', status:'Operacional', origem:'TFT' },
                     { placa:'TFT-0021', modelo:'Caio Vip V MB OF-1724 Euro 5', cambio:'Manual', status:'Operacional', origem:'TFT' }
                 ],
                 automatico: [
-                    { placa:'ABC-1234', modelo:'Mercedes-Benz S400 LE', cambio:'Automatico', status:'Operacional', origem:'Original' },
-                    { placa:'HIT-0001', modelo:'MAN Munchen Lions City', cambio:'Automatico', status:'Operacional', origem:'Original' },
-                    { placa:'RNT-0501', modelo:'London Citybus C400R', cambio:'Automatico', status:'Operacional', origem:'Original' },
-                    { placa:'RNT-0502', modelo:'Caio Millennium IV', cambio:'Automatico', status:'Operacional', origem:'Original' },
+                    { placa:'ABC-1234', modelo:'Mercedes-Benz S400 LE', cambio:'Automatico', status:'Operacional', origem:'Local' },
+                    { placa:'HIT-0001', modelo:'MAN Munchen Lions City', cambio:'Automatico', status:'Operacional', origem:'Local' },
+                    { placa:'RNT-0501', modelo:'London Citybus C400R', cambio:'Automatico', status:'Operacional', origem:'Local' },
+                    { placa:'RNT-0502', modelo:'Caio Millennium IV', cambio:'Automatico', status:'Operacional', origem:'Local' },
                     { placa:'TFT-0012', modelo:'Marcopolo TORINO S 17.230ODS', cambio:'Automatico', status:'Operacional', origem:'TFT' },
                     { placa:'TFT-0013', modelo:'Marcopolo TORINO S Rio Ita', cambio:'Automatico', status:'Operacional', origem:'TFT' },
                     { placa:'TFT-0014', modelo:'Caio Induscar Vip IV', cambio:'Automatico', status:'Na Oficina', origem:'TFT' },
@@ -430,17 +490,19 @@
             };
         }
 
-        function preencherM() {
+        function preencherMotoristas() {
             motoristaSelect.innerHTML = '<option value="">👨‍✈️ Selecione o motorista...</option>';
             listaMotoristas.innerHTML = '';
-            motoristasAPI.forEach((n, i) => {
-                motoristaSelect.innerHTML += `<option value="${n}">👨‍✈️ ${n}</option>`;
-                listaMotoristas.innerHTML += `<div class="lista-item"><div class="lista-item-header">#${String(i+1).padStart(2,'0')} 👨‍✈️ <strong>${n}</strong></div></div>`;
+            
+            motoristasAPI.forEach((nome, i) => {
+                motoristaSelect.innerHTML += `<option value="${nome}">👨‍✈️ ${nome}</option>`;
+                listaMotoristas.innerHTML += `<div class="lista-item"><div class="lista-item-header">#${String(i+1).padStart(2,'0')} 👨‍✈️ <strong>${nome}</strong></div></div>`;
             });
+            
             document.getElementById('contadorMotoristas').textContent = motoristasAPI.length + ' cadastrados';
         }
 
-        function preencherO() {
+        function preencherOnibus() {
             listaOnibus.innerHTML = '';
             const m = frotaCompleta.manual;
             const a = frotaCompleta.automatico;
@@ -448,16 +510,23 @@
             listaOnibus.innerHTML += `<div class="secao-titulo">🕹️ MANUAIS (${m.length} • ${m.filter(b=>b.status==='Operacional').length} op.)</div>`;
             m.forEach(b => {
                 const sb = b.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
-                listaOnibus.innerHTML += `<div class="lista-item"><div class="lista-item-header">🕹️ <strong>${b.placa}</strong><span class="badge badge-manual">Manual</span><span class="badge ${sb}">${b.status}</span></div><div style="color:#cbd5e1;">${b.modelo}</div></div>`;
+                listaOnibus.innerHTML += `<div class="lista-item"><div class="lista-item-header">🕹️ <strong>${b.placa}</strong><span class="badge badge-manual">Manual</span><span class="badge ${sb}">${b.status}</span><span style="font-size:0.65em;color:#64748b;">${b.origem}</span></div><div style="color:#cbd5e1;">${b.modelo}</div></div>`;
             });
 
             listaOnibus.innerHTML += `<div class="secao-titulo">🤖 AUTOMATICOS (${a.length} • ${a.filter(b=>b.status==='Operacional').length} op.)</div>`;
             a.forEach(b => {
                 const sb = b.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
-                listaOnibus.innerHTML += `<div class="lista-item"><div class="lista-item-header">🤖 <strong>${b.placa}</strong><span class="badge badge-automatico">Automatico</span><span class="badge ${sb}">${b.status}</span></div><div style="color:#cbd5e1;">${b.modelo}</div></div>`;
+                listaOnibus.innerHTML += `<div class="lista-item"><div class="lista-item-header">🤖 <strong>${b.placa}</strong><span class="badge badge-automatico">Automatico</span><span class="badge ${sb}">${b.status}</span><span style="font-size:0.65em;color:#64748b;">${b.origem}</span></div><div style="color:#cbd5e1;">${b.modelo}</div></div>`;
             });
             
             document.getElementById('contadorOnibus').textContent = (m.length + a.length) + ' veiculos';
+        }
+
+        // ============ ATUALIZAR DADOS ============
+        async function atualizarDados() {
+            statusAPI.innerHTML = '<span class="status-dot status-loading"></span> Atualizando...';
+            await Promise.all([carregarMotoristas(), carregarOnibus()]);
+            alert('✅ Dados atualizados com sucesso!');
         }
 
         // ============ FUNÇÕES ============
@@ -520,9 +589,7 @@ ${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(ultimaMensagem).then(() => {
                     alert('📋 Copiado! Agora cole no WhatsApp.');
-                }).catch(() => {
-                    fallbackCopiar();
-                });
+                }).catch(() => fallbackCopiar());
             } else {
                 fallbackCopiar();
             }
@@ -543,11 +610,8 @@ ${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
         function enviarWhatsApp() {
             if (!ultimaEscala) { alert('⚠️ Gere uma escala primeiro!'); return; }
             
-            // Mostrar alerta com botão de fallback
             textoAlerta.textContent = ultimaMensagem.replace(/\*/g, '').replace(/_/g, '');
             alertaZap.classList.add('show');
-            
-            // Tentar abrir WhatsApp diretamente
             abrirWhatsAppFinal();
         }
 
@@ -555,7 +619,6 @@ ${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
             const textoLimpo = ultimaMensagem.replace(/\*/g, '').replace(/_/g, '');
             const textoCod = encodeURIComponent(textoLimpo);
             
-            // Criar link e disparar clique
             const link = document.createElement('a');
             link.href = 'https://api.whatsapp.com/send?text=' + textoCod;
             link.target = '_blank';
@@ -572,8 +635,19 @@ ${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
         }
 
         // ============ INICIALIZAÇÃO ============
-        carregarMotoristas();
-        carregarOnibus();
+        async function inicializar() {
+            console.log('🚍 TRANSFORT-BR v18.0 • Conectando às APIs...');
+            console.log('🔗 API Motoristas:', API_STAFF);
+            console.log('🔗 API Ônibus:', API_BUSES);
+            
+            await Promise.all([carregarMotoristas(), carregarOnibus()]);
+            
+            console.log('✅ Aplicativo pronto!');
+            console.log('👥 Motoristas:', motoristasAPI.length);
+            console.log('🚌 Frota:', frotaCompleta.manual.length + frotaCompleta.automatico.length);
+        }
+
+        inicializar();
     </script>
 </body>
 </html>
