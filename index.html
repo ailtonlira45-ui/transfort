@@ -3,8 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App Financeiro com Voz</title>
+    <title>FinVoice - Gestão Financeira Inteligente</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius-sm: 0.375rem;
+            --radius: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,360 +45,1183 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 40px 20px;
+            color: var(--gray-800);
+            line-height: 1.5;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 640px;
             margin: 0 auto;
         }
 
+        /* Header */
         .header {
             text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text {
+            font-size: 28px;
+            font-weight: 700;
             color: white;
-            margin-bottom: 30px;
+            letter-spacing: -0.5px;
         }
 
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        .header-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 15px;
+            font-weight: 400;
         }
 
-        .header p {
-            opacity: 0.9;
+        .db-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            color: white;
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        .db-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        .db-status-dot.error {
+            background: var(--warning);
+        }
+
+        /* Cards */
         .card {
             background: white;
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            box-shadow: var(--shadow-xl);
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Balance Section */
+        .balance-section {
+            text-align: center;
+            padding: 24px;
+            background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
+            border-radius: var(--radius-lg);
+            margin-bottom: 36px;
+            border: 1px solid var(--gray-100);
+        }
+
+        .balance-label {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--gray-400);
+            margin-bottom: 12px;
+        }
+
+        .balance-amount {
+            font-size: 48px;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .balance-amount.positive {
+            color: var(--success);
+        }
+
+        .balance-amount.negative {
+            color: var(--danger);
+        }
+
+        .balance-amount.zero {
+            color: var(--gray-800);
+        }
+
+        .balance-trend {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 6px 12px;
             border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .balance-trend.positive {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .balance-trend.negative {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        /* Voice Section */
+        .voice-section {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .mic-wrapper {
+            position: relative;
+            display: inline-block;
             margin-bottom: 20px;
         }
 
-        .balance {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .balance h2 {
-            color: #666;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .balance .amount {
-            font-size: 3em;
-            font-weight: bold;
-            color: #333;
-            margin: 10px 0;
-        }
-
-        .balance .amount.positive {
-            color: #48bb78;
-        }
-
-        .balance .amount.negative {
-            color: #f56565;
-        }
-
-        .voice-section {
-            text-align: center;
-            margin-bottom: 30px;
+        .mic-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid var(--gray-200);
+            opacity: 0;
+            transition: all 0.3s ease;
         }
 
         .mic-button {
-            width: 100px;
-            height: 100px;
+            width: 88px;
+            height: 88px;
             border-radius: 50%;
             border: none;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary);
             color: white;
-            font-size: 40px;
+            font-size: 32px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
             position: relative;
+            z-index: 1;
         }
 
         .mic-button:hover:not(:disabled) {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+            transform: scale(1.08);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4);
+            background: var(--primary-dark);
+        }
+
+        .mic-button:active:not(:disabled) {
+            transform: scale(0.95);
         }
 
         .mic-button:disabled {
-            opacity: 0.5;
+            background: var(--gray-300);
             cursor: not-allowed;
+            box-shadow: none;
         }
 
         .mic-button.recording {
-            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
-            animation: pulse 1.5s ease-in-out infinite;
+            background: var(--danger);
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
         }
 
-        @keyframes pulse {
+        .mic-button.recording + .mic-ring {
+            animation: ringPulse 2s ease-out infinite;
+            border-color: var(--danger);
+        }
+
+        @keyframes ringPulse {
             0% {
-                box-shadow: 0 0 0 0 rgba(245, 101, 101, 0.7);
-            }
-            70% {
-                box-shadow: 0 0 0 20px rgba(245, 101, 101, 0);
+                width: 100px;
+                height: 100px;
+                opacity: 1;
+                border-width: 2px;
             }
             100% {
-                box-shadow: 0 0 0 0 rgba(245, 101, 101, 0);
+                width: 160px;
+                height: 160px;
+                opacity: 0;
+                border-width: 1px;
             }
         }
 
-        .status-text {
-            margin-top: 15px;
-            color: #666;
-            font-size: 0.9em;
-            min-height: 20px;
-        }
-
-        .status-text.error {
-            color: #f56565;
-        }
-
-        .status-text.success {
-            color: #48bb78;
-        }
-
-        .transactions {
-            margin-top: 20px;
-        }
-
-        .transactions h3 {
-            color: #333;
-            margin-bottom: 15px;
-        }
-
-        .transaction-item {
-            display: flex;
-            justify-content: space-between;
+        .status-badge {
+            display: inline-flex;
             align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #e2e8f0;
-            transition: all 0.3s ease;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--gray-50);
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--gray-600);
+            font-weight: 500;
         }
 
-        .transaction-item:hover {
-            background: #f7fafc;
-            border-radius: 10px;
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gray-300);
         }
 
-        .transaction-info {
-            flex: 1;
+        .status-dot.active {
+            background: var(--success);
+            animation: blink 1s ease-in-out infinite;
         }
 
-        .transaction-description {
+        .status-dot.error {
+            background: var(--danger);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Tips Section */
+        .tips-section {
+            background: var(--primary-light);
+            background: linear-gradient(135deg, #ede9fe 0%, #e0e7ff 100%);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-top: 24px;
+            border: 1px solid #ddd6fe;
+        }
+
+        .tips-title {
+            font-size: 14px;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .transaction-date {
-            font-size: 0.8em;
-            color: #a0aec0;
-        }
-
-        .transaction-category {
-            font-size: 0.8em;
-            color: #667eea;
-            margin-left: 10px;
-            background: #edf2f7;
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-
-        .transaction-amount {
-            font-weight: bold;
-            font-size: 1.1em;
-            margin-right: 10px;
-        }
-
-        .transaction-amount.income {
-            color: #48bb78;
-        }
-
-        .transaction-amount.expense {
-            color: #f56565;
-        }
-
-        .delete-btn {
-            background: #fc8181;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8em;
-            transition: background 0.3s;
-        }
-
-        .delete-btn:hover {
-            background: #f56565;
-        }
-
-        .example-text {
-            background: #f7fafc;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .example-text strong {
-            color: #667eea;
-        }
-
-        .input-section {
-            margin-top: 20px;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
             display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tips-list {
+            display: grid;
             gap: 10px;
         }
 
-        .manual-input {
-            flex: 1;
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--gray-700);
             padding: 10px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 1em;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: var(--radius);
+            transition: background 0.2s;
+        }
+
+        .tip-item:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .tip-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Manual Input */
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+            font-size: 18px;
+        }
+
+        .manual-input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            background: var(--gray-50);
         }
 
         .manual-input:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: var(--primary-light);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
 
-        .add-button {
-            padding: 10px 20px;
-            background: #667eea;
-            color: white;
+        .manual-input::placeholder {
+            color: var(--gray-400);
+        }
+
+        .btn {
+            padding: 12px 20px;
             border: none;
-            border-radius: 10px;
+            border-radius: var(--radius-lg);
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
-            font-size: 1em;
-            transition: background 0.3s;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
         }
 
-        .add-button:hover {
-            background: #5a67d8;
+        .btn-primary {
+            background: var(--primary);
+            color: white;
         }
 
-        .permission-warning {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 10px;
-            padding: 15px;
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            font-size: 13px;
+            padding: 10px 16px;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Transactions */
+        .transactions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .transactions-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .transactions-count {
+            font-size: 13px;
+            color: var(--gray-400);
+            font-weight: 500;
+            background: var(--gray-50);
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .transaction-list {
+            display: grid;
+            gap: 8px;
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .transaction-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .transaction-list::-webkit-scrollbar-track {
+            background: var(--gray-100);
+            border-radius: 3px;
+        }
+
+        .transaction-list::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 3px;
+        }
+
+        .transaction-list::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-400);
+        }
+
+        .transaction-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: var(--gray-50);
+            border-radius: var(--radius-lg);
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .transaction-item:hover {
+            background: white;
+            border-color: var(--gray-200);
+            box-shadow: var(--shadow-sm);
+            transform: translateX(2px);
+        }
+
+        .transaction-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-right: 14px;
+            flex-shrink: 0;
+        }
+
+        .transaction-icon.expense {
+            background: var(--danger-light);
+        }
+
+        .transaction-icon.income {
+            background: var(--success-light);
+        }
+
+        .transaction-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .transaction-description {
+            font-weight: 600;
+            color: var(--gray-800);
+            font-size: 15px;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .transaction-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--gray-500);
+        }
+
+        .transaction-date {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .transaction-category {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background: #ede9fe;
+            color: var(--primary-dark);
+        }
+
+        .transaction-amount {
+            font-weight: 700;
+            font-size: 16px;
+            margin-right: 12px;
+            white-space: nowrap;
+        }
+
+        .transaction-amount.expense {
+            color: var(--danger);
+        }
+
+        .transaction-amount.income {
+            color: var(--success);
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .delete-btn:hover {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--gray-400);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .empty-text {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .empty-subtext {
+            font-size: 13px;
+            color: var(--gray-300);
+        }
+
+        /* Warning Banner */
+        .warning-banner {
+            background: var(--warning-light);
+            border: 1px solid #fbbf24;
+            border-radius: var(--radius-lg);
+            padding: 16px 20px;
             margin-top: 20px;
-            color: #856404;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .warning-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .warning-content {
+            font-size: 13px;
+            color: #92400e;
+            line-height: 1.6;
+        }
+
+        .warning-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .warning-steps {
+            margin-top: 8px;
+            padding-left: 20px;
+        }
+
+        .warning-steps li {
+            margin-bottom: 4px;
+        }
+
+        /* Data Management */
+        .data-management {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .data-info {
+            font-size: 12px;
+            color: var(--gray-400);
+            margin-top: 16px;
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .transaction-item {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gray-800);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius-lg);
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: var(--shadow-xl);
+            z-index: 1000;
+            animation: toastIn 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .toast.success {
+            background: var(--success);
+        }
+
+        .toast.error {
+            background: var(--danger);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            body {
+                padding: 20px 12px;
+            }
+            
+            .card {
+                padding: 24px 20px;
+            }
+            
+            .balance-amount {
+                font-size: 40px;
+            }
+            
+            .mic-button {
+                width: 80px;
+                height: 80px;
+                font-size: 28px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+            
+            .transaction-item {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .transaction-amount {
+                margin-left: 54px;
+            }
+            
+            .data-management {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>💰 Finanças App</h1>
-            <p>Fale para adicionar suas transações</p>
-        </div>
-
-        <div class="card">
-            <div class="balance">
-                <h2>Saldo Total</h2>
-                <div class="amount" id="balance">R$ 0,00</div>
+        <header class="header">
+            <div class="logo">
+                <div class="logo-icon">💎</div>
+                <h1 class="logo-text">FinVoice</h1>
             </div>
+            <p class="header-subtitle">Sua voz, suas finanças, seu controle</p>
+            <div class="db-status" id="dbStatus">
+                <span class="db-status-dot" id="dbStatusDot"></span>
+                <span id="dbStatusText">Conectando ao banco de dados...</span>
+            </div>
+        </header>
 
-            <div class="voice-section">
-                <button class="mic-button" id="micButton">
-                    🎤
-                </button>
-                <div class="status-text" id="statusText">
-                    Verificando permissão do microfone...
+        <main>
+            <div class="card">
+                <div class="balance-section">
+                    <div class="balance-label">Saldo Total</div>
+                    <div class="balance-amount zero" id="balance">R$ 0,00</div>
+                    <div class="balance-trend" id="balanceTrend" style="display: none;"></div>
+                </div>
+
+                <div class="voice-section">
+                    <div class="mic-wrapper">
+                        <button class="mic-button" id="micButton" aria-label="Gravar áudio">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                                <line x1="12" y1="19" x2="12" y2="23"></line>
+                                <line x1="8" y1="23" x2="16" y2="23"></line>
+                            </svg>
+                        </button>
+                        <div class="mic-ring"></div>
+                    </div>
+                    <div class="status-badge" id="statusBadge">
+                        <span class="status-dot" id="statusDot"></span>
+                        <span id="statusText">Verificando microfone...</span>
+                    </div>
+                </div>
+
+                <div id="permissionWarning" class="warning-banner" style="display: none;">
+                    <span class="warning-icon">⚠️</span>
+                    <div class="warning-content">
+                        <div class="warning-title">Microfone não autorizado</div>
+                        <p>Para usar o reconhecimento de voz:</p>
+                        <ol class="warning-steps">
+                            <li>Clique no ícone de cadeado 🔒 na barra de endereço</li>
+                            <li>Ative a permissão do microfone</li>
+                            <li>Recarregue a página</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="tips-section">
+                    <div class="tips-title">
+                        <span>💡</span>
+                        Dicas de uso
+                    </div>
+                    <div class="tips-list">
+                        <div class="tip-item">
+                            <span class="tip-icon">🎯</span>
+                            <span>Fale frases como: <strong>"Gastei 50 reais em mercado ontem"</strong></span>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-icon">📅</span>
+                            <span>Inclua datas: <strong>"Recebi 2000 de salário dia 15 às 10h"</strong></span>
+                        </div>
+                        <div class="tip-item">
+                            <span class="tip-icon">⌨️</span>
+                            <span>Ou digite manualmente no campo abaixo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <span class="input-icon">✏️</span>
+                        <input 
+                            type="text" 
+                            class="manual-input" 
+                            id="manualInput" 
+                            placeholder="Ex: Gastei 50 reais em mercado ontem..."
+                            aria-label="Digitar transação manualmente"
+                        >
+                    </div>
+                    <button class="btn btn-primary" id="addButton">
+                        Adicionar
+                    </button>
                 </div>
             </div>
 
-            <div id="permissionWarning" class="permission-warning" style="display: none;">
-                ⚠️ <strong>Microfone não permitido!</strong><br>
-                Para usar o reconhecimento de voz:<br>
-                1. Clique no ícone de cadeado 🔒 na barra de endereço<br>
-                2. Ative a permissão do microfone<br>
-                3. Recarregue a página
-            </div>
+            <div class="card">
+                <div class="transactions-header">
+                    <h2 class="transactions-title">Transações Recentes</h2>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span class="transactions-count" id="transactionCount">0 registros</span>
+                    </div>
+                </div>
+                <div class="transaction-list" id="transactionsList">
+                    <div class="empty-state">
+                        <div class="empty-icon">📊</div>
+                        <div class="empty-text">Nenhuma transação registrada</div>
+                        <div class="empty-subtext">Use o microfone ou digite para começar</div>
+                    </div>
+                </div>
 
-            <div class="example-text">
-                <strong>Exemplos do que falar:</strong><br>
-                • "Gastei 50 reais em mercado ontem"<br>
-                • "Recebi 2000 de salário dia 15"<br>
-                • "Paguei 150 de luz esse mês"<br>
-                • "Ganhei 500 reais de freelance"
-            </div>
-
-            <div class="input-section">
-                <input type="text" class="manual-input" id="manualInput" placeholder="Ou digite manualmente...">
-                <button class="add-button" id="addButton">Adicionar</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="transactions">
-                <h3>Últimas Transações</h3>
-                <div id="transactionsList">
-                    <p style="text-align: center; color: #a0aec0;">Nenhuma transação registrada</p>
+                <div class="data-management">
+                    <button class="btn btn-danger" id="exportData" style="flex: 1;">
+                        📥 Exportar Dados
+                    </button>
+                    <button class="btn btn-primary" id="importData" style="flex: 1; background: var(--gray-600);">
+                        📤 Importar Dados
+                    </button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;">
+                </div>
+                <div class="data-info" id="dataInfo">
+                    Banco de dados: IndexedDB | Seus dados ficam salvos localmente
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 
     <script>
+        // ============================================
+        // DATABASE MANAGER - IndexedDB
+        // ============================================
+        class DatabaseManager {
+            constructor() {
+                this.dbName = 'FinVoiceDB';
+                this.dbVersion = 1;
+                this.db = null;
+                this.storeName = 'transactions';
+            }
+
+            async init() {
+                return new Promise((resolve, reject) => {
+                    const request = indexedDB.open(this.dbName, this.dbVersion);
+
+                    request.onerror = (event) => {
+                        console.error('Erro ao abrir banco de dados:', event.target.error);
+                        reject(event.target.error);
+                    };
+
+                    request.onsuccess = (event) => {
+                        this.db = event.target.result;
+                        console.log('✅ Banco de dados conectado com sucesso');
+                        resolve(this.db);
+                    };
+
+                    request.onupgradeneeded = (event) => {
+                        const db = event.target.result;
+                        
+                        // Criar store de transações
+                        if (!db.objectStoreNames.contains(this.storeName)) {
+                            const objectStore = db.createObjectStore(this.storeName, { 
+                                keyPath: 'id', 
+                                autoIncrement: true 
+                            });
+                            
+                            // Criar índices para buscas eficientes
+                            objectStore.createIndex('type', 'type', { unique: false });
+                            objectStore.createIndex('date', 'date', { unique: false });
+                            objectStore.createIndex('category', 'category', { unique: false });
+                            objectStore.createIndex('amount', 'amount', { unique: false });
+                            
+                            console.log('📦 Banco de dados criado com índices');
+                        }
+                    };
+                });
+            }
+
+            async addTransaction(transaction) {
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction([this.storeName], 'readwrite');
+                    const store = tx.objectStore(this.storeName);
+                    const request = store.add(transaction);
+
+                    request.onsuccess = (event) => {
+                        console.log('✅ Transação salva no banco:', event.target.result);
+                        resolve(event.target.result);
+                    };
+
+                    request.onerror = (event) => {
+                        console.error('❌ Erro ao salvar transação:', event.target.error);
+                        reject(event.target.error);
+                    };
+                });
+            }
+
+            async getAllTransactions() {
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction([this.storeName], 'readonly');
+                    const store = tx.objectStore(this.storeName);
+                    const index = store.index('date');
+                    const request = index.openCursor(null, 'prev'); // Ordenado por data decrescente
+                    const transactions = [];
+
+                    request.onsuccess = (event) => {
+                        const cursor = event.target.result;
+                        if (cursor) {
+                            transactions.push(cursor.value);
+                            cursor.continue();
+                        } else {
+                            resolve(transactions);
+                        }
+                    };
+
+                    request.onerror = (event) => {
+                        reject(event.target.error);
+                    };
+                });
+            }
+
+            async deleteTransaction(id) {
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction([this.storeName], 'readwrite');
+                    const store = tx.objectStore(this.storeName);
+                    const request = store.delete(id);
+
+                    request.onsuccess = () => {
+                        console.log('🗑️ Transação deletada:', id);
+                        resolve();
+                    };
+
+                    request.onerror = (event) => {
+                        console.error('❌ Erro ao deletar transação:', event.target.error);
+                        reject(event.target.error);
+                    };
+                });
+            }
+
+            async clearAllTransactions() {
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction([this.storeName], 'readwrite');
+                    const store = tx.objectStore(this.storeName);
+                    const request = store.clear();
+
+                    request.onsuccess = () => {
+                        console.log('🗑️ Todas as transações foram removidas');
+                        resolve();
+                    };
+
+                    request.onerror = (event) => {
+                        reject(event.target.error);
+                    };
+                });
+            }
+
+            async exportData() {
+                const transactions = await this.getAllTransactions();
+                const exportData = {
+                    version: '1.0',
+                    exportDate: new Date().toISOString(),
+                    appName: 'FinVoice',
+                    transactions: transactions,
+                    totalRecords: transactions.length
+                };
+                
+                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `finvoice-backup-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                return exportData;
+            }
+
+            async importData(jsonData) {
+                try {
+                    const data = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
+                    
+                    if (!data.transactions || !Array.isArray(data.transactions)) {
+                        throw new Error('Formato de dados inválido');
+                    }
+
+                    const tx = this.db.transaction([this.storeName], 'readwrite');
+                    const store = tx.objectStore(this.storeName);
+
+                    let importedCount = 0;
+                    
+                    for (const transaction of data.transactions) {
+                        // Remover o ID antigo para gerar novo
+                        const { id, ...cleanTransaction } = transaction;
+                        await new Promise((resolve, reject) => {
+                            const request = store.add(cleanTransaction);
+                            request.onsuccess = () => {
+                                importedCount++;
+                                resolve();
+                            };
+                            request.onerror = () => resolve(); // Pula transações com erro
+                        });
+                    }
+
+                    return importedCount;
+                } catch (error) {
+                    console.error('Erro ao importar:', error);
+                    throw error;
+                }
+            }
+
+            async getStats() {
+                const transactions = await this.getAllTransactions();
+                
+                const stats = {
+                    total: transactions.length,
+                    income: 0,
+                    expense: 0,
+                    balance: 0,
+                    thisMonth: {
+                        income: 0,
+                        expense: 0,
+                        balance: 0
+                    },
+                    categories: {}
+                };
+
+                const now = new Date();
+                
+                transactions.forEach(trans => {
+                    const amount = parseFloat(trans.amount);
+                    
+                    if (trans.type === 'income') {
+                        stats.income += amount;
+                    } else {
+                        stats.expense += amount;
+                    }
+
+                    // Estatísticas do mês atual
+                    const transDate = new Date(trans.date);
+                    if (transDate.getMonth() === now.getMonth() && 
+                        transDate.getFullYear() === now.getFullYear()) {
+                        if (trans.type === 'income') {
+                            stats.thisMonth.income += amount;
+                        } else {
+                            stats.thisMonth.expense += amount;
+                        }
+                    }
+
+                    // Categorias
+                    if (!stats.categories[trans.category]) {
+                        stats.categories[trans.category] = {
+                            income: 0,
+                            expense: 0,
+                            count: 0
+                        };
+                    }
+                    
+                    if (trans.type === 'income') {
+                        stats.categories[trans.category].income += amount;
+                    } else {
+                        stats.categories[trans.category].expense += amount;
+                    }
+                    stats.categories[trans.category].count++;
+                });
+
+                stats.balance = stats.income - stats.expense;
+                stats.thisMonth.balance = stats.thisMonth.income - stats.thisMonth.expense;
+
+                return stats;
+            }
+        }
+
+        // ============================================
+        // MAIN APPLICATION
+        // ============================================
         class FinanceApp {
             constructor() {
-                this.transactions = this.loadTransactions();
+                this.db = new DatabaseManager();
+                this.transactions = [];
                 this.recognition = null;
                 this.isRecording = false;
                 this.isSupported = false;
                 this.isPermissionGranted = false;
+                this.dbReady = false;
                 
-                this.checkSupport();
-                this.setupEventListeners();
-                this.updateUI();
+                this.init();
+            }
+
+            async init() {
+                try {
+                    // Inicializar banco de dados
+                    await this.db.init();
+                    this.dbReady = true;
+                    this.updateDBStatus(true);
+                    
+                    // Carregar transações
+                    await this.loadTransactions();
+                    
+                    // Verificar suporte a voz
+                    await this.checkSupport();
+                    
+                    // Configurar listeners
+                    this.setupEventListeners();
+                    
+                    // Atualizar interface
+                    this.updateUI();
+                    
+                    this.showToast('✅ Banco de dados conectado', 'success');
+                } catch (error) {
+                    console.error('Erro na inicialização:', error);
+                    this.updateDBStatus(false);
+                    this.showToast('❌ Erro ao conectar ao banco de dados', 'error');
+                }
+            }
+
+            updateDBStatus(connected) {
+                const dot = document.getElementById('dbStatusDot');
+                const text = document.getElementById('dbStatusText');
+                
+                if (connected) {
+                    dot.className = 'db-status-dot';
+                    text.textContent = 'Banco de dados conectado';
+                } else {
+                    dot.className = 'db-status-dot error';
+                    text.textContent = 'Erro no banco de dados';
+                }
+            }
+
+            async loadTransactions() {
+                try {
+                    this.transactions = await this.db.getAllTransactions();
+                    console.log(`📊 ${this.transactions.length} transações carregadas`);
+                } catch (error) {
+                    console.error('Erro ao carregar transações:', error);
+                    this.transactions = [];
+                }
             }
 
             async checkSupport() {
-                // Verificar suporte ao SpeechRecognition
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                 
                 if (!SpeechRecognition) {
-                    document.getElementById('statusText').textContent = 
-                        '❌ Seu navegador não suporta reconhecimento de voz. Use o Chrome.';
+                    this.updateStatus('error', 'Navegador não suporta reconhecimento de voz');
                     document.getElementById('micButton').disabled = true;
-                    document.getElementById('statusText').classList.add('error');
                     return;
                 }
 
                 this.isSupported = true;
                 
-                // Verificar permissão do microfone
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                     stream.getTracks().forEach(track => track.stop());
                     this.isPermissionGranted = true;
-                    document.getElementById('statusText').textContent = 
-                        '✅ Microfone autorizado! Clique para falar';
-                    document.getElementById('statusText').classList.add('success');
+                    this.updateStatus('success', 'Microfone pronto para uso');
                     this.initSpeechRecognition();
                 } catch (error) {
                     console.log('Erro de permissão:', error);
                     this.isPermissionGranted = false;
-                    document.getElementById('permissionWarning').style.display = 'block';
-                    document.getElementById('statusText').textContent = 
-                        '❌ Microfone não autorizado';
-                    document.getElementById('statusText').classList.add('error');
+                    document.getElementById('permissionWarning').style.display = 'flex';
+                    this.updateStatus('error', 'Microfone não autorizado');
                     document.getElementById('micButton').disabled = true;
                 }
             }
@@ -380,9 +1236,7 @@
                 this.recognition.maxAlternatives = 1;
 
                 this.recognition.onstart = () => {
-                    console.log('Reconhecimento iniciado');
-                    document.getElementById('statusText').textContent = '🎙️ Ouvindo... Fale agora!';
-                    document.getElementById('statusText').classList.remove('error', 'success');
+                    this.updateStatus('recording', 'Ouvindo... Fale agora');
                 };
 
                 this.recognition.onresult = (event) => {
@@ -394,35 +1248,26 @@
                 this.recognition.onerror = (event) => {
                     console.error('Erro no reconhecimento:', event.error);
                     
-                    let errorMessage = 'Erro ao reconhecer áudio. Tente novamente.';
+                    const errorMessages = {
+                        'not-allowed': 'Permissão do microfone negada',
+                        'no-speech': 'Nenhuma fala detectada',
+                        'audio-capture': 'Microfone não encontrado',
+                        'network': 'Erro de conexão com a internet',
+                        'aborted': 'Reconhecimento cancelado'
+                    };
                     
-                    switch(event.error) {
-                        case 'not-allowed':
-                            errorMessage = 'Permissão do microfone negada. Verifique as configurações.';
-                            document.getElementById('permissionWarning').style.display = 'block';
-                            document.getElementById('micButton').disabled = true;
-                            break;
-                        case 'no-speech':
-                            errorMessage = 'Nenhuma fala detectada. Tente novamente.';
-                            break;
-                        case 'audio-capture':
-                            errorMessage = 'Microfone não encontrado. Verifique se está conectado.';
-                            break;
-                        case 'network':
-                            errorMessage = 'Erro de rede. Verifique sua conexão.';
-                            break;
-                        case 'aborted':
-                            errorMessage = 'Reconhecimento cancelado.';
-                            break;
+                    const message = errorMessages[event.error] || 'Erro ao reconhecer áudio';
+                    this.updateStatus('error', message);
+                    
+                    if (event.error === 'not-allowed') {
+                        document.getElementById('permissionWarning').style.display = 'flex';
+                        document.getElementById('micButton').disabled = true;
                     }
                     
-                    document.getElementById('statusText').textContent = '❌ ' + errorMessage;
-                    document.getElementById('statusText').classList.add('error');
                     this.stopRecording();
                 };
 
                 this.recognition.onend = () => {
-                    console.log('Reconhecimento finalizado');
                     this.stopRecording();
                 };
             }
@@ -448,7 +1293,6 @@
                     }
                 });
 
-                // Input manual
                 document.getElementById('addButton').addEventListener('click', () => {
                     const input = document.getElementById('manualInput');
                     const text = input.value.trim();
@@ -456,10 +1300,10 @@
                     if (text) {
                         this.processVoiceInput(text);
                         input.value = '';
+                        input.focus();
                     }
                 });
 
-                // Enter no input manual
                 document.getElementById('manualInput').addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
                         const text = e.target.value.trim();
@@ -469,6 +1313,86 @@
                         }
                     }
                 });
+
+                // Exportar dados
+                document.getElementById('exportData').addEventListener('click', async () => {
+                    try {
+                        const data = await this.db.exportData();
+                        this.showToast(`✅ ${data.totalRecords} transações exportadas`, 'success');
+                    } catch (error) {
+                        this.showToast('❌ Erro ao exportar dados', 'error');
+                    }
+                });
+
+                // Importar dados
+                document.getElementById('importData').addEventListener('click', () => {
+                    document.getElementById('importFile').click();
+                });
+
+                document.getElementById('importFile').addEventListener('change', async (event) => {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    try {
+                        const text = await file.text();
+                        const importedCount = await this.db.importData(text);
+                        await this.loadTransactions();
+                        this.updateUI();
+                        this.showToast(`✅ ${importedCount} transações importadas`, 'success');
+                    } catch (error) {
+                        console.error('Erro na importação:', error);
+                        this.showToast('❌ Erro ao importar arquivo', 'error');
+                    }
+                    
+                    event.target.value = '';
+                });
+            }
+
+            showToast(message, type = '') {
+                const existingToast = document.querySelector('.toast');
+                if (existingToast) {
+                    existingToast.remove();
+                }
+
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.textContent = message;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+            }
+
+            updateStatus(type, message) {
+                const statusText = document.getElementById('statusText');
+                const statusDot = document.getElementById('statusDot');
+                const statusBadge = document.getElementById('statusBadge');
+                
+                statusText.textContent = message;
+                statusDot.className = 'status-dot';
+                statusBadge.className = 'status-badge';
+                
+                switch(type) {
+                    case 'recording':
+                        statusDot.classList.add('active');
+                        statusBadge.style.background = '#fef2f2';
+                        statusBadge.style.color = '#dc2626';
+                        break;
+                    case 'success':
+                        statusDot.classList.add('active');
+                        statusBadge.style.background = '#f0fdf4';
+                        statusBadge.style.color = '#16a34a';
+                        break;
+                    case 'error':
+                        statusDot.classList.add('error');
+                        statusBadge.style.background = '#fef2f2';
+                        statusBadge.style.color = '#dc2626';
+                        break;
+                    default:
+                        statusBadge.style.background = '#f9fafb';
+                        statusBadge.style.color = '#6b7280';
+                }
             }
 
             async requestPermission() {
@@ -478,20 +1402,17 @@
                     
                     this.isPermissionGranted = true;
                     document.getElementById('permissionWarning').style.display = 'none';
-                    document.getElementById('statusText').textContent = '✅ Permissão concedida!';
-                    document.getElementById('statusText').classList.add('success');
                     document.getElementById('micButton').disabled = false;
+                    this.updateStatus('success', 'Permissão concedida');
                     this.initSpeechRecognition();
                     
                     setTimeout(() => {
-                        document.getElementById('statusText').textContent = 'Clique no microfone e fale';
-                        document.getElementById('statusText').classList.remove('success');
+                        this.updateStatus('success', 'Microfone pronto para uso');
                     }, 2000);
                 } catch (error) {
                     console.error('Erro ao solicitar permissão:', error);
-                    document.getElementById('permissionWarning').style.display = 'block';
-                    document.getElementById('statusText').textContent = '❌ Permissão negada';
-                    document.getElementById('statusText').classList.add('error');
+                    document.getElementById('permissionWarning').style.display = 'flex';
+                    this.updateStatus('error', 'Permissão negada');
                 }
             }
 
@@ -504,13 +1425,10 @@
                     this.recognition.start();
                     this.isRecording = true;
                     document.getElementById('micButton').classList.add('recording');
-                    document.getElementById('statusText').textContent = '🎙️ Ouvindo... Fale agora!';
-                    document.getElementById('statusText').classList.remove('error', 'success');
                 } catch (error) {
                     console.error('Erro ao iniciar gravação:', error);
                     this.isRecording = false;
-                    document.getElementById('statusText').textContent = '❌ Erro ao iniciar. Tente novamente.';
-                    document.getElementById('statusText').classList.add('error');
+                    this.updateStatus('error', 'Erro ao iniciar gravação');
                 }
             }
 
@@ -527,71 +1445,180 @@
                 document.getElementById('micButton').classList.remove('recording');
                 
                 if (this.isPermissionGranted) {
-                    document.getElementById('statusText').textContent = '✅ Pronto para gravar novamente';
-                    document.getElementById('statusText').classList.add('success');
+                    this.updateStatus('success', 'Pronto para nova gravação');
                     
                     setTimeout(() => {
-                        document.getElementById('statusText').textContent = 'Clique no microfone e fale';
-                        document.getElementById('statusText').classList.remove('success');
-                    }, 3000);
+                        if (!this.isRecording) {
+                            this.updateStatus('success', 'Microfone pronto para uso');
+                        }
+                    }, 2500);
                 }
             }
 
-            processVoiceInput(text) {
+            extractDateTime(text) {
+                const now = new Date();
+                let transactionDate = new Date(now);
+                
+                const datePatterns = [
+                    {
+                        regex: /dia\s+(\d{1,2})(?:\s+de\s+(\w+))?/i,
+                        handler: (match) => {
+                            const day = parseInt(match[1]);
+                            let month = now.getMonth();
+                            
+                            if (match[2]) {
+                                const months = {
+                                    'janeiro': 0, 'fevereiro': 1, 'março': 2, 'abril': 3,
+                                    'maio': 4, 'junho': 5, 'julho': 6, 'agosto': 7,
+                                    'setembro': 8, 'outubro': 9, 'novembro': 10, 'dezembro': 11
+                                };
+                                const monthName = match[2].toLowerCase();
+                                if (months[monthName] !== undefined) {
+                                    month = months[monthName];
+                                }
+                            }
+                            
+                            transactionDate.setDate(day);
+                            transactionDate.setMonth(month);
+                            return true;
+                        }
+                    },
+                    {
+                        regex: /\bontem\b/i,
+                        handler: () => {
+                            transactionDate.setDate(transactionDate.getDate() - 1);
+                            return true;
+                        }
+                    },
+                    {
+                        regex: /\banteontem\b/i,
+                        handler: () => {
+                            transactionDate.setDate(transactionDate.getDate() - 2);
+                            return true;
+                        }
+                    },
+                    {
+                        regex: /\bhoje\b/i,
+                        handler: () => true
+                    },
+                    {
+                        regex: /\bsemana\s+passada\b/i,
+                        handler: () => {
+                            transactionDate.setDate(transactionDate.getDate() - 7);
+                            return true;
+                        }
+                    },
+                    {
+                        regex: /\bm[eê]s\s+passado\b/i,
+                        handler: () => {
+                            transactionDate.setMonth(transactionDate.getMonth() - 1);
+                            return true;
+                        }
+                    }
+                ];
+
+                const timePatterns = [
+                    {
+                        regex: /(?:às|as)\s+(\d{1,2})(?::(\d{2}))?(?:\s*(?:horas|h))?/i,
+                        handler: (match) => {
+                            const hours = parseInt(match[1]);
+                            const minutes = match[2] ? parseInt(match[2]) : 0;
+                            
+                            if (hours >= 0 && hours < 24 && minutes >= 0 && minutes < 60) {
+                                transactionDate.setHours(hours, minutes, 0, 0);
+                                return true;
+                            }
+                            return false;
+                        }
+                    },
+                    {
+                        regex: /\b(?:de|da|pela)\s+(manhã|tarde|noite|madrugada)\b/i,
+                        handler: (match) => {
+                            const period = match[1].toLowerCase();
+                            const hours = {
+                                'manhã': 9,
+                                'tarde': 15,
+                                'noite': 20,
+                                'madrugada': 2
+                            };
+                            transactionDate.setHours(hours[period] || 12, 0, 0, 0);
+                            return true;
+                        }
+                    }
+                ];
+
+                for (const pattern of datePatterns) {
+                    const match = text.match(pattern.regex);
+                    if (match) {
+                        pattern.handler(match);
+                        break;
+                    }
+                }
+
+                for (const pattern of timePatterns) {
+                    const match = text.match(pattern.regex);
+                    if (match) {
+                        pattern.handler(match);
+                        break;
+                    }
+                }
+
+                return transactionDate;
+            }
+
+            async processVoiceInput(text) {
                 console.log('Processando texto:', text);
                 
                 try {
                     const transaction = this.parseTransaction(text);
                     if (transaction) {
-                        this.addTransaction(transaction);
-                        document.getElementById('statusText').textContent = 
-                            `✅ Adicionado: ${transaction.description} - R$ ${transaction.amount}`;
-                        document.getElementById('statusText').classList.add('success');
+                        await this.addTransaction(transaction);
+                        this.updateStatus('success', `Transação adicionada com sucesso`);
                         
                         setTimeout(() => {
-                            document.getElementById('statusText').textContent = 'Clique no microfone e fale';
-                            document.getElementById('statusText').classList.remove('success');
-                        }, 3000);
+                            if (!this.isRecording) {
+                                this.updateStatus('success', 'Microfone pronto para uso');
+                            }
+                        }, 2500);
                     } else {
-                        document.getElementById('statusText').textContent = 
-                            '❌ Não entendi. Tente: "Gastei 50 reais em mercado"';
-                        document.getElementById('statusText').classList.add('error');
+                        this.updateStatus('error', 'Formato não reconhecido. Tente novamente');
                         
                         setTimeout(() => {
-                            document.getElementById('statusText').textContent = 'Clique no microfone e fale';
-                            document.getElementById('statusText').classList.remove('error');
-                        }, 3000);
+                            if (!this.isRecording) {
+                                this.updateStatus('success', 'Microfone pronto para uso');
+                            }
+                        }, 2500);
                     }
                 } catch (error) {
                     console.error('Erro ao processar:', error);
-                    document.getElementById('statusText').textContent = '❌ Erro ao processar áudio';
-                    document.getElementById('statusText').classList.add('error');
+                    this.updateStatus('error', 'Erro ao processar transação');
                 }
             }
 
             parseTransaction(text) {
                 text = text.toLowerCase().trim();
                 
-                // Remover palavras comuns que podem atrapalhar
+                const transactionDate = this.extractDateTime(text);
+                
                 text = text.replace(/\b(?:eu|a|o|as|os|um|uma|uns|umas|do|da|dos|das|no|na|nos|nas)\b/g, ' ').trim();
+                text = text.replace(/\b(?:ontem|anteontem|hoje|semana\s+passada|mês\s+passado)\b/gi, '').trim();
+                text = text.replace(/(?:dia\s+\d{1,2}(?:\s+de\s+\w+)?)/gi, '').trim();
+                text = text.replace(/(?:às|as)\s+\d{1,2}(?::\d{2})?(?:\s*(?:horas|h))?/gi, '').trim();
+                text = text.replace(/\b(?:de|da|pela)\s+(manhã|tarde|noite|madrugada)\b/gi, '').trim();
                 
                 const patterns = [
-                    // "gastei/paguei X reais em Y"
                     {
                         regex: /(?:gastei|paguei|gasto|comprei)\s+(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$|conto|pila)?\s*(?:em|para|de|com)?\s*(.+)/i,
                         type: 'expense'
                     },
-                    // "recebi/ganhei X reais de Y"
                     {
                         regex: /(?:recebi|ganhei|salário|renda|recebimento)\s+(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$|conto|pila)?\s*(?:de|do|da)?\s*(.+)/i,
                         type: 'income'
                     },
-                    // "comprei/paguei Y por X reais"
                     {
                         regex: /(?:comprei|paguei|gastei)\s+(.+)\s+por\s+(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$)?/i,
                         type: 'expense'
                     },
-                    // Padrão mais flexível
                     {
                         regex: /(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$)?\s*(?:em|de|para|com)?\s*(.+)/i,
                         type: 'auto'
@@ -604,12 +1631,7 @@
                         let amount, description, type;
 
                         if (pattern.type === 'auto') {
-                            // Determinar tipo baseado em palavras-chave
-                            if (text.match(/(?:recebi|ganhei|salário|renda|entrada|crédito)/i)) {
-                                type = 'income';
-                            } else {
-                                type = 'expense';
-                            }
+                            type = text.match(/(?:recebi|ganhei|salário|renda|entrada|crédito)/i) ? 'income' : 'expense';
                             amount = this.parseAmount(match[1]);
                             description = match[2] || 'Transação sem descrição';
                         } else {
@@ -623,15 +1645,18 @@
                             }
                         }
 
-                        // Limpar e capitalizar descrição
                         description = description.trim();
                         description = description.charAt(0).toUpperCase() + description.slice(1);
+
+                        if (description.length < 2) {
+                            description = 'Transação sem descrição';
+                        }
 
                         return {
                             description: description,
                             amount: Math.abs(amount),
                             type: type,
-                            date: new Date(),
+                            date: transactionDate.toISOString(),
                             category: this.categorizeTransaction(description)
                         };
                     }
@@ -649,12 +1674,12 @@
             categorizeTransaction(description) {
                 const desc = description.toLowerCase();
                 const categories = {
-                    'alimentação': ['mercado', 'restaurante', 'comida', 'lanche', 'almoço', 'janta', 'supermercado'],
-                    'transporte': ['uber', 'ônibus', 'gasolina', 'combustível', 'metrô', 'transporte', 'estacionamento'],
-                    'moradia': ['aluguel', 'condomínio', 'luz', 'água', 'internet', 'telefone', 'iptu'],
-                    'lazer': ['cinema', 'festa', 'show', 'viagem', 'passeio', 'jogo', 'jogos'],
-                    'saúde': ['farmácia', 'médico', 'hospital', 'remédio', 'consulta', 'dentista'],
-                    'salário': ['salário', 'pagamento', 'freelance', 'bônus', 'comissão']
+                    'Alimentação': ['mercado', 'restaurante', 'comida', 'lanche', 'almoço', 'janta', 'supermercado'],
+                    'Transporte': ['uber', 'ônibus', 'gasolina', 'combustível', 'metrô', 'transporte', 'estacionamento'],
+                    'Moradia': ['aluguel', 'condomínio', 'luz', 'água', 'internet', 'telefone', 'iptu'],
+                    'Lazer': ['cinema', 'festa', 'show', 'viagem', 'passeio', 'jogo', 'jogos'],
+                    'Saúde': ['farmácia', 'médico', 'hospital', 'remédio', 'consulta', 'dentista'],
+                    'Renda': ['salário', 'pagamento', 'freelance', 'bônus', 'comissão']
                 };
 
                 for (const [category, keywords] of Object.entries(categories)) {
@@ -663,29 +1688,58 @@
                     }
                 }
 
-                return 'outros';
+                return 'Outros';
             }
 
-            addTransaction(transaction) {
-                this.transactions.unshift(transaction);
-                this.saveTransactions();
-                this.updateUI();
-            }
-
-            deleteTransaction(index) {
-                if (confirm('Deseja realmente excluir esta transação?')) {
-                    this.transactions.splice(index, 1);
-                    this.saveTransactions();
+            async addTransaction(transaction) {
+                try {
+                    const id = await this.db.addTransaction(transaction);
+                    transaction.id = id;
+                    this.transactions.unshift(transaction);
                     this.updateUI();
+                    this.showToast(`✅ Transação adicionada: ${transaction.description}`, 'success');
+                } catch (error) {
+                    console.error('Erro ao adicionar transação:', error);
+                    this.showToast('❌ Erro ao salvar transação', 'error');
+                }
+            }
+
+            async deleteTransaction(index) {
+                if (confirm('Deseja realmente excluir esta transação?')) {
+                    try {
+                        const transaction = this.transactions[index];
+                        await this.db.deleteTransaction(transaction.id);
+                        this.transactions.splice(index, 1);
+                        this.updateUI();
+                        this.showToast('🗑️ Transação excluída', 'success');
+                    } catch (error) {
+                        console.error('Erro ao deletar:', error);
+                        this.showToast('❌ Erro ao excluir transação', 'error');
+                    }
                 }
             }
 
             calculateBalance() {
                 return this.transactions.reduce((total, trans) => {
                     return trans.type === 'income' 
-                        ? total + trans.amount 
-                        : total - trans.amount;
+                        ? total + parseFloat(trans.amount) 
+                        : total - parseFloat(trans.amount);
                 }, 0);
+            }
+
+            getBalanceTrend() {
+                const now = new Date();
+                const thisMonth = this.transactions.filter(t => {
+                    const d = new Date(t.date);
+                    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+                });
+
+                const income = thisMonth.filter(t => t.type === 'income')
+                    .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+                const expense = thisMonth.filter(t => t.type === 'expense')
+                    .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+                
+                return income - expense;
             }
 
             formatCurrency(value) {
@@ -695,72 +1749,118 @@
                 }).format(value);
             }
 
-            formatDate(date) {
-                return new Date(date).toLocaleDateString('pt-BR', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
+            formatDate(dateString) {
+                const transactionDate = new Date(dateString);
+                const now = new Date();
+                const diffTime = now - transactionDate;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                
+                let dateStr = '';
+                
+                if (diffDays === 0) {
+                    dateStr = 'Hoje';
+                } else if (diffDays === 1) {
+                    dateStr = 'Ontem';
+                } else if (diffDays < 7) {
+                    const weekDays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+                    dateStr = weekDays[transactionDate.getDay()];
+                } else {
+                    dateStr = transactionDate.toLocaleDateString('pt-BR', {
+                        day: '2-digit',
+                        month: 'short'
+                    });
+                }
+                
+                const timeStr = transactionDate.toLocaleTimeString('pt-BR', {
                     hour: '2-digit',
                     minute: '2-digit'
                 });
-            }
-
-            saveTransactions() {
-                try {
-                    localStorage.setItem('financeTransactions', JSON.stringify(this.transactions));
-                } catch (error) {
-                    console.error('Erro ao salvar:', error);
-                }
-            }
-
-            loadTransactions() {
-                try {
-                    const saved = localStorage.getItem('financeTransactions');
-                    return saved ? JSON.parse(saved) : [];
-                } catch (error) {
-                    console.error('Erro ao carregar:', error);
-                    return [];
-                }
+                
+                return `${dateStr} às ${timeStr}`;
             }
 
             updateUI() {
-                // Atualizar saldo
+                // Balance
                 const balance = this.calculateBalance();
                 const balanceElement = document.getElementById('balance');
                 balanceElement.textContent = this.formatCurrency(balance);
-                balanceElement.className = 'amount ' + (balance >= 0 ? 'positive' : 'negative');
+                balanceElement.className = 'balance-amount ' + 
+                    (balance > 0 ? 'positive' : balance < 0 ? 'negative' : 'zero');
 
-                // Atualizar lista de transações
+                // Balance trend
+                const trend = this.getBalanceTrend();
+                const trendElement = document.getElementById('balanceTrend');
+                if (this.transactions.length > 0) {
+                    trendElement.style.display = 'inline-flex';
+                    if (trend > 0) {
+                        trendElement.className = 'balance-trend positive';
+                        trendElement.innerHTML = `📈 +${this.formatCurrency(trend)} este mês`;
+                    } else if (trend < 0) {
+                        trendElement.className = 'balance-trend negative';
+                        trendElement.innerHTML = `📉 ${this.formatCurrency(trend)} este mês`;
+                    } else {
+                        trendElement.className = 'balance-trend';
+                        trendElement.innerHTML = `➡️ ${this.formatCurrency(trend)} este mês`;
+                    }
+                } else {
+                    trendElement.style.display = 'none';
+                }
+
+                // Transaction count
+                document.getElementById('transactionCount').textContent = 
+                    `${this.transactions.length} registro${this.transactions.length !== 1 ? 's' : ''}`;
+
+                // Transactions list
                 const transactionsList = document.getElementById('transactionsList');
                 
                 if (this.transactions.length === 0) {
-                    transactionsList.innerHTML = 
-                        '<p style="text-align: center; color: #a0aec0;">Nenhuma transação registrada</p>';
+                    transactionsList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">📊</div>
+                            <div class="empty-text">Nenhuma transação registrada</div>
+                            <div class="empty-subtext">Use o microfone ou digite para começar</div>
+                        </div>
+                    `;
                     return;
                 }
 
-                transactionsList.innerHTML = this.transactions.map((trans, index) => `
-                    <div class="transaction-item">
-                        <div class="transaction-info">
-                            <div class="transaction-description">
-                                ${trans.description}
-                                <span class="transaction-category">${trans.category}</span>
+                transactionsList.innerHTML = this.transactions.map((trans, index) => {
+                    const amount = parseFloat(trans.amount);
+                    return `
+                        <div class="transaction-item" style="animation-delay: ${index * 0.05}s">
+                            <div class="transaction-icon ${trans.type}">
+                                ${trans.type === 'income' ? '📥' : '📤'}
                             </div>
-                            <div class="transaction-date">${this.formatDate(trans.date)}</div>
+                            <div class="transaction-info">
+                                <div class="transaction-description" title="${trans.description}">
+                                    ${trans.description}
+                                </div>
+                                <div class="transaction-meta">
+                                    <span class="transaction-date">
+                                        🕐 ${this.formatDate(trans.date)}
+                                    </span>
+                                    <span class="transaction-category">${trans.category}</span>
+                                </div>
+                            </div>
+                            <div class="transaction-amount ${trans.type}">
+                                ${trans.type === 'income' ? '+' : '−'} ${this.formatCurrency(amount)}
+                            </div>
+                            <button class="delete-btn" onclick="app.deleteTransaction(${index})" aria-label="Excluir transação" title="Excluir">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                            </button>
                         </div>
-                        <div class="transaction-amount ${trans.type}">
-                            ${trans.type === 'income' ? '+' : '-'}${this.formatCurrency(Math.abs(trans.amount))}
-                        </div>
-                        <button class="delete-btn" onclick="app.deleteTransaction(${index})">
-                            🗑️
-                        </button>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             }
         }
 
-        // Inicializar aplicativo
-        const app = new FinanceApp();
+        // Initialize app when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            window.app = new FinanceApp();
+        });
     </script>
 </body>
 </html>
