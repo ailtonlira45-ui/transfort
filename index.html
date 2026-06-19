@@ -9,7 +9,6 @@
         :root {
             --primary: #6366f1;
             --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
             --success: #10b981;
             --success-light: #d1fae5;
             --danger: #ef4444;
@@ -26,16 +25,6 @@
             --gray-700: #374151;
             --gray-800: #1f2937;
             --gray-900: #111827;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-            --radius-sm: 0.375rem;
-            --radius: 0.5rem;
-            --radius-md: 0.75rem;
-            --radius-lg: 1rem;
-            --radius-xl: 1.5rem;
         }
 
         * {
@@ -45,12 +34,11 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 40px 20px;
+            padding: 20px;
             color: var(--gray-800);
-            line-height: 1.5;
         }
 
         .container {
@@ -58,10 +46,9 @@
             margin: 0 auto;
         }
 
-        /* Header */
         .header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .logo {
@@ -75,9 +62,9 @@
         .logo-icon {
             width: 48px;
             height: 48px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.2);
             backdrop-filter: blur(10px);
-            border-radius: var(--radius-lg);
+            border-radius: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -88,64 +75,39 @@
             font-size: 28px;
             font-weight: 700;
             color: white;
-            letter-spacing: -0.5px;
         }
 
         .header-subtitle {
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(255,255,255,0.8);
             font-size: 15px;
-            font-weight: 400;
         }
 
         .db-status {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            margin-top: 16px;
+            margin-top: 12px;
             padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.15);
             border-radius: 20px;
             color: white;
             font-size: 13px;
-            font-weight: 500;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        .db-status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-        }
-
-        .db-status-dot.error {
-            background: var(--warning);
-        }
-
-        /* Cards */
         .card {
             background: white;
-            border-radius: var(--radius-xl);
-            padding: 32px;
-            box-shadow: var(--shadow-xl);
-            margin-bottom: 24px;
-            backdrop-filter: blur(10px);
-            transition: transform 0.2s ease;
+            border-radius: 1.5rem;
+            padding: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
         }
 
-        .card:hover {
-            transform: translateY(-1px);
-        }
-
-        /* Balance Section */
         .balance-section {
             text-align: center;
-            padding: 24px;
-            background: linear-gradient(135deg, var(--gray-50) 0%, white 100%);
-            border-radius: var(--radius-lg);
-            margin-bottom: 36px;
-            border: 1px solid var(--gray-100);
+            padding: 20px;
+            background: linear-gradient(135deg, #f9fafb 0%, white 100%);
+            border-radius: 1rem;
+            margin-bottom: 24px;
         }
 
         .balance-label {
@@ -153,85 +115,46 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: var(--gray-400);
-            margin-bottom: 12px;
+            color: #9ca3af;
+            margin-bottom: 8px;
         }
 
         .balance-amount {
             font-size: 48px;
             font-weight: 700;
-            letter-spacing: -1px;
-            line-height: 1;
         }
 
-        .balance-amount.positive {
-            color: var(--success);
-        }
+        .balance-amount.positive { color: #10b981; }
+        .balance-amount.negative { color: #ef4444; }
+        .balance-amount.zero { color: #1f2937; }
 
-        .balance-amount.negative {
-            color: var(--danger);
-        }
-
-        .balance-amount.zero {
-            color: var(--gray-800);
-        }
-
-        .balance-trend {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 12px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .balance-trend.positive {
-            background: var(--success-light);
-            color: var(--success);
-        }
-
-        .balance-trend.negative {
-            background: var(--danger-light);
-            color: var(--danger);
-        }
-
-        /* Month Selector */
         .month-selector {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 16px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
+            margin-bottom: 20px;
         }
 
         .month-nav {
-            background: var(--gray-100);
+            background: #f3f4f6;
             border: none;
             width: 36px;
             height: 36px;
             border-radius: 50%;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-size: 18px;
             transition: all 0.2s;
-            color: var(--gray-600);
         }
 
         .month-nav:hover {
-            background: var(--primary);
+            background: #6366f1;
             color: white;
-            transform: scale(1.1);
         }
 
         .month-display {
             font-size: 18px;
             font-weight: 600;
-            color: var(--gray-800);
             min-width: 160px;
             text-align: center;
         }
@@ -239,7 +162,6 @@
         .quick-months {
             display: flex;
             gap: 8px;
-            flex-wrap: wrap;
             justify-content: center;
             margin-bottom: 20px;
         }
@@ -247,339 +169,207 @@
         .month-chip {
             padding: 6px 14px;
             border-radius: 20px;
-            border: 1px solid var(--gray-200);
+            border: 1px solid #e5e7eb;
             background: white;
             cursor: pointer;
             font-size: 13px;
             font-weight: 500;
             transition: all 0.2s;
-            color: var(--gray-600);
-            white-space: nowrap;
         }
 
         .month-chip:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: #f5f3ff;
+            border-color: #6366f1;
+            color: #6366f1;
         }
 
         .month-chip.active {
-            background: var(--primary);
+            background: #6366f1;
             color: white;
-            border-color: var(--primary);
+            border-color: #6366f1;
         }
 
-        /* Monthly Summary */
         .monthly-summary {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 24px;
         }
 
         .summary-card {
-            background: var(--gray-50);
-            border-radius: var(--radius-lg);
-            padding: 16px;
+            background: #f9fafb;
+            border-radius: 1rem;
+            padding: 14px;
             text-align: center;
-            border: 1px solid var(--gray-100);
-            transition: all 0.2s;
-        }
-
-        .summary-card:hover {
-            background: white;
-            box-shadow: var(--shadow-sm);
-            transform: translateY(-1px);
         }
 
         .summary-label {
             font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--gray-400);
-            margin-bottom: 8px;
+            color: #9ca3af;
+            margin-bottom: 6px;
         }
 
         .summary-value {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            color: var(--gray-800);
         }
 
-        .summary-value.income {
-            color: var(--success);
-        }
+        .summary-value.income { color: #10b981; }
+        .summary-value.expense { color: #ef4444; }
 
-        .summary-value.expense {
-            color: var(--danger);
-        }
-
-        /* Voice Section */
         .voice-section {
             text-align: center;
-            margin-bottom: 32px;
-        }
-
-        .mic-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
-
-        .mic-ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 2px solid var(--gray-200);
-            opacity: 0;
-            transition: all 0.3s ease;
+            margin-bottom: 24px;
         }
 
         .mic-button {
-            width: 88px;
-            height: 88px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             border: none;
-            background: var(--primary);
+            background: #6366f1;
             color: white;
-            font-size: 32px;
+            font-size: 28px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
-            position: relative;
-            z-index: 1;
+            transition: all 0.3s;
+            box-shadow: 0 8px 24px rgba(99,102,241,0.3);
+            margin-bottom: 12px;
         }
 
         .mic-button:hover:not(:disabled) {
             transform: scale(1.08);
-            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4);
-            background: var(--primary-dark);
-        }
-
-        .mic-button:active:not(:disabled) {
-            transform: scale(0.95);
+            background: #4f46e5;
         }
 
         .mic-button:disabled {
-            background: var(--gray-300);
+            background: #d1d5db;
             cursor: not-allowed;
             box-shadow: none;
         }
 
         .mic-button.recording {
-            background: var(--danger);
-            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+            background: #ef4444;
+            animation: pulse 1.5s infinite;
         }
 
-        .mic-button.recording + .mic-ring {
-            animation: ringPulse 2s ease-out infinite;
-            border-color: var(--danger);
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+            50% { box-shadow: 0 0 0 15px rgba(239,68,68,0); }
         }
 
-        @keyframes ringPulse {
-            0% {
-                width: 100px;
-                height: 100px;
-                opacity: 1;
-                border-width: 2px;
-            }
-            100% {
-                width: 160px;
-                height: 160px;
-                opacity: 0;
-                border-width: 1px;
-            }
+        .status-text {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 8px;
         }
 
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: var(--gray-50);
-            border-radius: 20px;
-            font-size: 14px;
-            color: var(--gray-600);
-            font-weight: 500;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--gray-300);
-        }
-
-        .status-dot.active {
-            background: var(--success);
-            animation: blink 1s ease-in-out infinite;
-        }
-
-        .status-dot.error {
-            background: var(--danger);
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* Tips Section */
         .tips-section {
-            background: var(--primary-light);
             background: linear-gradient(135deg, #ede9fe 0%, #e0e7ff 100%);
-            border-radius: var(--radius-lg);
-            padding: 20px;
-            margin-top: 24px;
-            border: 1px solid #ddd6fe;
+            border-radius: 1rem;
+            padding: 16px;
+            margin: 20px 0;
         }
 
         .tips-title {
             font-size: 14px;
             font-weight: 600;
-            color: var(--primary-dark);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: #4f46e5;
+            margin-bottom: 10px;
         }
 
         .tips-list {
             display: grid;
-            gap: 10px;
+            gap: 8px;
         }
 
         .tip-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
             font-size: 13px;
-            color: var(--gray-700);
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: var(--radius);
-            transition: background 0.2s;
+            color: #374151;
+            padding: 8px;
+            background: rgba(255,255,255,0.6);
+            border-radius: 0.5rem;
         }
 
-        .tip-item:hover {
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        .tip-icon {
-            font-size: 18px;
-            flex-shrink: 0;
-            margin-top: 1px;
-        }
-
-        /* Manual Input */
         .input-group {
             display: flex;
             gap: 10px;
-            margin-top: 24px;
-        }
-
-        .input-wrapper {
-            flex: 1;
-            position: relative;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray-400);
-            font-size: 18px;
+            margin-top: 20px;
         }
 
         .manual-input {
-            width: 100%;
-            padding: 12px 16px 12px 42px;
-            border: 2px solid var(--gray-200);
-            border-radius: var(--radius-lg);
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 1rem;
             font-size: 15px;
             font-family: 'Inter', sans-serif;
             transition: all 0.2s;
-            background: var(--gray-50);
         }
 
         .manual-input:focus {
             outline: none;
-            border-color: var(--primary-light);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .manual-input::placeholder {
-            color: var(--gray-400);
+            border-color: #818cf8;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
         }
 
         .btn {
             padding: 12px 20px;
             border: none;
-            border-radius: var(--radius-lg);
+            border-radius: 1rem;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
             font-family: 'Inter', sans-serif;
-            white-space: nowrap;
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: #6366f1;
             color: white;
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
+            background: #4f46e5;
         }
 
         .btn-danger {
-            background: var(--danger);
+            background: #ef4444;
             color: white;
             font-size: 13px;
-            padding: 10px 16px;
         }
 
-        .btn-danger:hover {
-            background: #dc2626;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
         }
 
-        /* Transactions */
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
         .transactions-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .transactions-title {
             font-size: 18px;
             font-weight: 600;
-            color: var(--gray-800);
         }
 
         .transactions-count {
             font-size: 13px;
-            color: var(--gray-400);
-            font-weight: 500;
-            background: var(--gray-50);
+            color: #9ca3af;
+            background: #f9fafb;
             padding: 4px 10px;
             border-radius: 12px;
         }
@@ -589,340 +379,237 @@
             gap: 8px;
             max-height: 500px;
             overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        .transaction-list::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .transaction-list::-webkit-scrollbar-track {
-            background: var(--gray-100);
-            border-radius: 3px;
-        }
-
-        .transaction-list::-webkit-scrollbar-thumb {
-            background: var(--gray-300);
-            border-radius: 3px;
-        }
-
-        .transaction-list::-webkit-scrollbar-thumb:hover {
-            background: var(--gray-400);
-        }
-
-        /* Month Group */
-        .month-group {
-            margin-bottom: 16px;
-        }
-
-        .month-group-header {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--gray-500);
-            padding: 8px 0;
-            margin-bottom: 8px;
-            border-bottom: 2px solid var(--gray-100);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .month-group-total {
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .month-group-total.positive {
-            color: var(--success);
-        }
-
-        .month-group-total.negative {
-            color: var(--danger);
         }
 
         .transaction-item {
-            display: flex;
+            display: grid;
+            grid-template-columns: 40px 1fr auto auto;
             align-items: center;
-            padding: 16px;
-            background: var(--gray-50);
-            border-radius: var(--radius-lg);
+            gap: 10px;
+            padding: 14px;
+            background: #f9fafb;
+            border-radius: 1rem;
             transition: all 0.2s;
             border: 1px solid transparent;
         }
 
         .transaction-item:hover {
             background: white;
-            border-color: var(--gray-200);
-            box-shadow: var(--shadow-sm);
-            transform: translateX(2px);
+            border-color: #e5e7eb;
         }
 
         .transaction-icon {
             width: 40px;
             height: 40px;
-            border-radius: var(--radius);
+            border-radius: 0.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
-            margin-right: 14px;
-            flex-shrink: 0;
         }
 
-        .transaction-icon.expense {
-            background: var(--danger-light);
-        }
+        .transaction-icon.expense { background: #fee2e2; }
+        .transaction-icon.income { background: #d1fae5; }
 
-        .transaction-icon.income {
-            background: var(--success-light);
-        }
-
-        .transaction-info {
-            flex: 1;
+        .transaction-content {
             min-width: 0;
         }
 
         .transaction-description {
             font-weight: 600;
-            color: var(--gray-800);
-            font-size: 15px;
+            font-size: 14px;
             margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            word-break: break-word;
         }
 
         .transaction-meta {
             display: flex;
-            align-items: center;
             gap: 8px;
-            font-size: 13px;
-            color: var(--gray-500);
-        }
-
-        .transaction-date {
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            font-size: 12px;
+            color: #6b7280;
+            flex-wrap: wrap;
         }
 
         .transaction-category {
-            font-size: 12px;
-            font-weight: 500;
-            padding: 3px 8px;
-            border-radius: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
             background: #ede9fe;
-            color: var(--primary-dark);
+            color: #4f46e5;
+            font-size: 11px;
+            font-weight: 500;
         }
 
         .transaction-amount {
             font-weight: 700;
-            font-size: 16px;
-            margin-right: 12px;
+            font-size: 15px;
             white-space: nowrap;
         }
 
-        .transaction-amount.expense {
-            color: var(--danger);
+        .transaction-amount.expense { color: #ef4444; }
+        .transaction-amount.income { color: #10b981; }
+
+        .transaction-actions {
+            display: flex;
+            gap: 4px;
         }
 
-        .transaction-amount.income {
-            color: var(--success);
-        }
-
-        .delete-btn {
+        .action-btn {
             background: none;
             border: none;
-            color: var(--gray-400);
             cursor: pointer;
             padding: 6px;
-            border-radius: var(--radius-sm);
+            border-radius: 0.375rem;
+            font-size: 14px;
             transition: all 0.2s;
-            font-size: 16px;
+            color: #9ca3af;
         }
 
-        .delete-btn:hover {
-            background: var(--danger-light);
-            color: var(--danger);
+        .action-btn:hover {
+            background: #f3f4f6;
+            color: #374151;
         }
 
-        /* Empty State */
+        .action-btn.edit:hover {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+
+        .action-btn.delete:hover {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
         .empty-state {
             text-align: center;
-            padding: 48px 24px;
-            color: var(--gray-400);
+            padding: 40px;
+            color: #9ca3af;
         }
 
         .empty-icon {
             font-size: 48px;
-            margin-bottom: 16px;
-            opacity: 0.5;
+            margin-bottom: 12px;
         }
 
-        .empty-text {
-            font-size: 15px;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-
-        .empty-subtext {
-            font-size: 13px;
-            color: var(--gray-300);
-        }
-
-        /* Warning Banner */
-        .warning-banner {
-            background: var(--warning-light);
-            border: 1px solid #fbbf24;
-            border-radius: var(--radius-lg);
-            padding: 16px 20px;
-            margin-top: 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-
-        .warning-icon {
-            font-size: 20px;
-            flex-shrink: 0;
-            margin-top: 1px;
-        }
-
-        .warning-content {
-            font-size: 13px;
-            color: #92400e;
-            line-height: 1.6;
-        }
-
-        .warning-title {
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .warning-steps {
-            margin-top: 8px;
-            padding-left: 20px;
-        }
-
-        .warning-steps li {
-            margin-bottom: 4px;
-        }
-
-        /* Data Management */
         .data-management {
             display: flex;
             gap: 10px;
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid var(--gray-200);
+            border-top: 1px solid #e5e7eb;
         }
 
-        .data-info {
-            font-size: 12px;
-            color: var(--gray-400);
-            margin-top: 16px;
-            text-align: center;
-        }
-
-        /* Animations */
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .transaction-item {
-            animation: slideUp 0.3s ease-out;
-        }
-
-        /* Toast Notification */
         .toast {
             position: fixed;
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--gray-800);
+            background: #1f2937;
             color: white;
             padding: 12px 24px;
-            border-radius: var(--radius-lg);
+            border-radius: 1rem;
             font-size: 14px;
-            font-weight: 500;
-            box-shadow: var(--shadow-xl);
             z-index: 1000;
-            animation: toastIn 0.3s ease-out;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .toast.success { background: #10b981; }
+        .toast.error { background: #ef4444; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* Modal de Edição */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
         }
 
-        @keyframes toastIn {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
+        .modal {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 24px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
         }
 
-        .toast.success {
-            background: var(--success);
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
         }
 
-        .toast.error {
-            background: var(--danger);
+        .form-group {
+            margin-bottom: 16px;
         }
 
-        /* Responsive */
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #818cf8;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            background: white;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
         @media (max-width: 480px) {
-            body {
-                padding: 20px 12px;
+            .transaction-item {
+                grid-template-columns: 40px 1fr auto;
+                gap: 8px;
             }
             
-            .card {
-                padding: 24px 20px;
-            }
-            
-            .balance-amount {
-                font-size: 40px;
-            }
-            
-            .mic-button {
-                width: 80px;
-                height: 80px;
-                font-size: 28px;
+            .transaction-actions {
+                grid-column: 3;
+                grid-row: 1;
             }
             
             .input-group {
                 flex-direction: column;
-            }
-            
-            .transaction-item {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-            
-            .transaction-amount {
-                margin-left: 54px;
-            }
-            
-            .data-management {
-                flex-direction: column;
-            }
-            
-            .monthly-summary {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 8px;
-            }
-            
-            .summary-value {
-                font-size: 16px;
             }
         }
     </style>
@@ -935,9 +622,8 @@
                 <h1 class="logo-text">FinVoice</h1>
             </div>
             <p class="header-subtitle">Sua voz, suas finanças, seu controle</p>
-            <div class="db-status" id="dbStatus">
-                <span class="db-status-dot" id="dbStatusDot"></span>
-                <span id="dbStatusText">Conectando ao banco de dados...</span>
+            <div class="db-status">
+                <span id="dbStatusText">🟢 Banco conectado</span>
             </div>
         </header>
 
@@ -946,22 +632,16 @@
                 <div class="balance-section">
                     <div class="balance-label" id="balanceLabel">Saldo Total</div>
                     <div class="balance-amount zero" id="balance">R$ 0,00</div>
-                    <div class="balance-trend" id="balanceTrend" style="display: none;"></div>
                 </div>
 
-                <!-- Seletor de Mês -->
                 <div class="month-selector">
-                    <button class="month-nav" id="prevMonth" title="Mês anterior">◀</button>
-                    <span class="month-display" id="monthDisplay">Janeiro 2026</span>
-                    <button class="month-nav" id="nextMonth" title="Próximo mês">▶</button>
+                    <button class="month-nav" id="prevMonth">◀</button>
+                    <span class="month-display" id="monthDisplay"></span>
+                    <button class="month-nav" id="nextMonth">▶</button>
                 </div>
 
-                <!-- Quick Months -->
-                <div class="quick-months" id="quickMonths">
-                    <!-- Gerado dinamicamente -->
-                </div>
+                <div class="quick-months" id="quickMonths"></div>
 
-                <!-- Resumo Mensal -->
                 <div class="monthly-summary">
                     <div class="summary-card">
                         <div class="summary-label">Entradas</div>
@@ -978,480 +658,265 @@
                 </div>
 
                 <div class="voice-section">
-                    <div class="mic-wrapper">
-                        <button class="mic-button" id="micButton" aria-label="Gravar áudio">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
-                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                                <line x1="12" y1="19" x2="12" y2="23"></line>
-                                <line x1="8" y1="23" x2="16" y2="23"></line>
-                            </svg>
-                        </button>
-                        <div class="mic-ring"></div>
-                    </div>
-                    <div class="status-badge" id="statusBadge">
-                        <span class="status-dot" id="statusDot"></span>
-                        <span id="statusText">Verificando microfone...</span>
-                    </div>
-                </div>
-
-                <div id="permissionWarning" class="warning-banner" style="display: none;">
-                    <span class="warning-icon">⚠️</span>
-                    <div class="warning-content">
-                        <div class="warning-title">Microfone não autorizado</div>
-                        <p>Para usar o reconhecimento de voz:</p>
-                        <ol class="warning-steps">
-                            <li>Clique no ícone de cadeado 🔒 na barra de endereço</li>
-                            <li>Ative a permissão do microfone</li>
-                            <li>Recarregue a página</li>
-                        </ol>
-                    </div>
+                    <button class="mic-button" id="micButton">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                            <line x1="12" y1="19" x2="12" y2="23"></line>
+                            <line x1="8" y1="23" x2="16" y2="23"></line>
+                        </svg>
+                    </button>
+                    <div class="status-text" id="statusText">Clique no microfone e fale</div>
                 </div>
 
                 <div class="tips-section">
-                    <div class="tips-title">
-                        <span>💡</span>
-                        Dicas de uso
-                    </div>
+                    <div class="tips-title">💡 Exemplos do que falar ou digitar:</div>
                     <div class="tips-list">
-                        <div class="tip-item">
-                            <span class="tip-icon">🎯</span>
-                            <span>Fale frases como: <strong>"Gastei 50 reais em combustível"</strong></span>
-                        </div>
-                        <div class="tip-item">
-                            <span class="tip-icon">📅</span>
-                            <span>Inclua datas: <strong>"Recebi 2000 de salário dia 15"</strong></span>
-                        </div>
-                        <div class="tip-item">
-                            <span class="tip-icon">⌨️</span>
-                            <span>Ou digite manualmente no campo abaixo</span>
-                        </div>
+                        <div class="tip-item">🎯 "Gastei 50 reais em combustível"</div>
+                        <div class="tip-item">📅 "Recebi 2000 de salário dia 15"</div>
+                        <div class="tip-item">💰 "Paguei 150 de luz ontem"</div>
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <div class="input-wrapper">
-                        <span class="input-icon">✏️</span>
-                        <input 
-                            type="text" 
-                            class="manual-input" 
-                            id="manualInput" 
-                            placeholder='Ex: Gastei 50 reais em combustível...'
-                            aria-label="Digitar transação manualmente"
-                        >
-                    </div>
-                    <button class="btn btn-primary" id="addButton">
-                        Adicionar
-                    </button>
+                    <input type="text" class="manual-input" id="manualInput" 
+                           placeholder='Digite: Gastei 50 reais em combustível...'>
+                    <button class="btn btn-primary" id="addButton">Adicionar</button>
                 </div>
             </div>
 
             <div class="card">
                 <div class="transactions-header">
                     <h2 class="transactions-title">Transações</h2>
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <span class="transactions-count" id="transactionCount">0 registros</span>
-                    </div>
+                    <span class="transactions-count" id="transactionCount">0 registros</span>
                 </div>
                 <div class="transaction-list" id="transactionsList">
                     <div class="empty-state">
                         <div class="empty-icon">📊</div>
-                        <div class="empty-text">Nenhuma transação registrada</div>
-                        <div class="empty-subtext">Use o microfone ou digite para começar</div>
+                        <div class="empty-text">Nenhuma transação</div>
                     </div>
                 </div>
 
                 <div class="data-management">
-                    <button class="btn btn-danger" id="exportData" style="flex: 1;">
-                        📥 Exportar Dados
-                    </button>
-                    <button class="btn btn-primary" id="importData" style="flex: 1; background: var(--gray-600);">
-                        📤 Importar Dados
-                    </button>
-                    <input type="file" id="importFile" accept=".json" style="display: none;">
-                </div>
-                <div class="data-info" id="dataInfo">
-                    Banco de dados: IndexedDB | Seus dados ficam salvos localmente
+                    <button class="btn btn-danger" id="exportData" style="flex:1">📥 Exportar</button>
+                    <button class="btn btn-primary" id="importData" style="flex:1;background:#6b7280">📤 Importar</button>
+                    <input type="file" id="importFile" accept=".json" style="display:none">
                 </div>
             </div>
         </main>
     </div>
 
+    <!-- Modal de Edição -->
+    <div class="modal-overlay" id="editModal" style="display:none">
+        <div class="modal">
+            <h3 class="modal-title">✏️ Editar Transação</h3>
+            <div class="form-group">
+                <label class="form-label">Descrição</label>
+                <input type="text" class="form-input" id="editDescription" placeholder="Ex: Combustível">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Valor (R$)</label>
+                <input type="number" class="form-input" id="editAmount" step="0.01" min="0" placeholder="0.00">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Tipo</label>
+                <select class="form-select" id="editType">
+                    <option value="expense">Saída (Gasto)</option>
+                    <option value="income">Entrada (Recebimento)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Categoria</label>
+                <select class="form-select" id="editCategory">
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Transporte">Transporte</option>
+                    <option value="Moradia">Moradia</option>
+                    <option value="Lazer">Lazer</option>
+                    <option value="Saúde">Saúde</option>
+                    <option value="Educação">Educação</option>
+                    <option value="Renda">Renda</option>
+                    <option value="Compras">Compras</option>
+                    <option value="Serviços">Serviços</option>
+                    <option value="Outros">Outros</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Data e Hora</label>
+                <input type="datetime-local" class="form-input" id="editDate">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" id="cancelEdit" style="background:#6b7280">Cancelar</button>
+                <button class="btn btn-success" id="saveEdit">Salvar</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // ============================================
-        // DATABASE MANAGER - IndexedDB
-        // ============================================
-        class DatabaseManager {
+        // ==================== BANCO DE DADOS ====================
+        class Database {
             constructor() {
                 this.dbName = 'FinVoiceDB';
-                this.dbVersion = 1;
+                this.version = 1;
                 this.db = null;
-                this.storeName = 'transactions';
             }
 
             async init() {
                 return new Promise((resolve, reject) => {
-                    const request = indexedDB.open(this.dbName, this.dbVersion);
-
-                    request.onerror = (event) => {
-                        console.error('Erro ao abrir banco de dados:', event.target.error);
-                        reject(event.target.error);
+                    const req = indexedDB.open(this.dbName, this.version);
+                    req.onerror = () => reject(req.error);
+                    req.onsuccess = () => {
+                        this.db = req.result;
+                        console.log('✅ DB conectado');
+                        resolve();
                     };
-
-                    request.onsuccess = (event) => {
-                        this.db = event.target.result;
-                        console.log('✅ Banco de dados conectado com sucesso');
-                        resolve(this.db);
-                    };
-
-                    request.onupgradeneeded = (event) => {
-                        const db = event.target.result;
-                        
-                        if (!db.objectStoreNames.contains(this.storeName)) {
-                            const objectStore = db.createObjectStore(this.storeName, { 
-                                keyPath: 'id', 
-                                autoIncrement: true 
-                            });
-                            
-                            objectStore.createIndex('type', 'type', { unique: false });
-                            objectStore.createIndex('date', 'date', { unique: false });
-                            objectStore.createIndex('category', 'category', { unique: false });
-                            objectStore.createIndex('amount', 'amount', { unique: false });
-                            
-                            console.log('📦 Banco de dados criado com índices');
+                    req.onupgradeneeded = (e) => {
+                        const db = e.target.result;
+                        if (!db.objectStoreNames.contains('transactions')) {
+                            const store = db.createObjectStore('transactions', { keyPath: 'id', autoIncrement: true });
+                            store.createIndex('date', 'date');
+                            store.createIndex('type', 'type');
+                            console.log('📦 DB criado');
                         }
                     };
                 });
             }
 
-            async addTransaction(transaction) {
+            async add(data) {
                 return new Promise((resolve, reject) => {
-                    const tx = this.db.transaction([this.storeName], 'readwrite');
-                    const store = tx.objectStore(this.storeName);
-                    const request = store.add(transaction);
-
-                    request.onsuccess = (event) => {
-                        console.log('✅ Transação salva no banco:', event.target.result);
-                        resolve(event.target.result);
-                    };
-
-                    request.onerror = (event) => {
-                        console.error('❌ Erro ao salvar transação:', event.target.error);
-                        reject(event.target.error);
-                    };
+                    const tx = this.db.transaction('transactions', 'readwrite');
+                    const store = tx.objectStore('transactions');
+                    const req = store.add(data);
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => reject(req.error);
                 });
             }
 
-            async getAllTransactions() {
+            async update(id, data) {
                 return new Promise((resolve, reject) => {
-                    const tx = this.db.transaction([this.storeName], 'readonly');
-                    const store = tx.objectStore(this.storeName);
-                    const index = store.index('date');
-                    const request = index.openCursor(null, 'prev');
-                    const transactions = [];
+                    const tx = this.db.transaction('transactions', 'readwrite');
+                    const store = tx.objectStore('transactions');
+                    const req = store.put({ ...data, id: id });
+                    req.onsuccess = () => resolve();
+                    req.onerror = () => reject(req.error);
+                });
+            }
 
-                    request.onsuccess = (event) => {
-                        const cursor = event.target.result;
+            async getAll() {
+                return new Promise((resolve, reject) => {
+                    const tx = this.db.transaction('transactions', 'readonly');
+                    const store = tx.objectStore('transactions');
+                    const index = store.index('date');
+                    const req = index.openCursor(null, 'prev');
+                    const results = [];
+                    req.onsuccess = (e) => {
+                        const cursor = e.target.result;
                         if (cursor) {
-                            transactions.push(cursor.value);
+                            results.push(cursor.value);
                             cursor.continue();
                         } else {
-                            resolve(transactions);
+                            resolve(results);
                         }
                     };
-
-                    request.onerror = (event) => {
-                        reject(event.target.error);
-                    };
+                    req.onerror = () => reject(req.error);
                 });
             }
 
-            async deleteTransaction(id) {
+            async delete(id) {
                 return new Promise((resolve, reject) => {
-                    const tx = this.db.transaction([this.storeName], 'readwrite');
-                    const store = tx.objectStore(this.storeName);
-                    const request = store.delete(id);
-
-                    request.onsuccess = () => {
-                        console.log('🗑️ Transação deletada:', id);
-                        resolve();
-                    };
-
-                    request.onerror = (event) => {
-                        console.error('❌ Erro ao deletar transação:', event.target.error);
-                        reject(event.target.error);
-                    };
+                    const tx = this.db.transaction('transactions', 'readwrite');
+                    const store = tx.objectStore('transactions');
+                    const req = store.delete(id);
+                    req.onsuccess = () => resolve();
+                    req.onerror = () => reject(req.error);
                 });
-            }
-
-            async clearAllTransactions() {
-                return new Promise((resolve, reject) => {
-                    const tx = this.db.transaction([this.storeName], 'readwrite');
-                    const store = tx.objectStore(this.storeName);
-                    const request = store.clear();
-
-                    request.onsuccess = () => {
-                        console.log('🗑️ Todas as transações foram removidas');
-                        resolve();
-                    };
-
-                    request.onerror = (event) => {
-                        reject(event.target.error);
-                    };
-                });
-            }
-
-            async exportData() {
-                const transactions = await this.getAllTransactions();
-                const exportData = {
-                    version: '1.0',
-                    exportDate: new Date().toISOString(),
-                    appName: 'FinVoice',
-                    transactions: transactions,
-                    totalRecords: transactions.length
-                };
-                
-                const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `finvoice-backup-${new Date().toISOString().split('T')[0]}.json`;
-                a.click();
-                URL.revokeObjectURL(url);
-                
-                return exportData;
-            }
-
-            async importData(jsonData) {
-                try {
-                    const data = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
-                    
-                    if (!data.transactions || !Array.isArray(data.transactions)) {
-                        throw new Error('Formato de dados inválido');
-                    }
-
-                    const tx = this.db.transaction([this.storeName], 'readwrite');
-                    const store = tx.objectStore(this.storeName);
-
-                    let importedCount = 0;
-                    
-                    for (const transaction of data.transactions) {
-                        const { id, ...cleanTransaction } = transaction;
-                        await new Promise((resolve, reject) => {
-                            const request = store.add(cleanTransaction);
-                            request.onsuccess = () => {
-                                importedCount++;
-                                resolve();
-                            };
-                            request.onerror = () => resolve();
-                        });
-                    }
-
-                    return importedCount;
-                } catch (error) {
-                    console.error('Erro ao importar:', error);
-                    throw error;
-                }
             }
         }
 
-        // ============================================
-        // MAIN APPLICATION
-        // ============================================
-        class FinanceApp {
+        // ==================== APLICATIVO ====================
+        class App {
             constructor() {
-                this.db = new DatabaseManager();
+                this.db = new Database();
                 this.transactions = [];
                 this.recognition = null;
                 this.isRecording = false;
-                this.isSupported = false;
-                this.isPermissionGranted = false;
-                this.dbReady = false;
                 this.currentMonth = new Date().getMonth();
                 this.currentYear = new Date().getFullYear();
-                
-                this.init();
+                this.editingId = null;
             }
 
             async init() {
                 try {
                     await this.db.init();
-                    this.dbReady = true;
-                    this.updateDBStatus(true);
-                    
-                    await this.loadTransactions();
-                    
-                    await this.checkSupport();
-                    
-                    this.setupEventListeners();
-                    this.updateMonthSelector();
+                    await this.loadData();
+                    this.initVoice();
+                    this.bindEvents();
                     this.updateUI();
-                    
-                    this.showToast('✅ Banco de dados conectado', 'success');
+                    this.showToast('✅ Aplicativo pronto!');
                 } catch (error) {
-                    console.error('Erro na inicialização:', error);
-                    this.updateDBStatus(false);
-                    this.showToast('❌ Erro ao conectar ao banco de dados', 'error');
+                    console.error('Erro:', error);
+                    this.showToast('❌ Erro ao iniciar', 'error');
                 }
             }
 
-            updateDBStatus(connected) {
-                const dot = document.getElementById('dbStatusDot');
-                const text = document.getElementById('dbStatusText');
-                
-                if (connected) {
-                    dot.className = 'db-status-dot';
-                    text.textContent = 'Banco de dados conectado';
-                } else {
-                    dot.className = 'db-status-dot error';
-                    text.textContent = 'Erro no banco de dados';
-                }
+            async loadData() {
+                this.transactions = await this.db.getAll();
+                console.log(`📊 ${this.transactions.length} transações carregadas`);
             }
 
-            async loadTransactions() {
-                try {
-                    this.transactions = await this.db.getAllTransactions();
-                    console.log(`📊 ${this.transactions.length} transações carregadas`);
-                } catch (error) {
-                    console.error('Erro ao carregar transações:', error);
-                    this.transactions = [];
-                }
-            }
-
-            // Obter transações do mês selecionado
-            getFilteredTransactions() {
-                return this.transactions.filter(trans => {
-                    const transDate = new Date(trans.date);
-                    return transDate.getMonth() === this.currentMonth && 
-                           transDate.getFullYear() === this.currentYear;
+            getFiltered() {
+                return this.transactions.filter(t => {
+                    const d = new Date(t.date);
+                    return d.getMonth() === this.currentMonth && d.getFullYear() === this.currentYear;
                 });
             }
 
-            // Agrupar transações por mês
-            groupTransactionsByMonth(transactions) {
-                const groups = {};
-                const months = [
-                    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-                ];
-                
-                transactions.forEach(trans => {
-                    const date = new Date(trans.date);
-                    const key = `${months[date.getMonth()]} ${date.getFullYear()}`;
-                    
-                    if (!groups[key]) {
-                        groups[key] = {
-                            transactions: [],
-                            income: 0,
-                            expense: 0,
-                            balance: 0
-                        };
-                    }
-                    
-                    groups[key].transactions.push(trans);
-                    
-                    const amount = parseFloat(trans.amount);
-                    if (trans.type === 'income') {
-                        groups[key].income += amount;
-                    } else {
-                        groups[key].expense += amount;
-                    }
-                });
-
-                // Calcular saldo de cada mês
-                Object.keys(groups).forEach(key => {
-                    groups[key].balance = groups[key].income - groups[key].expense;
-                });
-
-                return groups;
-            }
-
-            async checkSupport() {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                
-                if (!SpeechRecognition) {
-                    this.updateStatus('error', 'Navegador não suporta reconhecimento de voz');
+            initVoice() {
+                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SR) {
+                    document.getElementById('statusText').textContent = '❌ Navegador não suporta voz';
                     document.getElementById('micButton').disabled = true;
                     return;
                 }
 
-                this.isSupported = true;
-                
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    stream.getTracks().forEach(track => track.stop());
-                    this.isPermissionGranted = true;
-                    this.updateStatus('success', 'Microfone pronto para uso');
-                    this.initSpeechRecognition();
-                } catch (error) {
-                    console.log('Erro de permissão:', error);
-                    this.isPermissionGranted = false;
-                    document.getElementById('permissionWarning').style.display = 'flex';
-                    this.updateStatus('error', 'Microfone não autorizado');
-                    document.getElementById('micButton').disabled = true;
-                }
-            }
-
-            initSpeechRecognition() {
-                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                
-                this.recognition = new SpeechRecognition();
+                this.recognition = new SR();
                 this.recognition.lang = 'pt-BR';
                 this.recognition.continuous = false;
                 this.recognition.interimResults = false;
-                this.recognition.maxAlternatives = 1;
 
                 this.recognition.onstart = () => {
-                    this.updateStatus('recording', 'Ouvindo... Fale agora');
+                    this.isRecording = true;
+                    document.getElementById('micButton').classList.add('recording');
+                    document.getElementById('statusText').textContent = '🎙️ Ouvindo... Fale agora!';
                 };
 
                 this.recognition.onresult = (event) => {
-                    const transcript = event.results[0][0].transcript;
-                    console.log('📝 Texto reconhecido:', transcript);
-                    this.processVoiceInput(transcript);
+                    const text = event.results[0][0].transcript;
+                    console.log('📝 Reconhecido:', text);
+                    document.getElementById('statusText').textContent = `📝 "${text}"`;
+                    this.processInput(text);
                 };
 
                 this.recognition.onerror = (event) => {
-                    console.error('Erro no reconhecimento:', event.error);
-                    
-                    const errorMessages = {
-                        'not-allowed': 'Permissão do microfone negada',
-                        'no-speech': 'Nenhuma fala detectada',
-                        'audio-capture': 'Microfone não encontrado',
-                        'network': 'Erro de conexão com a internet',
-                        'aborted': 'Reconhecimento cancelado'
-                    };
-                    
-                    const message = errorMessages[event.error] || 'Erro ao reconhecer áudio';
-                    this.updateStatus('error', message);
-                    
+                    console.error('Erro voz:', event.error);
                     if (event.error === 'not-allowed') {
-                        document.getElementById('permissionWarning').style.display = 'flex';
-                        document.getElementById('micButton').disabled = true;
+                        document.getElementById('statusText').textContent = '❌ Microfone bloqueado. Permita nas configurações.';
+                    } else if (event.error === 'no-speech') {
+                        document.getElementById('statusText').textContent = '⚠️ Nada detectado. Tente novamente.';
+                    } else {
+                        document.getElementById('statusText').textContent = '❌ Erro: ' + event.error;
                     }
-                    
                     this.stopRecording();
                 };
 
                 this.recognition.onend = () => {
                     this.stopRecording();
+                    document.getElementById('statusText').textContent = '✅ Clique no microfone e fale';
                 };
             }
 
-            setupEventListeners() {
-                const micButton = document.getElementById('micButton');
-                
-                micButton.addEventListener('click', async () => {
-                    if (!this.isSupported) {
-                        alert('Reconhecimento de voz não suportado neste navegador.');
-                        return;
-                    }
-
-                    if (!this.isPermissionGranted) {
-                        await this.requestPermission();
-                        return;
-                    }
-
+            bindEvents() {
+                // Microfone
+                document.getElementById('micButton').addEventListener('click', () => {
                     if (this.isRecording) {
                         this.stopRecording();
                     } else {
@@ -1459,28 +924,37 @@
                     }
                 });
 
-                document.getElementById('addButton').addEventListener('click', () => {
-                    const input = document.getElementById('manualInput');
+                // Input manual - CORRIGIDO
+                const addBtn = document.getElementById('addButton');
+                const input = document.getElementById('manualInput');
+
+                addBtn.addEventListener('click', () => {
                     const text = input.value.trim();
-                    
+                    console.log('🔘 Botão Adicionar clicado. Texto:', text);
                     if (text) {
-                        this.processVoiceInput(text);
+                        this.processInput(text);
                         input.value = '';
                         input.focus();
+                    } else {
+                        this.showToast('⚠️ Digite algo primeiro', 'error');
                     }
                 });
 
-                document.getElementById('manualInput').addEventListener('keypress', (e) => {
+                input.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
-                        const text = e.target.value.trim();
+                        e.preventDefault();
+                        const text = input.value.trim();
+                        console.log('⌨️ Enter pressionado. Texto:', text);
                         if (text) {
-                            this.processVoiceInput(text);
-                            e.target.value = '';
+                            this.processInput(text);
+                            input.value = '';
+                        } else {
+                            this.showToast('⚠️ Digite algo primeiro', 'error');
                         }
                     }
                 });
 
-                // Navegação de meses
+                // Meses
                 document.getElementById('prevMonth').addEventListener('click', () => {
                     if (this.currentMonth === 0) {
                         this.currentMonth = 11;
@@ -1488,7 +962,6 @@
                     } else {
                         this.currentMonth--;
                     }
-                    this.updateMonthSelector();
                     this.updateUI();
                 });
 
@@ -1499,696 +972,490 @@
                     } else {
                         this.currentMonth++;
                     }
-                    this.updateMonthSelector();
                     this.updateUI();
                 });
 
-                document.getElementById('exportData').addEventListener('click', async () => {
-                    try {
-                        const data = await this.db.exportData();
-                        this.showToast(`✅ ${data.totalRecords} transações exportadas`, 'success');
-                    } catch (error) {
-                        this.showToast('❌ Erro ao exportar dados', 'error');
-                    }
-                });
+                // Export/Import
+                document.getElementById('exportData').addEventListener('click', () => this.exportData());
+                document.getElementById('importData').addEventListener('click', () => document.getElementById('importFile').click());
+                document.getElementById('importFile').addEventListener('change', (e) => this.importData(e));
 
-                document.getElementById('importData').addEventListener('click', () => {
-                    document.getElementById('importFile').click();
-                });
-
-                document.getElementById('importFile').addEventListener('change', async (event) => {
-                    const file = event.target.files[0];
-                    if (!file) return;
-
-                    try {
-                        const text = await file.text();
-                        const importedCount = await this.db.importData(text);
-                        await this.loadTransactions();
-                        this.updateMonthSelector();
-                        this.updateUI();
-                        this.showToast(`✅ ${importedCount} transações importadas`, 'success');
-                    } catch (error) {
-                        console.error('Erro na importação:', error);
-                        this.showToast('❌ Erro ao importar arquivo', 'error');
-                    }
-                    
-                    event.target.value = '';
-                });
-            }
-
-            updateMonthSelector() {
-                const months = [
-                    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-                ];
-                
-                document.getElementById('monthDisplay').textContent = 
-                    `${months[this.currentMonth]} ${this.currentYear}`;
-                
-                // Atualizar label do saldo
-                document.getElementById('balanceLabel').textContent = 
-                    `Saldo - ${months[this.currentMonth]} ${this.currentYear}`;
-                
-                // Atualizar quick months
-                this.updateQuickMonths();
-            }
-
-            updateQuickMonths() {
-                const quickMonths = document.getElementById('quickMonths');
-                const months = [
-                    'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-                    'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
-                ];
-                
-                // Mostrar último mês, mês atual, próximo mês
-                const currentMonthIndex = this.currentMonth;
-                const prevMonth = currentMonthIndex === 0 ? 11 : currentMonthIndex - 1;
-                const nextMonth = currentMonthIndex === 11 ? 0 : currentMonthIndex + 1;
-                
-                const prevYear = currentMonthIndex === 0 ? this.currentYear - 1 : this.currentYear;
-                const nextYear = currentMonthIndex === 11 ? this.currentYear + 1 : this.currentYear;
-                
-                const chips = [
-                    { month: prevMonth, year: prevYear, label: `${months[prevMonth]} ${prevYear}` },
-                    { month: currentMonthIndex, year: this.currentYear, label: `${months[currentMonthIndex]} ${this.currentYear}` },
-                    { month: nextMonth, year: nextYear, label: `${months[nextMonth]} ${nextYear}` }
-                ];
-                
-                quickMonths.innerHTML = chips.map((chip, index) => `
-                    <button class="month-chip ${chip.month === this.currentMonth && chip.year === this.currentYear ? 'active' : ''}" 
-                            data-month="${chip.month}" data-year="${chip.year}">
-                        ${chip.label}
-                    </button>
-                `).join('');
-                
-                // Adicionar evento aos chips
-                quickMonths.querySelectorAll('.month-chip').forEach(chip => {
-                    chip.addEventListener('click', () => {
-                        this.currentMonth = parseInt(chip.dataset.month);
-                        this.currentYear = parseInt(chip.dataset.year);
-                        this.updateMonthSelector();
-                        this.updateUI();
-                    });
-                });
-            }
-
-            showToast(message, type = '') {
-                const existingToast = document.querySelector('.toast');
-                if (existingToast) {
-                    existingToast.remove();
-                }
-
-                const toast = document.createElement('div');
-                toast.className = `toast ${type}`;
-                toast.textContent = message;
-                document.body.appendChild(toast);
-
-                setTimeout(() => {
-                    toast.remove();
-                }, 3000);
-            }
-
-            updateStatus(type, message) {
-                const statusText = document.getElementById('statusText');
-                const statusDot = document.getElementById('statusDot');
-                const statusBadge = document.getElementById('statusBadge');
-                
-                statusText.textContent = message;
-                statusDot.className = 'status-dot';
-                statusBadge.className = 'status-badge';
-                
-                switch(type) {
-                    case 'recording':
-                        statusDot.classList.add('active');
-                        statusBadge.style.background = '#fef2f2';
-                        statusBadge.style.color = '#dc2626';
-                        break;
-                    case 'success':
-                        statusDot.classList.add('active');
-                        statusBadge.style.background = '#f0fdf4';
-                        statusBadge.style.color = '#16a34a';
-                        break;
-                    case 'error':
-                        statusDot.classList.add('error');
-                        statusBadge.style.background = '#fef2f2';
-                        statusBadge.style.color = '#dc2626';
-                        break;
-                    default:
-                        statusBadge.style.background = '#f9fafb';
-                        statusBadge.style.color = '#6b7280';
-                }
-            }
-
-            async requestPermission() {
-                try {
-                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                    stream.getTracks().forEach(track => track.stop());
-                    
-                    this.isPermissionGranted = true;
-                    document.getElementById('permissionWarning').style.display = 'none';
-                    document.getElementById('micButton').disabled = false;
-                    this.updateStatus('success', 'Permissão concedida');
-                    this.initSpeechRecognition();
-                    
-                    setTimeout(() => {
-                        this.updateStatus('success', 'Microfone pronto para uso');
-                    }, 2000);
-                } catch (error) {
-                    console.error('Erro ao solicitar permissão:', error);
-                    document.getElementById('permissionWarning').style.display = 'flex';
-                    this.updateStatus('error', 'Permissão negada');
-                }
+                // Modal de edição
+                document.getElementById('cancelEdit').addEventListener('click', () => this.closeEditModal());
+                document.getElementById('saveEdit').addEventListener('click', () => this.saveEdit());
             }
 
             startRecording() {
                 if (!this.recognition) {
-                    this.initSpeechRecognition();
+                    document.getElementById('statusText').textContent = '❌ Voz não disponível';
+                    return;
                 }
-
                 try {
                     this.recognition.start();
-                    this.isRecording = true;
-                    document.getElementById('micButton').classList.add('recording');
                 } catch (error) {
-                    console.error('Erro ao iniciar gravação:', error);
-                    this.isRecording = false;
-                    this.updateStatus('error', 'Erro ao iniciar gravação');
+                    console.error('Erro ao iniciar:', error);
                 }
             }
 
             stopRecording() {
                 if (this.recognition) {
-                    try {
-                        this.recognition.stop();
-                    } catch (error) {
-                        console.log('Erro ao parar reconhecimento:', error);
-                    }
+                    try { this.recognition.stop(); } catch (e) {}
                 }
-                
                 this.isRecording = false;
                 document.getElementById('micButton').classList.remove('recording');
+            }
+
+            // PROCESSAMENTO DE TEXTO - CORRIGIDO
+            processInput(text) {
+                console.log('🔍 Processando texto:', text);
                 
-                if (this.isPermissionGranted) {
-                    this.updateStatus('success', 'Pronto para nova gravação');
-                    
-                    setTimeout(() => {
-                        if (!this.isRecording) {
-                            this.updateStatus('success', 'Microfone pronto para uso');
-                        }
-                    }, 2500);
+                if (!text || text.trim().length < 3) {
+                    console.log('❌ Texto muito curto');
+                    this.showToast('❌ Texto muito curto. Ex: "Gastei 50 reais em combustível"', 'error');
+                    return;
+                }
+
+                const result = this.parseText(text);
+                
+                if (result) {
+                    console.log('✅ Parseado com sucesso:', result);
+                    this.addTransaction(result);
+                } else {
+                    console.log('❌ Não foi possível entender:', text);
+                    this.showToast('❌ Não entendi. Use: "Gastei 50 reais em combustível"', 'error');
                 }
             }
 
-            extractDateTime(text) {
-                const now = new Date();
-                let transactionDate = new Date(now);
+            parseText(text) {
+                const original = text.trim();
+                let t = original.toLowerCase();
                 
-                const datePatterns = [
-                    {
-                        regex: /dia\s+(\d{1,2})(?:\s+de\s+(\w+))?/i,
-                        handler: (match) => {
-                            const day = parseInt(match[1]);
-                            let month = now.getMonth();
-                            
-                            if (match[2]) {
-                                const months = {
-                                    'janeiro': 0, 'fevereiro': 1, 'março': 2, 'abril': 3,
-                                    'maio': 4, 'junho': 5, 'julho': 6, 'agosto': 7,
-                                    'setembro': 8, 'outubro': 9, 'novembro': 10, 'dezembro': 11
-                                };
-                                const monthName = match[2].toLowerCase();
-                                if (months[monthName] !== undefined) {
-                                    month = months[monthName];
-                                }
-                            }
-                            
-                            transactionDate.setDate(day);
-                            transactionDate.setMonth(month);
-                            return true;
-                        }
-                    },
-                    {
-                        regex: /\bontem\b/i,
-                        handler: () => {
-                            transactionDate.setDate(transactionDate.getDate() - 1);
-                            return true;
-                        }
-                    },
-                    {
-                        regex: /\banteontem\b/i,
-                        handler: () => {
-                            transactionDate.setDate(transactionDate.getDate() - 2);
-                            return true;
-                        }
-                    },
-                    {
-                        regex: /\bhoje\b/i,
-                        handler: () => true
-                    },
-                    {
-                        regex: /\bsemana\s+passada\b/i,
-                        handler: () => {
-                            transactionDate.setDate(transactionDate.getDate() - 7);
-                            return true;
-                        }
-                    },
-                    {
-                        regex: /\bm[eê]s\s+passado\b/i,
-                        handler: () => {
-                            transactionDate.setMonth(transactionDate.getMonth() - 1);
-                            return true;
-                        }
-                    }
-                ];
-
-                const timePatterns = [
-                    {
-                        regex: /(?:às|as)\s+(\d{1,2})(?::(\d{2}))?(?:\s*(?:horas|h))?/i,
-                        handler: (match) => {
-                            const hours = parseInt(match[1]);
-                            const minutes = match[2] ? parseInt(match[2]) : 0;
-                            
-                            if (hours >= 0 && hours < 24 && minutes >= 0 && minutes < 60) {
-                                transactionDate.setHours(hours, minutes, 0, 0);
-                                return true;
-                            }
-                            return false;
-                        }
-                    },
-                    {
-                        regex: /\b(?:de|da|pela)\s+(manhã|tarde|noite|madrugada)\b/i,
-                        handler: (match) => {
-                            const period = match[1].toLowerCase();
-                            const hours = {
-                                'manhã': 9,
-                                'tarde': 15,
-                                'noite': 20,
-                                'madrugada': 2
-                            };
-                            transactionDate.setHours(hours[period] || 12, 0, 0, 0);
-                            return true;
-                        }
-                    }
-                ];
-
-                for (const pattern of datePatterns) {
-                    const match = text.match(pattern.regex);
-                    if (match) {
-                        pattern.handler(match);
-                        break;
-                    }
-                }
-
-                for (const pattern of timePatterns) {
-                    const match = text.match(pattern.regex);
-                    if (match) {
-                        pattern.handler(match);
-                        break;
-                    }
-                }
-
-                return transactionDate;
-            }
-
-            async processVoiceInput(text) {
-                console.log('🎤 Processando texto:', text);
+                console.log('📝 Analisando:', t);
                 
-                try {
-                    const transaction = this.parseTransaction(text);
-                    if (transaction) {
-                        console.log('✅ Transação parseada:', transaction);
-                        await this.addTransaction(transaction);
-                        
-                        // Atualizar para o mês da transação adicionada
-                        const transDate = new Date(transaction.date);
-                        this.currentMonth = transDate.getMonth();
-                        this.currentYear = transDate.getFullYear();
-                        this.updateMonthSelector();
-                        
-                        this.updateStatus('success', `"${transaction.description}" adicionado com sucesso`);
-                        
-                        setTimeout(() => {
-                            if (!this.isRecording) {
-                                this.updateStatus('success', 'Microfone pronto para uso');
-                            }
-                        }, 3000);
-                    } else {
-                        console.log('❌ Não foi possível parsear:', text);
-                        this.updateStatus('error', 'Não entendi. Exemplo: "Gastei 50 reais em combustível"');
-                        
-                        setTimeout(() => {
-                            if (!this.isRecording) {
-                                this.updateStatus('success', 'Microfone pronto para uso');
-                            }
-                        }, 3000);
-                    }
-                } catch (error) {
-                    console.error('Erro ao processar:', error);
-                    this.updateStatus('error', 'Erro ao processar transação');
-                }
-            }
-
-            parseTransaction(text) {
-                const originalText = text.trim();
-                text = text.toLowerCase().trim();
-                
-                console.log('🔍 Analisando texto:', text);
-                
-                const transactionDate = this.extractDateTime(text);
-                
+                // Padrões de reconhecimento
                 const patterns = [
-                    {
-                        regex: /(?:gastei|paguei|gasto|comprei|gasto|pago|paguei)\s+(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$|conto|pila)?\s*(?:em|para|de|com|no|na|do|da)?\s*(.+)/i,
+                    // "gastei/paguei/comprei X reais em/para/de/com/no/na Y"
+                    { 
+                        regex: /(?:gastei|paguei|gasto|comprei|pago|paguei)\s+(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$|conto|pila)?\s*(?:em|para|de|com|no|na|do|da)?\s*(.+)/i,
                         type: 'expense',
-                        extract: (match) => ({
-                            amount: match[1],
-                            description: match[2]
-                        })
+                        getData: (m) => ({ amount: m[1], desc: m[2] })
                     },
-                    {
+                    // "recebi/ganhei/salário X reais de/do/da Y"
+                    { 
                         regex: /(?:recebi|ganhei|salário|renda|recebimento|recebido|ganho)\s+(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$|conto|pila)?\s*(?:de|do|da|por)?\s*(.+)/i,
                         type: 'income',
-                        extract: (match) => ({
-                            amount: match[1],
-                            description: match[2]
-                        })
+                        getData: (m) => ({ amount: m[1], desc: m[2] })
                     },
-                    {
-                        regex: /(?:comprei|paguei|gastei|pago)\s+(.+)\s+por\s+(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$)?/i,
+                    // "Y por X reais"
+                    { 
+                        regex: /(.+)\s+por\s+(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$)?/i,
                         type: 'expense',
-                        extract: (match) => ({
-                            amount: match[2],
-                            description: match[1]
-                        })
+                        getData: (m) => ({ amount: m[2], desc: m[1] })
                     },
-                    {
+                    // "X reais em/no/na Y"
+                    { 
                         regex: /(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$)\s*(?:em|de|para|com|no|na)?\s*(.+)/i,
                         type: 'auto',
-                        extract: (match) => ({
-                            amount: match[1],
-                            description: match[2]
-                        })
+                        getData: (m) => ({ amount: m[1], desc: m[2] })
                     },
-                    {
+                    // "X Y" (número seguido de palavras)
+                    { 
                         regex: /(\d+(?:[.,]\d{1,2})?)\s+(.+)/i,
                         type: 'auto',
-                        extract: (match) => ({
-                            amount: match[1],
-                            description: match[2]
-                        })
+                        getData: (m) => ({ amount: m[1], desc: m[2] })
                     }
                 ];
 
-                for (const pattern of patterns) {
-                    const match = text.match(pattern.regex);
+                for (const pat of patterns) {
+                    const match = t.match(pat.regex);
                     if (match) {
-                        const extracted = pattern.extract(match);
-                        let amount = this.parseAmount(extracted.amount);
-                        let description = extracted.description;
-                        let type = pattern.type;
+                        console.log('✅ Padrão encontrado:', match[0]);
+                        
+                        const data = pat.getData(match);
+                        let amount = parseFloat(data.amount.replace(',', '.'));
+                        let desc = data.desc.trim();
+                        let type = pat.type;
 
+                        // Determinar tipo automaticamente
                         if (type === 'auto') {
-                            if (text.match(/(?:recebi|ganhei|salário|renda|entrada|crédito|depósito|recebimento)/i)) {
-                                type = 'income';
-                            } else {
-                                type = 'expense';
-                            }
+                            type = t.match(/(?:recebi|ganhei|salário|renda|entrada|crédito|depósito)/i) ? 'income' : 'expense';
                         }
 
-                        description = description.trim();
-                        description = description.replace(/\b(?:eu|o|a|os|as|um|uma|uns|umas|do|da|dos|das|no|na|nos|nas|meu|minha)\b/gi, ' ').trim();
-                        description = description.replace(/\b(?:ontem|anteontem|hoje|semana\s+passada|mês\s+passado)\b/gi, '').trim();
-                        description = description.replace(/(?:dia\s+\d{1,2}(?:\s+de\s+\w+)?)/gi, '').trim();
-                        description = description.replace(/(?:às|as)\s+\d{1,2}(?::\d{2})?(?:\s*(?:horas|h))?/gi, '').trim();
-                        description = description.replace(/\b(?:de|da|pela)\s+(manhã|tarde|noite|madrugada)\b/gi, '').trim();
-                        description = description.replace(/,/g, ' ').replace(/\s+/g, ' ').trim();
-                        
-                        if (description.length > 0) {
-                            description = description.charAt(0).toUpperCase() + description.slice(1);
-                        }
-                        
-                        if (description.length < 2) {
-                            description = originalText.replace(/\d+(?:[.,]\d{1,2})?/, '').replace(/reais|real|r\$|gastei|paguei|recebi|ganhei|comprei/gi, '').trim();
-                            if (description.length > 0) {
-                                description = description.charAt(0).toUpperCase() + description.slice(1);
-                            } else {
-                                description = 'Transação sem descrição';
-                            }
-                        }
+                        // Limpar descrição
+                        desc = this.cleanDescription(desc, original);
 
-                        console.log('✅ Parseado:', { description, amount, type });
+                        console.log('📦 Resultado:', { desc, amount, type });
 
                         return {
-                            description: description,
+                            description: desc || 'Transação sem descrição',
                             amount: Math.abs(amount),
                             type: type,
-                            date: transactionDate.toISOString(),
-                            category: this.categorizeTransaction(description)
+                            date: this.extractDate(t).toISOString(),
+                            category: this.categorize(desc)
                         };
                     }
                 }
 
-                console.log('❌ Nenhum padrão encontrado para:', text);
+                console.log('❌ Nenhum padrão correspondeu');
                 return null;
             }
 
-            parseAmount(amountStr) {
-                if (!amountStr) return 0;
-                amountStr = amountStr.replace(',', '.');
-                return parseFloat(amountStr);
-            }
+            cleanDescription(desc, original) {
+                // Remover artigos e preposições do início
+                desc = desc.replace(/^(?:eu|o|a|os|as|um|uma|uns|umas|do|da|dos|das|no|na|nos|nas|meu|minha|meus|minhas)\s+/gi, '');
+                
+                // Remover referências de data/hora
+                desc = desc.replace(/\b(?:ontem|anteontem|hoje|semana\s+passada|mês\s+passado)\b/gi, '');
+                desc = desc.replace(/(?:dia\s+\d{1,2}(?:\s+de\s+\w+)?)/gi, '');
+                desc = desc.replace(/(?:às|as)\s+\d{1,2}(?::\d{2})?(?:\s*(?:horas|h))?/gi, '');
+                desc = desc.replace(/\b(?:de|da|pela)\s+(manhã|tarde|noite|madrugada)\b/gi, '');
+                
+                // Limpar espaços
+                desc = desc.replace(/,/g, ' ').replace(/\s+/g, ' ').trim();
+                
+                // Capitalizar
+                if (desc.length > 0) {
+                    desc = desc.charAt(0).toUpperCase() + desc.slice(1);
+                }
 
-            categorizeTransaction(description) {
-                const desc = description.toLowerCase();
-                const categories = {
-                    'Alimentação': ['mercado', 'restaurante', 'comida', 'lanche', 'almoço', 'janta', 'supermercado', 'padaria', 'açougue', 'feira', 'ifood', 'pizza', 'hamburguer'],
-                    'Transporte': ['uber', 'ônibus', 'gasolina', 'combustível', 'metrô', 'transporte', 'estacionamento', 'pedágio', 'taxi', '99', 'trem'],
-                    'Moradia': ['aluguel', 'condomínio', 'luz', 'água', 'internet', 'telefone', 'iptu', 'gás', 'encanador', 'eletricista'],
-                    'Lazer': ['cinema', 'festa', 'show', 'viagem', 'passeio', 'jogo', 'jogos', 'netflix', 'spotify', 'teatro', 'parque'],
-                    'Saúde': ['farmácia', 'médico', 'hospital', 'remédio', 'consulta', 'dentista', 'academia', 'plano de saúde', 'exame'],
-                    'Educação': ['escola', 'curso', 'livro', 'faculdade', 'material', 'mensalidade'],
-                    'Renda': ['salário', 'pagamento', 'freelance', 'bônus', 'comissão', 'venda', 'extra'],
-                    'Compras': ['roupa', 'shopping', 'eletrônico', 'celular', 'computador', 'móvel', 'presente'],
-                    'Serviços': ['assinatura', 'manutenção', 'limpeza', 'conserto', 'reparo']
-                };
-
-                for (const [category, keywords] of Object.entries(categories)) {
-                    if (keywords.some(keyword => desc.includes(keyword))) {
-                        return category;
+                // Se ficou vazio, tentar extrair do original
+                if (!desc || desc.length < 2) {
+                    desc = original
+                        .replace(/\d+(?:[.,]\d{1,2})?/g, '')
+                        .replace(/\b(?:reais|real|r\$|gastei|paguei|recebi|ganhei|comprei|pago|gasto|em|de|para|com|no|na|do|da|por|eu|o|a|os|as|um|uma)\b/gi, '')
+                        .replace(/,/g, ' ')
+                        .replace(/\s+/g, ' ')
+                        .trim();
+                    
+                    if (desc.length > 0) {
+                        desc = desc.charAt(0).toUpperCase() + desc.slice(1);
                     }
                 }
 
+                return desc;
+            }
+
+            extractDate(text) {
+                const now = new Date();
+                const d = new Date(now);
+                
+                // "dia 15" ou "dia 15 de janeiro"
+                const diaMatch = text.match(/dia\s+(\d{1,2})(?:\s+de\s+(\w+))?/i);
+                if (diaMatch) {
+                    const day = parseInt(diaMatch[1]);
+                    const months = { 'janeiro':0,'fevereiro':1,'março':2,'abril':3,'maio':4,'junho':5,'julho':6,'agosto':7,'setembro':8,'outubro':9,'novembro':10,'dezembro':11 };
+                    const month = diaMatch[2] ? (months[diaMatch[2].toLowerCase()] ?? now.getMonth()) : now.getMonth();
+                    d.setDate(day);
+                    d.setMonth(month);
+                    return d;
+                }
+                
+                if (/ontem/i.test(text)) { d.setDate(d.getDate() - 1); return d; }
+                if (/anteontem/i.test(text)) { d.setDate(d.getDate() - 2); return d; }
+                if (/semana\s+passada/i.test(text)) { d.setDate(d.getDate() - 7); return d; }
+                if (/m[eê]s\s+passado/i.test(text)) { d.setMonth(d.getMonth() - 1); return d; }
+                
+                // Hora
+                const horaMatch = text.match(/(?:às|as)\s+(\d{1,2})(?::(\d{2}))?/i);
+                if (horaMatch) {
+                    d.setHours(parseInt(horaMatch[1]), horaMatch[2] ? parseInt(horaMatch[2]) : 0, 0, 0);
+                }
+                
+                return d;
+            }
+
+            categorize(desc) {
+                const d = desc.toLowerCase();
+                const cats = {
+                    'Alimentação': ['mercado','restaurante','comida','lanche','almoço','janta','supermercado','padaria','ifood','pizza','hamburguer'],
+                    'Transporte': ['uber','ônibus','gasolina','combustível','metrô','transporte','estacionamento','pedágio','taxi','99'],
+                    'Moradia': ['aluguel','condomínio','luz','água','internet','telefone','iptu','gás','encanador'],
+                    'Lazer': ['cinema','festa','show','viagem','passeio','jogo','netflix','spotify','teatro'],
+                    'Saúde': ['farmácia','médico','hospital','remédio','consulta','dentista','academia','exame'],
+                    'Educação': ['escola','curso','livro','faculdade','material','mensalidade'],
+                    'Renda': ['salário','pagamento','freelance','bônus','comissão','venda','extra'],
+                    'Compras': ['roupa','shopping','eletrônico','celular','computador','presente'],
+                    'Serviços': ['assinatura','manutenção','limpeza','conserto','reparo']
+                };
+                
+                for (const [cat, keywords] of Object.entries(cats)) {
+                    if (keywords.some(k => d.includes(k))) return cat;
+                }
                 return 'Outros';
             }
 
-            async addTransaction(transaction) {
+            async addTransaction(data) {
                 try {
-                    const id = await this.db.addTransaction(transaction);
-                    transaction.id = id;
-                    this.transactions.unshift(transaction);
+                    const id = await this.db.add(data);
+                    data.id = id;
+                    this.transactions.unshift(data);
+                    
+                    const td = new Date(data.date);
+                    this.currentMonth = td.getMonth();
+                    this.currentYear = td.getFullYear();
+                    
                     this.updateUI();
-                    this.showToast(`✅ Adicionado: ${transaction.description} - ${this.formatCurrency(transaction.amount)}`, 'success');
+                    this.showToast(`✅ Adicionado: ${data.description} - R$ ${data.amount.toFixed(2)}`, 'success');
                 } catch (error) {
-                    console.error('Erro ao adicionar transação:', error);
-                    this.showToast('❌ Erro ao salvar transação', 'error');
+                    console.error('Erro ao adicionar:', error);
+                    this.showToast('❌ Erro ao salvar', 'error');
+                }
+            }
+
+            // EDIÇÃO
+            openEditModal(index) {
+                const filtered = this.getFiltered();
+                const trans = filtered[index];
+                if (!trans) return;
+                
+                this.editingId = trans.id;
+                
+                document.getElementById('editDescription').value = trans.description;
+                document.getElementById('editAmount').value = trans.amount;
+                document.getElementById('editType').value = trans.type;
+                document.getElementById('editCategory').value = trans.category;
+                
+                // Formatar data para datetime-local
+                const d = new Date(trans.date);
+                const dateStr = d.toISOString().slice(0, 16);
+                document.getElementById('editDate').value = dateStr;
+                
+                document.getElementById('editModal').style.display = 'flex';
+            }
+
+            closeEditModal() {
+                document.getElementById('editModal').style.display = 'none';
+                this.editingId = null;
+            }
+
+            async saveEdit() {
+                if (!this.editingId) return;
+                
+                const desc = document.getElementById('editDescription').value.trim();
+                const amount = parseFloat(document.getElementById('editAmount').value);
+                const type = document.getElementById('editType').value;
+                const category = document.getElementById('editCategory').value;
+                const date = document.getElementById('editDate').value;
+                
+                if (!desc || isNaN(amount) || amount <= 0) {
+                    this.showToast('❌ Preencha descrição e valor corretamente', 'error');
+                    return;
+                }
+                
+                const updated = {
+                    id: this.editingId,
+                    description: desc,
+                    amount: amount,
+                    type: type,
+                    category: category,
+                    date: new Date(date).toISOString()
+                };
+                
+                try {
+                    await this.db.update(this.editingId, updated);
+                    
+                    // Atualizar na lista local
+                    const idx = this.transactions.findIndex(t => t.id === this.editingId);
+                    if (idx !== -1) {
+                        this.transactions[idx] = updated;
+                    }
+                    
+                    this.closeEditModal();
+                    this.updateUI();
+                    this.showToast('✅ Transação atualizada!', 'success');
+                } catch (error) {
+                    console.error('Erro ao editar:', error);
+                    this.showToast('❌ Erro ao salvar edição', 'error');
                 }
             }
 
             async deleteTransaction(index) {
-                // Encontrar o índice real na lista filtrada
-                const filteredTransactions = this.getFilteredTransactions();
-                const transaction = filteredTransactions[index];
+                const filtered = this.getFiltered();
+                const trans = filtered[index];
+                if (!trans) return;
                 
-                if (!transaction) return;
-                
-                // Encontrar o índice na lista completa
-                const realIndex = this.transactions.findIndex(t => t.id === transaction.id);
-                
-                if (confirm('Deseja realmente excluir esta transação?')) {
+                if (confirm(`Excluir "${trans.description}"?`)) {
                     try {
-                        await this.db.deleteTransaction(transaction.id);
-                        if (realIndex !== -1) {
-                            this.transactions.splice(realIndex, 1);
-                        }
+                        await this.db.delete(trans.id);
+                        const realIdx = this.transactions.findIndex(t => t.id === trans.id);
+                        if (realIdx !== -1) this.transactions.splice(realIdx, 1);
                         this.updateUI();
-                        this.showToast('🗑️ Transação excluída', 'success');
+                        this.showToast('🗑️ Excluído!', 'success');
                     } catch (error) {
-                        console.error('Erro ao deletar:', error);
-                        this.showToast('❌ Erro ao excluir transação', 'error');
+                        this.showToast('❌ Erro ao excluir', 'error');
                     }
                 }
             }
 
-            calculateBalance(transactions) {
-                if (!transactions) transactions = this.transactions;
-                return transactions.reduce((total, trans) => {
-                    return trans.type === 'income' 
-                        ? total + parseFloat(trans.amount) 
-                        : total - parseFloat(trans.amount);
-                }, 0);
+            async exportData() {
+                const data = {
+                    app: 'FinVoice',
+                    date: new Date().toISOString(),
+                    transactions: this.transactions
+                };
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `finvoice-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                this.showToast(`✅ ${this.transactions.length} registros exportados`, 'success');
+            }
+
+            async importData(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                try {
+                    const text = await file.text();
+                    const data = JSON.parse(text);
+                    
+                    if (!data.transactions) throw new Error('Formato inválido');
+                    
+                    let count = 0;
+                    for (const t of data.transactions) {
+                        const { id, ...clean } = t;
+                        await this.db.add(clean);
+                        count++;
+                    }
+                    
+                    await this.loadData();
+                    this.updateUI();
+                    this.showToast(`✅ ${count} registros importados`, 'success');
+                } catch (error) {
+                    this.showToast('❌ Erro ao importar arquivo', 'error');
+                }
+                
+                event.target.value = '';
             }
 
             formatCurrency(value) {
-                return new Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                }).format(value);
+                return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
             }
 
-            formatDate(dateString) {
-                const transactionDate = new Date(dateString);
+            formatDate(dateStr) {
+                const d = new Date(dateStr);
                 const now = new Date();
-                const diffTime = now - transactionDate;
-                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24));
                 
-                let dateStr = '';
+                let datePart;
+                if (diff === 0) datePart = 'Hoje';
+                else if (diff === 1) datePart = 'Ontem';
+                else if (diff < 7) datePart = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][d.getDay()];
+                else datePart = d.toLocaleDateString('pt-BR', { day:'2-digit', month:'short' });
                 
-                if (diffDays === 0) {
-                    dateStr = 'Hoje';
-                } else if (diffDays === 1) {
-                    dateStr = 'Ontem';
-                } else if (diffDays < 7) {
-                    const weekDays = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-                    dateStr = weekDays[transactionDate.getDay()];
-                } else {
-                    dateStr = transactionDate.toLocaleDateString('pt-BR', {
-                        day: '2-digit',
-                        month: 'short'
-                    });
-                }
-                
-                const timeStr = transactionDate.toLocaleTimeString('pt-BR', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-                
-                return `${dateStr} às ${timeStr}`;
+                const time = d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+                return `${datePart} às ${time}`;
             }
 
             updateUI() {
-                const filteredTransactions = this.getFilteredTransactions();
+                const filtered = this.getFiltered();
+                const months = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+                const shortMonths = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
                 
-                // Saldo do mês
-                const monthBalance = this.calculateBalance(filteredTransactions);
-                const balanceElement = document.getElementById('balance');
-                balanceElement.textContent = this.formatCurrency(monthBalance);
-                balanceElement.className = 'balance-amount ' + 
-                    (monthBalance > 0 ? 'positive' : monthBalance < 0 ? 'negative' : 'zero');
-
-                // Saldo total (todos os meses)
-                const totalBalance = this.calculateBalance(this.transactions);
-                const trendElement = document.getElementById('balanceTrend');
-                if (this.transactions.length > 0) {
-                    trendElement.style.display = 'inline-flex';
-                    if (totalBalance > 0) {
-                        trendElement.className = 'balance-trend positive';
-                        trendElement.innerHTML = `📈 Saldo total: ${this.formatCurrency(totalBalance)}`;
-                    } else if (totalBalance < 0) {
-                        trendElement.className = 'balance-trend negative';
-                        trendElement.innerHTML = `📉 Saldo total: ${this.formatCurrency(totalBalance)}`;
-                    } else {
-                        trendElement.className = 'balance-trend';
-                        trendElement.innerHTML = `➡️ Saldo total: ${this.formatCurrency(totalBalance)}`;
-                    }
-                } else {
-                    trendElement.style.display = 'none';
-                }
-
-                // Resumo mensal
-                const monthIncome = filteredTransactions
-                    .filter(t => t.type === 'income')
-                    .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+                // Mês
+                document.getElementById('monthDisplay').textContent = `${months[this.currentMonth]} ${this.currentYear}`;
+                document.getElementById('balanceLabel').textContent = `Saldo - ${months[this.currentMonth]} ${this.currentYear}`;
                 
-                const monthExpense = filteredTransactions
-                    .filter(t => t.type === 'expense')
-                    .reduce((sum, t) => sum + parseFloat(t.amount), 0);
-
-                document.getElementById('monthIncome').textContent = this.formatCurrency(monthIncome);
-                document.getElementById('monthExpense').textContent = this.formatCurrency(monthExpense);
-                document.getElementById('monthBalance').textContent = this.formatCurrency(monthBalance);
+                // Quick months
+                const prevM = this.currentMonth === 0 ? 11 : this.currentMonth - 1;
+                const nextM = this.currentMonth === 11 ? 0 : this.currentMonth + 1;
+                const prevY = this.currentMonth === 0 ? this.currentYear - 1 : this.currentYear;
+                const nextY = this.currentMonth === 11 ? this.currentYear + 1 : this.currentYear;
                 
-                const monthBalanceEl = document.getElementById('monthBalance');
-                monthBalanceEl.className = 'summary-value ' + 
-                    (monthBalance > 0 ? 'income' : monthBalance < 0 ? 'expense' : '');
-
-                // Contagem de transações
-                document.getElementById('transactionCount').textContent = 
-                    `${filteredTransactions.length} registro${filteredTransactions.length !== 1 ? 's' : ''}`;
-
-                // Lista de transações agrupadas por mês
-                const transactionsList = document.getElementById('transactionsList');
+                const chips = [
+                    { m: prevM, y: prevY, label: `${shortMonths[prevM]} ${prevY}` },
+                    { m: this.currentMonth, y: this.currentYear, label: `${shortMonths[this.currentMonth]} ${this.currentYear}` },
+                    { m: nextM, y: nextY, label: `${shortMonths[nextM]} ${nextY}` }
+                ];
+                
+                const qmEl = document.getElementById('quickMonths');
+                qmEl.innerHTML = chips.map(c => `
+                    <button class="month-chip ${c.m === this.currentMonth && c.y === this.currentYear ? 'active' : ''}" 
+                            data-m="${c.m}" data-y="${c.y}">${c.label}</button>
+                `).join('');
+                
+                qmEl.querySelectorAll('.month-chip').forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        this.currentMonth = parseInt(chip.dataset.m);
+                        this.currentYear = parseInt(chip.dataset.y);
+                        this.updateUI();
+                    });
+                });
+                
+                // Saldo
+                const monthBalance = filtered.reduce((t, tr) => t + (tr.type === 'income' ? parseFloat(tr.amount) : -parseFloat(tr.amount)), 0);
+                const totalBalance = this.transactions.reduce((t, tr) => t + (tr.type === 'income' ? parseFloat(tr.amount) : -parseFloat(tr.amount)), 0);
+                
+                const balEl = document.getElementById('balance');
+                balEl.textContent = this.formatCurrency(monthBalance);
+                balEl.className = 'balance-amount ' + (monthBalance > 0 ? 'positive' : monthBalance < 0 ? 'negative' : 'zero');
+                
+                // Resumo
+                const income = filtered.filter(t => t.type === 'income').reduce((s, t) => s + parseFloat(t.amount), 0);
+                const expense = filtered.filter(t => t.type === 'expense').reduce((s, t) => s + parseFloat(t.amount), 0);
+                
+                document.getElementById('monthIncome').textContent = this.formatCurrency(income);
+                document.getElementById('monthExpense').textContent = this.formatCurrency(expense);
+                const mbEl = document.getElementById('monthBalance');
+                mbEl.textContent = this.formatCurrency(monthBalance);
+                mbEl.className = 'summary-value ' + (monthBalance > 0 ? 'income' : monthBalance < 0 ? 'expense' : '');
+                
+                // Contagem
+                document.getElementById('transactionCount').textContent = `${filtered.length} registro${filtered.length !== 1 ? 's' : ''}`;
+                
+                // Lista
+                const listEl = document.getElementById('transactionsList');
                 
                 if (this.transactions.length === 0) {
-                    transactionsList.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-icon">📊</div>
-                            <div class="empty-text">Nenhuma transação registrada</div>
-                            <div class="empty-subtext">Use o microfone ou digite para começar</div>
-                        </div>
-                    `;
+                    listEl.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">Nenhuma transação</div></div>`;
                     return;
                 }
-
-                // Agrupar todas as transações por mês
-                const groupedTransactions = this.groupTransactionsByMonth(this.transactions);
-                const months = [
-                    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-                ];
-
-                // Se não houver transações no mês atual
-                if (filteredTransactions.length === 0 && this.transactions.length > 0) {
-                    transactionsList.innerHTML = `
-                        <div class="empty-state">
-                            <div class="empty-icon">📅</div>
-                            <div class="empty-text">Nenhuma transação neste mês</div>
-                            <div class="empty-subtext">Selecione outro mês para visualizar</div>
-                        </div>
-                    `;
+                
+                if (filtered.length === 0) {
+                    listEl.innerHTML = `<div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">Nenhuma transação neste mês</div></div>`;
                     return;
                 }
-
-                // Renderizar transações do mês atual
-                transactionsList.innerHTML = filteredTransactions.map((trans, index) => {
-                    const amount = parseFloat(trans.amount);
-                    const transDate = new Date(trans.date);
-                    const monthName = months[transDate.getMonth()];
-                    const year = transDate.getFullYear();
-                    
-                    return `
-                        <div class="transaction-item" style="animation-delay: ${index * 0.05}s">
-                            <div class="transaction-icon ${trans.type}">
-                                ${trans.type === 'income' ? '📥' : '📤'}
+                
+                listEl.innerHTML = filtered.map((tr, i) => `
+                    <div class="transaction-item">
+                        <div class="transaction-icon ${tr.type}">${tr.type==='income'?'📥':'📤'}</div>
+                        <div class="transaction-content">
+                            <div class="transaction-description">${tr.description}</div>
+                            <div class="transaction-meta">
+                                <span>🕐 ${this.formatDate(tr.date)}</span>
+                                <span class="transaction-category">${tr.category}</span>
                             </div>
-                            <div class="transaction-info">
-                                <div class="transaction-description" title="${trans.description}">
-                                    ${trans.description}
-                                </div>
-                                <div class="transaction-meta">
-                                    <span class="transaction-date">
-                                        🕐 ${this.formatDate(trans.date)}
-                                    </span>
-                                    <span class="transaction-category">${trans.category}</span>
-                                </div>
-                            </div>
-                            <div class="transaction-amount ${trans.type}">
-                                ${trans.type === 'income' ? '+' : '−'} ${this.formatCurrency(amount)}
-                            </div>
-                            <button class="delete-btn" onclick="app.deleteTransaction(${index})" aria-label="Excluir transação" title="Excluir">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                </svg>
-                            </button>
                         </div>
-                    `;
-                }).join('');
+                        <div class="transaction-amount ${tr.type}">
+                            ${tr.type==='income'?'+':'−'} ${this.formatCurrency(parseFloat(tr.amount))}
+                        </div>
+                        <div class="transaction-actions">
+                            <button class="action-btn edit" onclick="app.openEditModal(${i})" title="Editar">✏️</button>
+                            <button class="action-btn delete" onclick="app.deleteTransaction(${i})" title="Excluir">🗑️</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            showToast(msg, type = '') {
+                const existing = document.querySelector('.toast');
+                if (existing) existing.remove();
+                
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.textContent = msg;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => toast.remove(), 3000);
             }
         }
 
-        // Initialize app when DOM is ready
+        // Iniciar
         document.addEventListener('DOMContentLoaded', () => {
-            window.app = new FinanceApp();
+            window.app = new App();
+            window.app.init();
         });
     </script>
 </body>
