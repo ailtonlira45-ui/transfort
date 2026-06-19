@@ -1,653 +1,766 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>🚍 TRANSFORT-BR | Escalação</title>
-    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Financeiro com Voz</title>
     <style>
-        :root {
-            --azul: #1b4ba0;
-            --cinza-escuro: #121214;
-            --cinza-claro: #2a2a2f;
-            --texto: #e5e5e5;
-            --texto-secundario: #a8a8a8;
-            --verde: #4caf50;
-            --manual: #f59e0b;
-            --automatico: #3b82f6;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--cinza-escuro);
-            color: var(--texto);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            padding: 20px;
         }
 
-        .app-container { max-width: 1000px; margin: 0 auto; padding: 16px; }
-
-        .header-site {
-            background: rgba(30, 30, 34, 0.95);
-            padding: 15px 20px;
-            margin-bottom: 24px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
         }
 
-        .header-logo { display: flex; align-items: center; gap: 10px; }
-        .header-logo span { font-size: 1.8em; }
-        .header-logo h1 { font-size: 1.2em; text-transform: uppercase; letter-spacing: 2px; color: var(--texto); }
-        .badge-versao { background: var(--azul); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75em; font-weight: 600; }
-        .badge-api { background: var(--verde); color: white; padding: 4px 10px; border-radius: 20px; font-size: 0.7em; font-weight: 600; }
-
-        .hero-mini {
+        .header {
             text-align: center;
-            padding: 25px 15px;
-            background: linear-gradient(135deg, rgba(27,75,160,0.2), rgba(12,12,14,0.9));
-            border-radius: 16px;
-            margin-bottom: 20px;
+            color: white;
+            margin-bottom: 30px;
         }
-        .hero-mini h2 { font-size: 1.6em; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 6px; }
-        .hero-mini p { color: var(--texto-secundario); font-size: 0.95em; }
 
-        .dashboard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-        @media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
 
         .card {
-            background: var(--cinza-claro);
-            border: 1px solid #333;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-        .card-full { grid-column: 1 / -1; }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #333;
-        }
-        .card-icon {
-            width: 40px; height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-        .icon-driver { background: rgba(27,75,160,0.3); }
-        .icon-bus { background: rgba(245,158,11,0.2); }
-        .icon-result { background: rgba(76,175,80,0.2); }
-
-        .card-title { font-size: 1.1em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .card-count { font-size: 0.8em; color: var(--texto-secundario); }
-
-        .cambio-selector { display: flex; gap: 10px; margin-bottom: 14px; }
-
-        .btn-cambio {
-            flex: 1;
-            padding: 12px 16px;
-            border: 2px solid rgba(255,255,255,0.1);
-            border-radius: 10px;
-            background: rgba(255,255,255,0.03);
-            color: var(--texto);
-            font-size: 0.95em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .btn-cambio.manual { border-color: rgba(245,158,11,0.3); }
-        .btn-cambio.manual.active { background: rgba(245,158,11,0.2); border-color: var(--manual); color: #fbbf24; }
-        .btn-cambio.automatico { border-color: rgba(59,130,246,0.3); }
-        .btn-cambio.automatico.active { background: rgba(59,130,246,0.2); border-color: var(--automatico); color: #60a5fa; }
-
-        .select-premium {
-            width: 100%;
-            padding: 12px 14px;
-            background: #1a1a1f;
-            border: 1px solid #444;
-            border-radius: 10px;
-            color: var(--texto);
-            font-size: 0.95em;
-            cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffd700' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            margin-bottom: 14px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
         }
 
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .btn-gerar { background: linear-gradient(135deg, var(--azul), #0d3b7a); }
-        .btn-copiar { background: linear-gradient(135deg, #3b82f6, #2563eb); margin-top: 10px; }
-        .btn-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); margin-top: 10px; }
-        .btn-atualizar { background: linear-gradient(135deg, #f59e0b, #d97706); margin-top: 10px; font-size: 0.85em; }
-
-        .resultado-box {
-            background: rgba(76,175,80,0.08);
-            border: 1px solid rgba(76,175,80,0.2);
-            border-radius: 10px;
-            padding: 16px;
-            margin-top: 14px;
-            line-height: 1.8;
-        }
-        .resultado-titulo {
-            color: var(--verde);
-            font-weight: 700;
-            font-size: 1em;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-transform: uppercase;
-        }
-        .pulse-dot {
-            width: 8px; height: 8px;
-            background: var(--verde);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.3); }
-        }
-
-        .dado-destaque { background: rgba(0,0,0,0.3); padding: 6px 12px; border-radius: 6px; display: inline-block; font-weight: 600; }
-        .badge { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 0.8em; font-weight: 600; margin-left: 4px; }
-        .badge-manual { background: rgba(245,158,11,0.2); color: #fbbf24; }
-        .badge-automatico { background: rgba(59,130,246,0.2); color: #60a5fa; }
-        .badge-operacional { background: rgba(76,175,80,0.2); color: #66bb6a; }
-        .badge-oficina { background: rgba(198,40,40,0.2); color: #ef5350; }
-
-        .lista-scroll { max-height: 400px; overflow-y: auto; padding-right: 4px; }
-        .lista-scroll::-webkit-scrollbar { width: 3px; }
-        .lista-scroll::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.3); border-radius: 3px; }
-
-        .lista-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 10px 12px;
-            border-radius: 8px;
-            margin-bottom: 5px;
-            font-size: 0.85em;
-        }
-        .lista-item-header { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; flex-wrap: wrap; }
-
-        .secao-titulo {
-            color: var(--texto-secundario);
-            font-size: 0.85em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin: 14px 0 6px 0;
-        }
-        .secao-titulo:first-child { margin-top: 0; }
-
-        .loading { text-align: center; color: #ffd700; padding: 20px; }
-
-        .status-api {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.7em;
-            margin-top: 4px;
-        }
-        .status-dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .status-online { background: #4caf50; }
-        .status-offline { background: #ef4444; }
-        .status-loading { background: #f59e0b; animation: pulse 1s infinite; }
-
-        .footer-premium {
+        .balance {
             text-align: center;
-            padding: 20px;
-            color: var(--texto-secundario);
-            font-size: 0.8em;
-            border-top: 1px solid #333;
+            margin-bottom: 30px;
+        }
+
+        .balance h2 {
+            color: #666;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .balance .amount {
+            font-size: 3em;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .balance .amount.positive {
+            color: #48bb78;
+        }
+
+        .balance .amount.negative {
+            color: #f56565;
+        }
+
+        .voice-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .mic-button {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            position: relative;
+        }
+
+        .mic-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .mic-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .mic-button.recording {
+            background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(245, 101, 101, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(245, 101, 101, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(245, 101, 101, 0);
+            }
+        }
+
+        .status-text {
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.9em;
+            min-height: 20px;
+        }
+
+        .status-text.error {
+            color: #f56565;
+        }
+
+        .status-text.success {
+            color: #48bb78;
+        }
+
+        .transactions {
             margin-top: 20px;
         }
 
-        .alerta-zap {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            background: #1e1e24;
-            border: 2px solid #25D366;
-            border-radius: 16px;
-            padding: 20px;
-            z-index: 1000;
-            text-align: center;
+        .transactions h3 {
+            color: #333;
+            margin-bottom: 15px;
         }
-        .alerta-zap.show { display: block; }
-        .alerta-zap h4 { color: #25D366; margin-bottom: 8px; }
-        .alerta-zap p { color: #ccc; font-size: 0.85em; margin-bottom: 12px; max-height: 100px; overflow-y: auto; }
-        .alerta-zap button {
-            padding: 12px 24px;
-            background: #25D366;
-            border: none;
-            border-radius: 25px;
-            color: white;
-            font-weight: 700;
-            font-size: 1em;
-            cursor: pointer;
-            margin: 4px;
-        }
-        .alerta-zap .btn-fechar { background: #555; }
 
-        @media (max-width: 600px) {
-            .hero-mini h2 { font-size: 1.4em; }
-            .card { padding: 16px; }
-            .btn { padding: 12px; font-size: 0.9em; }
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .transaction-item:hover {
+            background: #f7fafc;
+            border-radius: 10px;
+        }
+
+        .transaction-info {
+            flex: 1;
+        }
+
+        .transaction-description {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .transaction-date {
+            font-size: 0.8em;
+            color: #a0aec0;
+        }
+
+        .transaction-category {
+            font-size: 0.8em;
+            color: #667eea;
+            margin-left: 10px;
+            background: #edf2f7;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .transaction-amount {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-right: 10px;
+        }
+
+        .transaction-amount.income {
+            color: #48bb78;
+        }
+
+        .transaction-amount.expense {
+            color: #f56565;
+        }
+
+        .delete-btn {
+            background: #fc8181;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #f56565;
+        }
+
+        .example-text {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .example-text strong {
+            color: #667eea;
+        }
+
+        .input-section {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .manual-input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1em;
+        }
+
+        .manual-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .add-button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s;
+        }
+
+        .add-button:hover {
+            background: #5a67d8;
+        }
+
+        .permission-warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #856404;
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        
-        <header class="header-site">
-            <div class="header-logo">
-                <span>🚍</span>
-                <h1>Transfort-BR</h1>
-            </div>
-            <div style="display:flex; gap:8px; align-items:center;">
-                <span class="badge-api" id="statusAPI">🔄 Sincronizando...</span>
-                <span class="badge-versao">v18.0 FINAL</span>
-            </div>
-        </header>
-
-        <div class="hero-mini">
-            <h2>Escalação Inteligente</h2>
-            <p>Movendo a simulação. Conectando motoristas.</p>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Finanças App</h1>
+            <p>Fale para adicionar suas transações</p>
         </div>
 
-        <div class="dashboard-grid">
-            
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon icon-result">⚡</div>
-                    <div>
-                        <div class="card-title">Gerar Escala</div>
-                        <div class="card-count">Escolha motorista e cambio</div>
-                    </div>
-                </div>
+        <div class="card">
+            <div class="balance">
+                <h2>Saldo Total</h2>
+                <div class="amount" id="balance">R$ 0,00</div>
+            </div>
 
-                <div class="cambio-selector">
-                    <button class="btn-cambio manual" id="btnManual" onclick="selecionarCambio('manual')">🕹️ MANUAL</button>
-                    <button class="btn-cambio automatico" id="btnAutomatico" onclick="selecionarCambio('automatico')">🤖 AUTOMATICO</button>
-                </div>
-
-                <select id="motoristaSelect" class="select-premium">
-                    <option value="">👨‍✈️ Carregando...</option>
-                </select>
-
-                <button class="btn btn-gerar" onclick="gerarEscala()">🎯 GERAR ESCALA</button>
-                <button class="btn btn-copiar" onclick="copiarEscala()">📋 COPIAR TEXTO</button>
-                <button class="btn btn-whatsapp" id="btnWhatsApp" onclick="enviarWhatsApp()">📤 ENVIAR WHATSAPP</button>
-                <button class="btn btn-atualizar" onclick="atualizarDados()">🔄 ATUALIZAR DADOS</button>
-
-                <div class="resultado-box" id="resultadoBox">
-                    <em style="color: #a8a8a8;">Escolha cambio e motorista, depois clique em GERAR ESCALA.</em>
+            <div class="voice-section">
+                <button class="mic-button" id="micButton">
+                    🎤
+                </button>
+                <div class="status-text" id="statusText">
+                    Verificando permissão do microfone...
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-icon icon-driver">👥</div>
-                    <div>
-                        <div class="card-title">Motoristas</div>
-                        <div class="card-count" id="contadorMotoristas">Carregando...</div>
-                    </div>
-                </div>
-                <div class="lista-scroll" id="listaMotoristas"><div class="loading">Carregando</div></div>
+            <div id="permissionWarning" class="permission-warning" style="display: none;">
+                ⚠️ <strong>Microfone não permitido!</strong><br>
+                Para usar o reconhecimento de voz:<br>
+                1. Clique no ícone de cadeado 🔒 na barra de endereço<br>
+                2. Ative a permissão do microfone<br>
+                3. Recarregue a página
             </div>
 
-            <div class="card card-full">
-                <div class="card-header">
-                    <div class="card-icon icon-bus">🚌</div>
-                    <div>
-                        <div class="card-title">Frota Completa</div>
-                        <div class="card-count" id="contadorOnibus">Carregando...</div>
-                    </div>
-                </div>
-                <div class="lista-scroll" id="listaOnibus"><div class="loading">Carregando frota</div></div>
+            <div class="example-text">
+                <strong>Exemplos do que falar:</strong><br>
+                • "Gastei 50 reais em mercado ontem"<br>
+                • "Recebi 2000 de salário dia 15"<br>
+                • "Paguei 150 de luz esse mês"<br>
+                • "Ganhei 500 reais de freelance"
             </div>
 
+            <div class="input-section">
+                <input type="text" class="manual-input" id="manualInput" placeholder="Ou digite manualmente...">
+                <button class="add-button" id="addButton">Adicionar</button>
+            </div>
         </div>
 
-        <div class="alerta-zap" id="alertaZap">
-            <h4>📤 ABRIR WHATSAPP</h4>
-            <p id="textoAlerta"></p>
-            <button onclick="abrirWhatsAppFinal()">💬 ABRIR WHATSAPP</button>
-            <button class="btn-fechar" onclick="fecharAlerta()">✖ FECHAR</button>
+        <div class="card">
+            <div class="transactions">
+                <h3>Últimas Transações</h3>
+                <div id="transactionsList">
+                    <p style="text-align: center; color: #a0aec0;">Nenhuma transação registrada</p>
+                </div>
+            </div>
         </div>
-
-        <footer class="footer-premium">
-            TRANSFORT-BR © 2026 • transfort.com.br • OMSI 2 • Dados via API
-        </footer>
     </div>
 
     <script>
-        // ============ APIs OFICIAIS ============
-        const API_BUSES = 'https://pedepe.de/api/api.php?key=BE4201AB-8E20-44AF-893F-586465C860F3&request=busesjson';
-        const API_STAFF = 'https://pedepe.de/api/api.php?key=BE4201AB-8E20-44AF-893F-586465C860F3&request=staffjson';
-
-        let cambioSelecionado = null;
-        let ultimaEscala = null;
-        let ultimaMensagem = '';
-        let motoristasAPI = [];
-        let frotaCompleta = { manual: [], automatico: [] };
-
-        const motoristaSelect = document.getElementById('motoristaSelect');
-        const listaMotoristas = document.getElementById('listaMotoristas');
-        const listaOnibus = document.getElementById('listaOnibus');
-        const resultadoBox = document.getElementById('resultadoBox');
-        const btnManual = document.getElementById('btnManual');
-        const btnAutomatico = document.getElementById('btnAutomatico');
-        const alertaZap = document.getElementById('alertaZap');
-        const textoAlerta = document.getElementById('textoAlerta');
-        const statusAPI = document.getElementById('statusAPI');
-
-        // ============ CARREGAR DADOS DAS APIs ============
-        
-        async function carregarMotoristas() {
-            statusAPI.innerHTML = '<span class="status-dot status-loading"></span> Carregando motoristas...';
-            
-            try {
-                const response = await fetch(API_STAFF);
-                if (!response.ok) throw new Error('HTTP ' + response.status);
+        class FinanceApp {
+            constructor() {
+                this.transactions = this.loadTransactions();
+                this.recognition = null;
+                this.isRecording = false;
+                this.isSupported = false;
+                this.isPermissionGranted = false;
                 
-                const data = await response.json();
-                console.log('✅ API Motoristas:', data);
+                this.checkSupport();
+                this.setupEventListeners();
+                this.updateUI();
+            }
+
+            async checkSupport() {
+                // Verificar suporte ao SpeechRecognition
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                 
-                if (Array.isArray(data)) {
-                    motoristasAPI = data.map(s => s.nome || s.name || 'Sem nome');
-                } else if (data.staff) {
-                    motoristasAPI = data.staff.map(s => s.nome || s.name || 'Sem nome');
-                } else {
-                    throw new Error('Formato desconhecido');
+                if (!SpeechRecognition) {
+                    document.getElementById('statusText').textContent = 
+                        '❌ Seu navegador não suporta reconhecimento de voz. Use o Chrome.';
+                    document.getElementById('micButton').disabled = true;
+                    document.getElementById('statusText').classList.add('error');
+                    return;
+                }
+
+                this.isSupported = true;
+                
+                // Verificar permissão do microfone
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    stream.getTracks().forEach(track => track.stop());
+                    this.isPermissionGranted = true;
+                    document.getElementById('statusText').textContent = 
+                        '✅ Microfone autorizado! Clique para falar';
+                    document.getElementById('statusText').classList.add('success');
+                    this.initSpeechRecognition();
+                } catch (error) {
+                    console.log('Erro de permissão:', error);
+                    this.isPermissionGranted = false;
+                    document.getElementById('permissionWarning').style.display = 'block';
+                    document.getElementById('statusText').textContent = 
+                        '❌ Microfone não autorizado';
+                    document.getElementById('statusText').classList.add('error');
+                    document.getElementById('micButton').disabled = true;
+                }
+            }
+
+            initSpeechRecognition() {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                
+                this.recognition = new SpeechRecognition();
+                this.recognition.lang = 'pt-BR';
+                this.recognition.continuous = false;
+                this.recognition.interimResults = false;
+                this.recognition.maxAlternatives = 1;
+
+                this.recognition.onstart = () => {
+                    console.log('Reconhecimento iniciado');
+                    document.getElementById('statusText').textContent = '🎙️ Ouvindo... Fale agora!';
+                    document.getElementById('statusText').classList.remove('error', 'success');
+                };
+
+                this.recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    console.log('Texto reconhecido:', transcript);
+                    this.processVoiceInput(transcript);
+                };
+
+                this.recognition.onerror = (event) => {
+                    console.error('Erro no reconhecimento:', event.error);
+                    
+                    let errorMessage = 'Erro ao reconhecer áudio. Tente novamente.';
+                    
+                    switch(event.error) {
+                        case 'not-allowed':
+                            errorMessage = 'Permissão do microfone negada. Verifique as configurações.';
+                            document.getElementById('permissionWarning').style.display = 'block';
+                            document.getElementById('micButton').disabled = true;
+                            break;
+                        case 'no-speech':
+                            errorMessage = 'Nenhuma fala detectada. Tente novamente.';
+                            break;
+                        case 'audio-capture':
+                            errorMessage = 'Microfone não encontrado. Verifique se está conectado.';
+                            break;
+                        case 'network':
+                            errorMessage = 'Erro de rede. Verifique sua conexão.';
+                            break;
+                        case 'aborted':
+                            errorMessage = 'Reconhecimento cancelado.';
+                            break;
+                    }
+                    
+                    document.getElementById('statusText').textContent = '❌ ' + errorMessage;
+                    document.getElementById('statusText').classList.add('error');
+                    this.stopRecording();
+                };
+
+                this.recognition.onend = () => {
+                    console.log('Reconhecimento finalizado');
+                    this.stopRecording();
+                };
+            }
+
+            setupEventListeners() {
+                const micButton = document.getElementById('micButton');
+                
+                micButton.addEventListener('click', async () => {
+                    if (!this.isSupported) {
+                        alert('Reconhecimento de voz não suportado neste navegador.');
+                        return;
+                    }
+
+                    if (!this.isPermissionGranted) {
+                        await this.requestPermission();
+                        return;
+                    }
+
+                    if (this.isRecording) {
+                        this.stopRecording();
+                    } else {
+                        this.startRecording();
+                    }
+                });
+
+                // Input manual
+                document.getElementById('addButton').addEventListener('click', () => {
+                    const input = document.getElementById('manualInput');
+                    const text = input.value.trim();
+                    
+                    if (text) {
+                        this.processVoiceInput(text);
+                        input.value = '';
+                    }
+                });
+
+                // Enter no input manual
+                document.getElementById('manualInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const text = e.target.value.trim();
+                        if (text) {
+                            this.processVoiceInput(text);
+                            e.target.value = '';
+                        }
+                    }
+                });
+            }
+
+            async requestPermission() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    stream.getTracks().forEach(track => track.stop());
+                    
+                    this.isPermissionGranted = true;
+                    document.getElementById('permissionWarning').style.display = 'none';
+                    document.getElementById('statusText').textContent = '✅ Permissão concedida!';
+                    document.getElementById('statusText').classList.add('success');
+                    document.getElementById('micButton').disabled = false;
+                    this.initSpeechRecognition();
+                    
+                    setTimeout(() => {
+                        document.getElementById('statusText').textContent = 'Clique no microfone e fale';
+                        document.getElementById('statusText').classList.remove('success');
+                    }, 2000);
+                } catch (error) {
+                    console.error('Erro ao solicitar permissão:', error);
+                    document.getElementById('permissionWarning').style.display = 'block';
+                    document.getElementById('statusText').textContent = '❌ Permissão negada';
+                    document.getElementById('statusText').classList.add('error');
+                }
+            }
+
+            startRecording() {
+                if (!this.recognition) {
+                    this.initSpeechRecognition();
+                }
+
+                try {
+                    this.recognition.start();
+                    this.isRecording = true;
+                    document.getElementById('micButton').classList.add('recording');
+                    document.getElementById('statusText').textContent = '🎙️ Ouvindo... Fale agora!';
+                    document.getElementById('statusText').classList.remove('error', 'success');
+                } catch (error) {
+                    console.error('Erro ao iniciar gravação:', error);
+                    this.isRecording = false;
+                    document.getElementById('statusText').textContent = '❌ Erro ao iniciar. Tente novamente.';
+                    document.getElementById('statusText').classList.add('error');
+                }
+            }
+
+            stopRecording() {
+                if (this.recognition) {
+                    try {
+                        this.recognition.stop();
+                    } catch (error) {
+                        console.log('Erro ao parar reconhecimento:', error);
+                    }
                 }
                 
-                statusAPI.innerHTML = '<span class="status-dot status-online"></span> Motoristas: ONLINE';
-            } catch (error) {
-                console.warn('⚠️ API Motoristas offline:', error.message);
-                statusAPI.innerHTML = '<span class="status-dot status-offline"></span> Motoristas: offline (local)';
-                usarMotoristasFallback();
+                this.isRecording = false;
+                document.getElementById('micButton').classList.remove('recording');
+                
+                if (this.isPermissionGranted) {
+                    document.getElementById('statusText').textContent = '✅ Pronto para gravar novamente';
+                    document.getElementById('statusText').classList.add('success');
+                    
+                    setTimeout(() => {
+                        document.getElementById('statusText').textContent = 'Clique no microfone e fale';
+                        document.getElementById('statusText').classList.remove('success');
+                    }, 3000);
+                }
             }
-            
-            preencherMotoristas();
-        }
 
-        function usarMotoristasFallback() {
-            motoristasAPI = [
-                'MayconRib808','Matheus_fr','Araujo_no_Volante','itsguss',
-                'ALEX_DSB','Bruno Nunes','Willian Santos','Guilhermeeb',
-                'Riccieri','PRADO','PF Luciano','daniel23',
-                'Capacity-Felix','DIEGO_SC','fernando br'
-            ];
-        }
-
-        async function carregarOnibus() {
-            statusAPI.innerHTML = '<span class="status-dot status-loading"></span> Carregando frota...';
-            
-            try {
-                const response = await fetch(API_BUSES);
-                if (!response.ok) throw new Error('HTTP ' + response.status);
+            processVoiceInput(text) {
+                console.log('Processando texto:', text);
                 
-                const data = await response.json();
-                console.log('✅ API Ônibus:', data);
-                
-                frotaCompleta = { manual: [], automatico: [] };
-                
-                if (Array.isArray(data)) {
-                    data.forEach(bus => {
-                        const cambio = (bus.cambio || bus.transmission || '').toLowerCase();
-                        const tipo = cambio.includes('manual') ? 'manual' : 'automatico';
+                try {
+                    const transaction = this.parseTransaction(text);
+                    if (transaction) {
+                        this.addTransaction(transaction);
+                        document.getElementById('statusText').textContent = 
+                            `✅ Adicionado: ${transaction.description} - R$ ${transaction.amount}`;
+                        document.getElementById('statusText').classList.add('success');
                         
-                        frotaCompleta[tipo].push({
-                            placa: bus.placa || bus.license_plate || bus.numberplate || 'S/PLACA',
-                            modelo: bus.modelo || bus.model || bus.name || bus.vehicle || 'S/MODELO',
-                            cambio: tipo === 'manual' ? 'Manual' : 'Automatico',
-                            status: bus.status || bus.state || bus.condition || 'Operacional',
-                            origem: 'API ' + (bus.garage || bus.depot || 'Online')
-                        });
-                    });
+                        setTimeout(() => {
+                            document.getElementById('statusText').textContent = 'Clique no microfone e fale';
+                            document.getElementById('statusText').classList.remove('success');
+                        }, 3000);
+                    } else {
+                        document.getElementById('statusText').textContent = 
+                            '❌ Não entendi. Tente: "Gastei 50 reais em mercado"';
+                        document.getElementById('statusText').classList.add('error');
+                        
+                        setTimeout(() => {
+                            document.getElementById('statusText').textContent = 'Clique no microfone e fale';
+                            document.getElementById('statusText').classList.remove('error');
+                        }, 3000);
+                    }
+                } catch (error) {
+                    console.error('Erro ao processar:', error);
+                    document.getElementById('statusText').textContent = '❌ Erro ao processar áudio';
+                    document.getElementById('statusText').classList.add('error');
                 }
+            }
+
+            parseTransaction(text) {
+                text = text.toLowerCase().trim();
                 
-                if (frotaCompleta.manual.length === 0 && frotaCompleta.automatico.length === 0) {
-                    throw new Error('Dados vazios');
+                // Remover palavras comuns que podem atrapalhar
+                text = text.replace(/\b(?:eu|a|o|as|os|um|uma|uns|umas|do|da|dos|das|no|na|nos|nas)\b/g, ' ').trim();
+                
+                const patterns = [
+                    // "gastei/paguei X reais em Y"
+                    {
+                        regex: /(?:gastei|paguei|gasto|comprei)\s+(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$|conto|pila)?\s*(?:em|para|de|com)?\s*(.+)/i,
+                        type: 'expense'
+                    },
+                    // "recebi/ganhei X reais de Y"
+                    {
+                        regex: /(?:recebi|ganhei|salário|renda|recebimento)\s+(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$|conto|pila)?\s*(?:de|do|da)?\s*(.+)/i,
+                        type: 'income'
+                    },
+                    // "comprei/paguei Y por X reais"
+                    {
+                        regex: /(?:comprei|paguei|gastei)\s+(.+)\s+por\s+(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$)?/i,
+                        type: 'expense'
+                    },
+                    // Padrão mais flexível
+                    {
+                        regex: /(\d+(?:[.,]\d{1,2})?)\s*(?:reais|real|r\$)?\s*(?:em|de|para|com)?\s*(.+)/i,
+                        type: 'auto'
+                    }
+                ];
+
+                for (const pattern of patterns) {
+                    const match = text.match(pattern.regex);
+                    if (match) {
+                        let amount, description, type;
+
+                        if (pattern.type === 'auto') {
+                            // Determinar tipo baseado em palavras-chave
+                            if (text.match(/(?:recebi|ganhei|salário|renda|entrada|crédito)/i)) {
+                                type = 'income';
+                            } else {
+                                type = 'expense';
+                            }
+                            amount = this.parseAmount(match[1]);
+                            description = match[2] || 'Transação sem descrição';
+                        } else {
+                            type = pattern.type;
+                            if (match[2] && !match[2].match(/^\d/)) {
+                                amount = this.parseAmount(match[1]);
+                                description = match[2];
+                            } else {
+                                amount = this.parseAmount(match[2] || match[1]);
+                                description = match[1] || 'Transação sem descrição';
+                            }
+                        }
+
+                        // Limpar e capitalizar descrição
+                        description = description.trim();
+                        description = description.charAt(0).toUpperCase() + description.slice(1);
+
+                        return {
+                            description: description,
+                            amount: Math.abs(amount),
+                            type: type,
+                            date: new Date(),
+                            category: this.categorizeTransaction(description)
+                        };
+                    }
                 }
+
+                return null;
+            }
+
+            parseAmount(amountStr) {
+                if (!amountStr) return 0;
+                amountStr = amountStr.replace(',', '.');
+                return parseFloat(amountStr);
+            }
+
+            categorizeTransaction(description) {
+                const desc = description.toLowerCase();
+                const categories = {
+                    'alimentação': ['mercado', 'restaurante', 'comida', 'lanche', 'almoço', 'janta', 'supermercado'],
+                    'transporte': ['uber', 'ônibus', 'gasolina', 'combustível', 'metrô', 'transporte', 'estacionamento'],
+                    'moradia': ['aluguel', 'condomínio', 'luz', 'água', 'internet', 'telefone', 'iptu'],
+                    'lazer': ['cinema', 'festa', 'show', 'viagem', 'passeio', 'jogo', 'jogos'],
+                    'saúde': ['farmácia', 'médico', 'hospital', 'remédio', 'consulta', 'dentista'],
+                    'salário': ['salário', 'pagamento', 'freelance', 'bônus', 'comissão']
+                };
+
+                for (const [category, keywords] of Object.entries(categories)) {
+                    if (keywords.some(keyword => desc.includes(keyword))) {
+                        return category;
+                    }
+                }
+
+                return 'outros';
+            }
+
+            addTransaction(transaction) {
+                this.transactions.unshift(transaction);
+                this.saveTransactions();
+                this.updateUI();
+            }
+
+            deleteTransaction(index) {
+                if (confirm('Deseja realmente excluir esta transação?')) {
+                    this.transactions.splice(index, 1);
+                    this.saveTransactions();
+                    this.updateUI();
+                }
+            }
+
+            calculateBalance() {
+                return this.transactions.reduce((total, trans) => {
+                    return trans.type === 'income' 
+                        ? total + trans.amount 
+                        : total - trans.amount;
+                }, 0);
+            }
+
+            formatCurrency(value) {
+                return new Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(value);
+            }
+
+            formatDate(date) {
+                return new Date(date).toLocaleDateString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+
+            saveTransactions() {
+                try {
+                    localStorage.setItem('financeTransactions', JSON.stringify(this.transactions));
+                } catch (error) {
+                    console.error('Erro ao salvar:', error);
+                }
+            }
+
+            loadTransactions() {
+                try {
+                    const saved = localStorage.getItem('financeTransactions');
+                    return saved ? JSON.parse(saved) : [];
+                } catch (error) {
+                    console.error('Erro ao carregar:', error);
+                    return [];
+                }
+            }
+
+            updateUI() {
+                // Atualizar saldo
+                const balance = this.calculateBalance();
+                const balanceElement = document.getElementById('balance');
+                balanceElement.textContent = this.formatCurrency(balance);
+                balanceElement.className = 'amount ' + (balance >= 0 ? 'positive' : 'negative');
+
+                // Atualizar lista de transações
+                const transactionsList = document.getElementById('transactionsList');
                 
-                statusAPI.innerHTML = '<span class="status-dot status-online"></span> Frota: ONLINE (' + (frotaCompleta.manual.length + frotaCompleta.automatico.length) + ' veiculos)';
-            } catch (error) {
-                console.warn('⚠️ API Ônibus offline:', error.message);
-                statusAPI.innerHTML = '<span class="status-dot status-offline"></span> Frota: offline (local)';
-                usarOnibusFallback();
-            }
-            
-            preencherOnibus();
-        }
+                if (this.transactions.length === 0) {
+                    transactionsList.innerHTML = 
+                        '<p style="text-align: center; color: #a0aec0;">Nenhuma transação registrada</p>';
+                    return;
+                }
 
-        function usarOnibusFallback() {
-            frotaCompleta = {
-                manual: [
-                    { placa:'KZZ-8037', modelo:'CAIO VIP IV OF-1721', cambio:'Manual', status:'Operacional', origem:'Local' },
-                    { placa:'RNT-0003', modelo:'Apache Vip V OF-1721L', cambio:'Manual', status:'Operacional', origem:'Local' },
-                    { placa:'RNT-0004', modelo:'Marcopolo Viale 2010', cambio:'Manual', status:'Operacional', origem:'Local' },
-                    { placa:'RNT-0005', modelo:'Torino 2007 VW 17.230', cambio:'Manual', status:'Operacional', origem:'Local' },
-                    { placa:'RNT-0007', modelo:'Apache SSA Vip V MB 1721', cambio:'Manual', status:'Operacional', origem:'Local' },
-                    { placa:'RNT-0008', modelo:'Busscar Urbanus 94', cambio:'Manual', status:'Operacional', origem:'Local' },
-                    { placa:'TFT-0016', modelo:'Caio Vip V VW 15.190 OD', cambio:'Manual', status:'Operacional', origem:'TFT' },
-                    { placa:'TFT-0020', modelo:'Marcopolo Torino S MB OF-1721', cambio:'Manual', status:'Operacional', origem:'TFT' },
-                    { placa:'TFT-0021', modelo:'Caio Vip V MB OF-1724 Euro 5', cambio:'Manual', status:'Operacional', origem:'TFT' }
-                ],
-                automatico: [
-                    { placa:'ABC-1234', modelo:'Mercedes-Benz S400 LE', cambio:'Automatico', status:'Operacional', origem:'Local' },
-                    { placa:'HIT-0001', modelo:'MAN Munchen Lions City', cambio:'Automatico', status:'Operacional', origem:'Local' },
-                    { placa:'RNT-0501', modelo:'London Citybus C400R', cambio:'Automatico', status:'Operacional', origem:'Local' },
-                    { placa:'RNT-0502', modelo:'Caio Millennium IV', cambio:'Automatico', status:'Operacional', origem:'Local' },
-                    { placa:'TFT-0012', modelo:'Marcopolo TORINO S 17.230ODS', cambio:'Automatico', status:'Operacional', origem:'TFT' },
-                    { placa:'TFT-0013', modelo:'Marcopolo TORINO S Rio Ita', cambio:'Automatico', status:'Operacional', origem:'TFT' },
-                    { placa:'TFT-0014', modelo:'Caio Induscar Vip IV', cambio:'Automatico', status:'Na Oficina', origem:'TFT' },
-                    { placa:'TFT-0015', modelo:'Caio Apache Vip III', cambio:'Automatico', status:'Operacional', origem:'TFT' },
-                    { placa:'TFT-0018', modelo:'Mercedes-Benz O530 G Citaro', cambio:'Automatico', status:'Operacional', origem:'TFT' },
-                    { placa:'TFT-0019', modelo:'Scania Citywide LF', cambio:'Automatico', status:'Operacional', origem:'TFT' },
-                    { placa:'TFT-0022', modelo:'MB O305G', cambio:'Automatico', status:'Operacional', origem:'TFT' },
-                    { placa:'TFT-0023', modelo:'Caio Vip V MB OF-1724', cambio:'Automatico', status:'Operacional', origem:'TFT' },
-                    { placa:'TFT-0024', modelo:'Caio Millennium IV Scania', cambio:'Automatico', status:'Operacional', origem:'TFT' }
-                ]
-            };
-        }
-
-        function preencherMotoristas() {
-            motoristaSelect.innerHTML = '<option value="">👨‍✈️ Selecione o motorista...</option>';
-            listaMotoristas.innerHTML = '';
-            
-            motoristasAPI.forEach((nome, i) => {
-                motoristaSelect.innerHTML += `<option value="${nome}">👨‍✈️ ${nome}</option>`;
-                listaMotoristas.innerHTML += `<div class="lista-item"><div class="lista-item-header">#${String(i+1).padStart(2,'0')} 👨‍✈️ <strong>${nome}</strong></div></div>`;
-            });
-            
-            document.getElementById('contadorMotoristas').textContent = motoristasAPI.length + ' cadastrados';
-        }
-
-        function preencherOnibus() {
-            listaOnibus.innerHTML = '';
-            const m = frotaCompleta.manual;
-            const a = frotaCompleta.automatico;
-            
-            listaOnibus.innerHTML += `<div class="secao-titulo">🕹️ MANUAIS (${m.length} • ${m.filter(b=>b.status==='Operacional').length} op.)</div>`;
-            m.forEach(b => {
-                const sb = b.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
-                listaOnibus.innerHTML += `<div class="lista-item"><div class="lista-item-header">🕹️ <strong>${b.placa}</strong><span class="badge badge-manual">Manual</span><span class="badge ${sb}">${b.status}</span><span style="font-size:0.65em;color:#64748b;">${b.origem}</span></div><div style="color:#cbd5e1;">${b.modelo}</div></div>`;
-            });
-
-            listaOnibus.innerHTML += `<div class="secao-titulo">🤖 AUTOMATICOS (${a.length} • ${a.filter(b=>b.status==='Operacional').length} op.)</div>`;
-            a.forEach(b => {
-                const sb = b.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
-                listaOnibus.innerHTML += `<div class="lista-item"><div class="lista-item-header">🤖 <strong>${b.placa}</strong><span class="badge badge-automatico">Automatico</span><span class="badge ${sb}">${b.status}</span><span style="font-size:0.65em;color:#64748b;">${b.origem}</span></div><div style="color:#cbd5e1;">${b.modelo}</div></div>`;
-            });
-            
-            document.getElementById('contadorOnibus').textContent = (m.length + a.length) + ' veiculos';
-        }
-
-        // ============ ATUALIZAR DADOS ============
-        async function atualizarDados() {
-            statusAPI.innerHTML = '<span class="status-dot status-loading"></span> Atualizando...';
-            await Promise.all([carregarMotoristas(), carregarOnibus()]);
-            alert('✅ Dados atualizados com sucesso!');
-        }
-
-        // ============ FUNÇÕES ============
-        function selecionarCambio(t) {
-            cambioSelecionado = t;
-            btnManual.classList.remove('active');
-            btnAutomatico.classList.remove('active');
-            if (t === 'manual') btnManual.classList.add('active');
-            else btnAutomatico.classList.add('active');
-        }
-
-        function gerarEscala() {
-            const motorista = motoristaSelect.value;
-            if (!motorista) { resultadoBox.innerHTML = '<div style="color:#ef4444;text-align:center;">⚠️ Selecione um motorista!</div>'; return; }
-            if (!cambioSelecionado) { resultadoBox.innerHTML = '<div style="color:#ef4444;text-align:center;">⚠️ Escolha MANUAL ou AUTOMATICO!</div>'; return; }
-
-            const frota = frotaCompleta[cambioSelecionado].filter(b => b.status === 'Operacional');
-            if (frota.length === 0) { resultadoBox.innerHTML = '<div style="color:#f59e0b;text-align:center;">⚠️ Nenhum onibus disponivel!</div>'; return; }
-
-            const onibus = frota[Math.floor(Math.random() * frota.length)];
-            const agora = new Date();
-            const hora = agora.toLocaleTimeString('pt-BR');
-            const data = agora.toLocaleDateString('pt-BR');
-            const icone = cambioSelecionado === 'manual' ? '🕹️' : '🤖';
-            const txt = cambioSelecionado === 'manual' ? 'Manual' : 'Automatico';
-            const badgeC = cambioSelecionado === 'manual' ? 'badge-manual' : 'badge-automatico';
-            const badgeS = onibus.status === 'Operacional' ? 'badge-operacional' : 'badge-oficina';
-
-            ultimaEscala = { motorista, onibus, cambio: txt, cambioIcone: icone, horaReal: hora, dataReal: data };
-
-            ultimaMensagem = 
-`🚍 *TRANSFORT-BR - ESCALA CONFIRMADA*
-
-👨‍✈️ *Motorista:* ${ultimaEscala.motorista}
-🚌 *Onibus:* ${ultimaEscala.onibus.modelo}
-🔖 *Placa:* ${ultimaEscala.onibus.placa}
-${ultimaEscala.cambioIcone} *Cambio:* ${ultimaEscala.cambio}
-📡 *Status:* ${ultimaEscala.onibus.status}
-🕐 *Hora:* ${ultimaEscala.horaReal}
-📅 *Data:* ${ultimaEscala.dataReal}
-✅ *Situacao:* Escalado
-
-🌐 transfort.com.br`;
-
-            resultadoBox.innerHTML = `
-                <div class="resultado-titulo"><span class="pulse-dot"></span> ESCALA CONFIRMADA</div>
-                👨‍✈️ <strong>Motorista:</strong> <span class="dado-destaque">${ultimaEscala.motorista}</span><br>
-                🚌 <strong>Onibus:</strong> <span class="dado-destaque">${ultimaEscala.onibus.modelo}</span><br>
-                🔖 <strong>Placa:</strong> <span class="dado-destaque">${ultimaEscala.onibus.placa}</span><br>
-                ${icone} <strong>Cambio:</strong> <span class="badge ${badgeC}">${txt}</span><br>
-                📡 <strong>Status:</strong> <span class="badge ${badgeS}">${onibus.status}</span><br>
-                🕐 <strong>Hora:</strong> <span class="dado-destaque">${hora}</span><br>
-                📅 <strong>Data:</strong> <span class="dado-destaque">${data}</span>
-            `;
-        }
-
-        function copiarEscala() {
-            if (!ultimaEscala) { alert('⚠️ Gere uma escala primeiro!'); return; }
-            
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(ultimaMensagem).then(() => {
-                    alert('📋 Copiado! Agora cole no WhatsApp.');
-                }).catch(() => fallbackCopiar());
-            } else {
-                fallbackCopiar();
+                transactionsList.innerHTML = this.transactions.map((trans, index) => `
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div class="transaction-description">
+                                ${trans.description}
+                                <span class="transaction-category">${trans.category}</span>
+                            </div>
+                            <div class="transaction-date">${this.formatDate(trans.date)}</div>
+                        </div>
+                        <div class="transaction-amount ${trans.type}">
+                            ${trans.type === 'income' ? '+' : '-'}${this.formatCurrency(Math.abs(trans.amount))}
+                        </div>
+                        <button class="delete-btn" onclick="app.deleteTransaction(${index})">
+                            🗑️
+                        </button>
+                    </div>
+                `).join('');
             }
         }
 
-        function fallbackCopiar() {
-            const ta = document.createElement('textarea');
-            ta.value = ultimaMensagem;
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-            alert('📋 Copiado! Agora cole no WhatsApp.');
-        }
-
-        function enviarWhatsApp() {
-            if (!ultimaEscala) { alert('⚠️ Gere uma escala primeiro!'); return; }
-            
-            textoAlerta.textContent = ultimaMensagem.replace(/\*/g, '').replace(/_/g, '');
-            alertaZap.classList.add('show');
-            abrirWhatsAppFinal();
-        }
-
-        function abrirWhatsAppFinal() {
-            const textoLimpo = ultimaMensagem.replace(/\*/g, '').replace(/_/g, '');
-            const textoCod = encodeURIComponent(textoLimpo);
-            
-            const link = document.createElement('a');
-            link.href = 'https://api.whatsapp.com/send?text=' + textoCod;
-            link.target = '_blank';
-            link.rel = 'noopener';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            
-            fecharAlerta();
-        }
-
-        function fecharAlerta() {
-            alertaZap.classList.remove('show');
-        }
-
-        // ============ INICIALIZAÇÃO ============
-        async function inicializar() {
-            console.log('🚍 TRANSFORT-BR v18.0 • Conectando às APIs...');
-            console.log('🔗 API Motoristas:', API_STAFF);
-            console.log('🔗 API Ônibus:', API_BUSES);
-            
-            await Promise.all([carregarMotoristas(), carregarOnibus()]);
-            
-            console.log('✅ Aplicativo pronto!');
-            console.log('👥 Motoristas:', motoristasAPI.length);
-            console.log('🚌 Frota:', frotaCompleta.manual.length + frotaCompleta.automatico.length);
-        }
-
-        inicializar();
+        // Inicializar aplicativo
+        const app = new FinanceApp();
     </script>
 </body>
 </html>
