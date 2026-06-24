@@ -894,4 +894,699 @@
                     const tx = this.db.transaction(this.storeName, 'readwrite');
                     const store = tx.objectStore(this.storeName);
                     const req = store.delete(id);
-                    req
+                    req.onsuccess = () => resolve();
+                    req.onerror = () => reject(req.error);
+                });
+            }
+        }
+
+        // ==================== APLICATIVO PRINCIPAL ====================
+        class FinanceApp {
+            constructor() {
+                this.db = new DatabaseManager();
+                this.transactions = [];
+                this.recognition = null;
+                this.isRecording = false;
+                this.currentMonth = new Date().getMonth();
+                this.currentYear = new Date().getFullYear();
+                this.editingId = null;
+            }
+
+            async init() {
+                try {
+                    await this.db.init();
+                    this.updateDBStatus(true);
+                    await this.loadTransactions();
+                    await this.checkMicrophone();
+                    this.bindEvents();
+                    this.updateUI();
+                    this.showToast('✅ Aplicativo pronto!', 'success');
+                } catch (error) {
+                    console.error('Erro:', error);
+                    this.updateDBStatus(false);
+                    this.showToast('❌ Erro ao inicializar', 'error');
+                }
+            }
+
+            updateDBStatus(ok) {
+                const dot = document.getElementById('dbStatusDot');
+                const text = document.getElementById('dbStatusText');
+                dot.className = 'db-status-dot' + (ok ? '' : ' error');
+                text.textContent = ok ? 'Banco de dados conectado' : 'Erro no banco de dados';
+            }
+
+            async loadTransactions() {
+                this.transactions = await this.db.getAll();
+                console.log(`📊 ${this.transactions.length} transações carregadas`);
+            }
+
+            getFiltered() {
+                return this.transactions.filter(t => {
+                    const d = new Date(t.date);
+                    return d.getMonth() === this.currentMonth && d.getFullYear() === this.currentYear;
+                });
+            }
+
+            async checkMicrophone() {
+                const SR = window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition;
+                
+                if (!SR) {
+                    this.setStatus('error', 'Navegador não suporta voz. Use Chrome.');
+                    document.getElementById('micButton').disabled = true;
+                    return;
+                }
+
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    stream.getTracks().forEach(t => t.stop());
+                    document.getElementById('permissionWarning').style.display = 'none';
+                    document.getElementById('micButton').disabled = false;
+                    this.setStatus('success', '✅ Microfone pronto! Clique para falar');
+                } catch (error) {
+                    console.error('❌ Permissão negada:', error);
+                    document.getElementById('permissionWarning').style.display = 'flex';
+                    document.getElementById('micButton').disabled = true;
+                    this.setStatus('error', '❌ Microfone não autorizado');
+                    return;
+                }
+
+                this.recognition = new SR();
+                this.recognition.lang = 'pt-BR';
+                this.recognition.continuous = false;
+                this.recognition.interimResults = true;
+                this.recognition.maxAlternatives = 1;
+
+                this.recognition.onstart = () => {
+                    this.isRecording = true;
+                    document.getElementById('micButton').classList.add('recording');
+                    document.getElementById('transcriptDisplay').style.display = 'flex';
+                    document.getElementById('transcriptText').textContent = 'Ouvindo...';
+                    this.setStatus('recording', '🎙️ Ouvindo... Fale agora!');
+                };
+
+                this.recognition.onresult = (event) => {
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+                    
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript;
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+
+                    const displayText = finalTranscript || interimTranscript;
+                    if (displayText) {
+                        document.getElementById('transcriptText').textContent = displayText;
+                    }
+                    
+                    if (finalTranscript && finalTranscript.trim().length > 0) {
+                        this.processInput(finalTranscript.trim());
+                        this.stopRecording();
+                    }
+                };
+
+                this.recognition.onerror = (event) => {
+                    console.error('❌ Erro no reconhecimento:', event.error);
+                    
+                    if (event.error === 'no-speech') {
+                        this.setStatus('success', '✅ Clique para tentar de novo.');
+                        this.stopRecording();
+                        return;
+                    }
+
+                    const errorMessages = {
+                        'not-allowed': 'Microfone bloqueado',
+                        'audio-capture': 'Microfone não encontrado.',
+                        'network': 'Erro de conexão.',
+                        'aborted': 'Conexão interrompida.'
+                    };
+                    
+                    this.setStatus('error', errorMessages[event.error] || `Erro: ${event.error}`);
+                    this.stopRecording();
+                };
+
+                this.recognition.onend = () => {
+                    this.stopRecording();
+                };
+            }
+
+            bindEvents() {
+                document.getElementById('micButton').addEventListener('click', () => {
+                    if (this.isRecording) {
+                        this.stopRecording();
+                    } else {
+                        this.startRecording();
+                    }
+                });
+
+                document.getElementById('addButton').addEventListener('click', () => {
+                    const input = document.getElementById('manualInput');
+                    const text = input.value.trim();
+                    if (text) {
+                        this.processInput(text);
+                        input.value = '';
+                        input.focus();
+                    }
+                });
+
+                document.getElementById('manualInput').addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        const text = e.target.value.trim();
+                        if (text) {
+                            this.processInput(text);
+                            e.target.value = '';
+                        }
+                    }
+                });
+
+                document.getElementById('prevMonth').addEventListener('click', () => this.changeMonth(-1));
+                document.getElementById('nextMonth').addEventListener('click', () => this.changeMonth(1));
+
+                document.getElementById('exportData').addEventListener('click', () => this.exportData());
+                document.getElementById('importData').addEventListener('click', () => document.getElementById('importFile').click());
+                document.getElementById('importFile').addEventListener('change', (e) => this.importData(e));
+
+                document.getElementById('cancelEdit').addEventListener('click', () => this.closeModal());
+                document.getElementById('saveEdit').addEventListener('click', () => this.saveEdit());
+            }
+
+            changeMonth(delta) {
+                this.currentMonth += delta;
+                if (this.currentMonth < 0) {
+                    this.currentMonth = 11;
+                    this.currentYear--;
+                } else if (this.currentMonth > 11) {
+                    this.currentMonth = 0;
+                    this.currentYear++;
+                }
+                this.updateUI();
+            }
+
+            startRecording() {
+                if (!this.recognition) {
+                    this.setStatus('error', 'Reconhecimento não disponível');
+                    return;
+                }
+                
+                if (this.isRecording) {
+                    this.stopRecording();
+                    return;
+                }
+                
+                setTimeout(() => {
+                    try {
+                        this.recognition.start();
+                        console.log('🎙️ Gravação iniciada com sucesso');
+                    } catch (error) {
+                        console.error('❌ Erro ao iniciar gravação:', error);
+                        this.stopRecording();
+                    }
+                }, 200); 
+            }
+
+            stopRecording() {
+                if (this.recognition && this.isRecording) {
+                    try { 
+                        this.recognition.stop(); 
+                    } catch (e) {
+                        console.log('Aviso ao parar:', e);
+                    }
+                }
+                
+                this.isRecording = false;
+                const micBtn = document.getElementById('micButton');
+                if (micBtn) {
+                    micBtn.classList.remove('recording');
+                }
+                
+                setTimeout(() => {
+                    if (!this.isRecording) {
+                        const display = document.getElementById('transcriptDisplay');
+                        if (display) display.style.display = 'none';
+                        this.setStatus('success', '✅ Microfone pronto! Clique para falar');
+                    }
+                }, 2000);
+            }
+
+            setStatus(type, message) {
+                const statusText = document.getElementById('statusText');
+                const statusDot = document.getElementById('statusDot');
+                const badge = document.getElementById('statusBadge');
+                
+                statusText.textContent = message;
+                statusDot.className = 'status-dot';
+                badge.style.background = '#f9fafb';
+                badge.style.color = '#6b7280';
+                
+                if (type === 'recording') {
+                    statusDot.classList.add('active');
+                    badge.style.background = '#fef2f2';
+                    badge.style.color = '#dc2626';
+                } else if (type === 'success') {
+                    statusDot.classList.add('active');
+                    badge.style.background = '#f0fdf4';
+                    badge.style.color = '#16a34a';
+                } else if (type === 'error') {
+                    statusDot.classList.add('error');
+                    badge.style.background = '#fef2f2';
+                    badge.style.color = '#dc2626';
+                }
+            }
+
+            processInput(text) {
+                console.log('🔍 processInput recebeu:', text);
+                
+                if (!text || text.trim().length < 2) {
+                    this.showToast('❌ Digite ou fale algo como "50 reais combustível"', 'error');
+                    return;
+                }
+
+                const result = this.parseText(text);
+                
+                if (result) {
+                    this.addTransaction(result);
+                } else {
+                    this.showToast('❌ Não entendi. Tente: "50 reais combustível"', 'error');
+                }
+            }
+
+            parseText(text) {
+                const original = text.trim();
+                let t = original.toLowerCase();
+                
+                const date = this.extractDate(t);
+                
+                const amountMatch = t.match(/(\d+(?:[.,]\d{1,2})?)/);
+                if (!amountMatch) return null;
+                
+                let amount = parseFloat(amountMatch[1].replace(',', '.'));
+                if (isNaN(amount) || amount <= 0) return null;
+                
+                let type = 'expense';
+                
+                const entradaPalavras = [
+                    'recebi', 'ganhei', 'ganho', 'salário', 'salario', 'renda', 'rendeu',
+                    'depositei', 'depósito', 'deposito', 'crédito', 'credito', 'entrada',
+                    'lucro', 'lucrei', 'vendi', 'venda', 'freelance', 'bônus', 'bonus',
+                    'comissão', 'comissao', 'restituição', 'restituicao', 'reembolso',
+                    'recebimento', 'recebido', 'pagamento', 'depositaram', 'caiu',
+                    'tombou', 'pingou', 'entrou', 'transferência recebida', 'pix recebido'
+                ];
+                
+                const saidaPalavras = [
+                    'gastei', 'paguei', 'gasto', 'pago', 'comprei', 'comprado',
+                    'pagar', 'gastar', 'comprar', 'desembolsei', 'quitei', 'liquidei',
+                    'transferi', 'enviei', 'mandei', 'pix', 'pixei', 'transferência',
+                    'transferencia', 'débito', 'debito', 'saída', 'saida', 'despesa',
+                    'conta', 'boleto', 'fatura', 'pagar', 'gaste', 'gastou', 'pagou',
+                    'comprei', 'comprou', 'pixei', 'transferi', 'mandei', 'enviei'
+                ];
+                
+                for (const palavra of entradaPalavras) {
+                    if (t.includes(palavra)) {
+                        type = 'income';
+                        break;
+                    }
+                }
+                
+                if (type === 'expense') {
+                    for (const palavra of saidaPalavras) {
+                        if (t.includes(palavra)) {
+                            type = 'expense';
+                            break;
+                        }
+                    }
+                }
+                
+                let desc = original;
+                desc = desc.replace(amountMatch[0], '');
+                
+                const todasPalavras = [...entradaPalavras, ...saidaPalavras];
+                todasPalavras.forEach(palavra => {
+                    desc = desc.replace(new RegExp(`\\b${palavra}\\b`, 'gi'), '');
+                });
+                
+                desc = desc.replace(/\b(?:reais|real|r\$|conto|pila|contos|dinheiro|grana|pau|merreis)\b/gi, '');
+                desc = desc.replace(/\b(?:em|para|de|com|no|na|do|da|nos|nas|dos|das|por|pelo|pela|um|uma|uns|umas|o|a|os|as|eu|meu|minha|meus|minhas)\b/gi, '');
+                desc = desc.replace(/\b(?:ontem|anteontem|hoje|semana\s+passada|mês\s+passado|mes\s+passado)\b/gi, '');
+                desc = desc.replace(/(?:dia\s+\d{1,2}(?:\s+de\s+\w+)?)/gi, '');
+                desc = desc.replace(/(?:às|as)\s+\d{1,2}(?::\d{2})?(?:\s*(?:horas|h))?/gi, '');
+                desc = desc.replace(/\b(?:de|da|pela)\s+(manhã|tarde|noite|madrugada|manha)\b/gi, '');
+                desc = desc.replace(/[,.;:!?()\[\]{}"']/g, ' ');
+                desc = desc.replace(/\s+/g, ' ').trim();
+                
+                if (desc.length > 0) {
+                    desc = desc.split(' ').map(word => {
+                        if (word.length > 0) {
+                            return word.charAt(0).toUpperCase() + word.slice(1);
+                        }
+                        return word;
+                    }).join(' ');
+                }
+                
+                if (!desc || desc.length < 2) {
+                    desc = 'Transação';
+                }
+                
+                return {
+                    description: desc,
+                    amount: Math.abs(amount),
+                    type: type,
+                    date: date.toISOString(),
+                    category: this.categorize(desc)
+                };
+            }
+
+            extractDate(text) {
+                const now = new Date();
+                const d = new Date(now);
+                
+                const diaMatch = text.match(/dia\s+(\d{1,2})(?:\s+(?:de\s+)?(\w+))?/i);
+                if (diaMatch) {
+                    const day = parseInt(diaMatch[1]);
+                    const months = {
+                        'janeiro':0,'jan':0,'fevereiro':1,'fev':1,'março':2,'marco':2,'mar':2,
+                        'abril':3,'abr':3,'maio':4,'mai':4,'junho':5,'jun':5,
+                        'julho':6,'jul':6,'agosto':7,'ago':7,'setembro':8,'set':8,
+                        'outubro':9,'out':9,'novembro':10,'nov':10,'dezembro':11,'dez':11
+                    };
+                    const month = diaMatch[2] ? (months[diaMatch[2].toLowerCase()] ?? now.getMonth()) : now.getMonth();
+                    d.setDate(Math.min(day, 31));
+                    d.setMonth(month);
+                    return d;
+                }
+                
+                if (/\bontem\b/i.test(text)) { d.setDate(d.getDate() - 1); return d; }
+                if (/\banteontem\b/i.test(text)) { d.setDate(d.getDate() - 2); return d; }
+                if (/\bsemana\s+passada\b/i.test(text)) { d.setDate(d.getDate() - 7); return d; }
+                if (/\bm[eê]s\s+passado\b/i.test(text)) { d.setMonth(d.getMonth() - 1); return d; }
+                
+                const horaMatch = text.match(/(?:às|as)\s+(\d{1,2})(?::(\d{2}))?/i);
+                if (horaMatch) {
+                    const h = parseInt(horaMatch[1]);
+                    const m = horaMatch[2] ? parseInt(horaMatch[2]) : 0;
+                    if (h >= 0 && h < 24 && m >= 0 && m < 60) {
+                        d.setHours(h, m, 0, 0);
+                    }
+                }
+                
+                const periodoMatch = text.match(/\b(?:de|da|pela)\s+(manh[ãa]|tarde|noite|madrugada)\b/i);
+                if (periodoMatch) {
+                    const periodos = {'manhã':9,'manha':9,'tarde':15,'noite':20,'madrugada':2};
+                    const hora = periodos[periodoMatch[1].toLowerCase()] || 12;
+                    d.setHours(hora, 0, 0, 0);
+                }
+                
+                return d;
+            }
+
+            categorize(desc) {
+                const d = desc.toLowerCase();
+                const cats = {
+                    'Alimentação': ['mercado','restaurante','comida','lanche','almoço','janta','supermercado','padaria','ifood','pizza','hamburguer'],
+                    'Transporte': ['uber','ônibus','gasolina','combustível','metrô','transporte','estacionamento','taxi'],
+                    'Moradia': ['aluguel','condomínio','luz','água','internet','telefone','iptu','gás'],
+                    'Lazer': ['cinema','festa','show','viagem','passeio','jogo','netflix','spotify'],
+                    'Saúde': ['farmácia','médico','hospital','remédio','consulta','dentista','academia'],
+                    'Educação': ['escola','curso','livro','faculdade','material','mensalidade'],
+                    'Renda': ['salário','pagamento','freelance','bônus','comissão','venda','extra'],
+                    'Compras': ['roupa','shopping','eletrônico','celular','computador','presente'],
+                    'Serviços': ['assinatura','manutenção','limpeza','conserto','reparo']
+                };
+                
+                for (const [cat, keywords] of Object.entries(cats)) {
+                    if (keywords.some(k => d.includes(k))) return cat;
+                }
+                return 'Outros';
+            }
+
+            async addTransaction(data) {
+                try {
+                    const id = await this.db.add(data);
+                    data.id = id;
+                    this.transactions.unshift(data);
+                    
+                    const td = new Date(data.date);
+                    this.currentMonth = td.getMonth();
+                    this.currentYear = td.getFullYear();
+                    
+                    this.updateUI();
+                    this.showToast(`✅ ${data.description} - R$ ${data.amount.toFixed(2)}`, 'success');
+                } catch (error) {
+                    console.error('Erro ao adicionar:', error);
+                    this.showToast('❌ Erro ao salvar', 'error');
+                }
+            }
+
+            openEditModal(index) {
+                const filtered = this.getFiltered();
+                const trans = filtered[index];
+                if (!trans) return;
+                
+                this.editingId = trans.id;
+                
+                document.getElementById('editDescription').value = trans.description;
+                document.getElementById('editAmount').value = trans.amount;
+                document.getElementById('editType').value = trans.type;
+                document.getElementById('editCategory').value = trans.category;
+                
+                const d = new Date(trans.date);
+                document.getElementById('editDate').value = d.toISOString().slice(0, 16);
+                
+                document.getElementById('editModal').style.display = 'flex';
+            }
+
+            closeModal() {
+                document.getElementById('editModal').style.display = 'none';
+                this.editingId = null;
+            }
+
+            async saveEdit() {
+                if (!this.editingId) return;
+                
+                const desc = document.getElementById('editDescription').value.trim();
+                const amount = parseFloat(document.getElementById('editAmount').value);
+                const type = document.getElementById('editType').value;
+                const category = document.getElementById('editCategory').value;
+                const date = document.getElementById('editDate').value;
+                
+                if (!desc || isNaN(amount) || amount <= 0) {
+                    this.showToast('❌ Preencha descrição e valor', 'error');
+                    return;
+                }
+                
+                const updated = {
+                    id: this.editingId,
+                    description: desc,
+                    amount: amount,
+                    type: type,
+                    category: category,
+                    date: new Date(date).toISOString()
+                };
+                
+                try {
+                    await this.db.update(this.editingId, updated);
+                    const idx = this.transactions.findIndex(t => t.id === this.editingId);
+                    if (idx !== -1) this.transactions[idx] = updated;
+                    
+                    this.closeModal();
+                    this.updateUI();
+                    this.showToast('✅ Atualizado!', 'success');
+                } catch (error) {
+                    this.showToast('❌ Erro ao salvar', 'error');
+                }
+            }
+
+            async deleteTransaction(index) {
+                const filtered = this.getFiltered();
+                const trans = filtered[index];
+                if (!trans) return;
+                
+                if (confirm(`Excluir "${trans.description}"?`)) {
+                    try {
+                        await this.db.delete(trans.id);
+                        const realIdx = this.transactions.findIndex(t => t.id === trans.id);
+                        if (realIdx !== -1) this.transactions.splice(realIdx, 1);
+                        this.updateUI();
+                        this.showToast('🗑️ Excluído!', 'success');
+                    } catch (error) {
+                        this.showToast('❌ Erro ao excluir', 'error');
+                    }
+                }
+            }
+
+            async exportData() {
+                const data = { app: 'FinVoice', date: new Date().toISOString(), transactions: this.transactions };
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `finvoice-${new Date().toISOString().split('T')[0]}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                this.showToast(`✅ ${this.transactions.length} registros exportados`, 'success');
+            }
+
+            async importData(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                
+                try {
+                    const text = await file.text();
+                    const data = JSON.parse(text);
+                    
+                    if (!data.transactions) throw new Error('Formato inválido');
+                    
+                    let count = 0;
+                    for (const t of data.transactions) {
+                        const { id, ...clean } = t;
+                        await this.db.add(clean);
+                        count++;
+                    }
+                    
+                    await this.loadTransactions();
+                    this.updateUI();
+                    this.showToast(`✅ ${count} registros importados`, 'success');
+                } catch (error) {
+                    this.showToast('❌ Erro ao importar', 'error');
+                }
+                
+                event.target.value = '';
+            }
+
+            formatCurrency(value) {
+                return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value);
+            }
+
+            formatDate(dateStr) {
+                const d = new Date(dateStr);
+                const now = new Date();
+                const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24));
+                
+                let datePart;
+                if (diff === 0) datePart = 'Hoje';
+                else if (diff === 1) datePart = 'Ontem';
+                else if (diff < 7) datePart = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][d.getDay()];
+                else datePart = d.toLocaleDateString('pt-BR', { day:'2-digit', month:'short' });
+                
+                const time = d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+                return `${datePart} às ${time}`;
+            }
+
+            updateUI() {
+                const filtered = this.getFiltered();
+                const months = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+                const shortMonths = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+                
+                document.getElementById('monthDisplay').textContent = `${months[this.currentMonth]} ${this.currentYear}`;
+                document.getElementById('balanceLabel').textContent = `Saldo - ${months[this.currentMonth]} ${this.currentYear}`;
+                
+                const prevM = this.currentMonth === 0 ? 11 : this.currentMonth - 1;
+                const nextM = this.currentMonth === 11 ? 0 : this.currentMonth + 1;
+                const prevY = this.currentMonth === 0 ? this.currentYear - 1 : this.currentYear;
+                const nextY = this.currentMonth === 11 ? this.currentYear + 1 : this.currentYear;
+                
+                const chips = [
+                    { m: prevM, y: prevY, label: `${shortMonths[prevM]} ${prevY}` },
+                    { m: this.currentMonth, y: this.currentYear, label: `${shortMonths[this.currentMonth]} ${this.currentYear}` },
+                    { m: nextM, y: nextY, label: `${shortMonths[nextM]} ${nextY}` }
+                ];
+                
+                const qmEl = document.getElementById('quickMonths');
+                qmEl.innerHTML = chips.map(c => `
+                    <button class="month-chip ${c.m === this.currentMonth && c.y === this.currentYear ? 'active' : ''}" 
+                            data-m="${c.m}" data-y="${c.y}">${c.label}</button>
+                `).join('');
+                
+                qmEl.querySelectorAll('.month-chip').forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        this.currentMonth = parseInt(chip.dataset.m);
+                        this.currentYear = parseInt(chip.dataset.y);
+                        this.updateUI();
+                    });
+                });
+                
+                const monthBalance = filtered.reduce((t, tr) => t + (tr.type === 'income' ? parseFloat(tr.amount) : -parseFloat(tr.amount)), 0);
+                const totalBalance = this.transactions.reduce((t, tr) => t + (tr.type === 'income' ? parseFloat(tr.amount) : -parseFloat(tr.amount)), 0);
+                
+                const balEl = document.getElementById('balance');
+                balEl.textContent = this.formatCurrency(monthBalance);
+                balEl.className = 'balance-amount ' + (monthBalance > 0 ? 'positive' : monthBalance < 0 ? 'negative' : 'zero');
+                
+                const trendEl = document.getElementById('balanceTrend');
+                if (this.transactions.length > 0) {
+                    trendEl.style.display = 'inline-flex';
+                    trendEl.className = 'balance-trend ' + (totalBalance >= 0 ? 'positive' : 'negative');
+                    trendEl.innerHTML = `${totalBalance >= 0 ? '📈' : '📉'} Total: ${this.formatCurrency(totalBalance)}`;
+                } else {
+                    trendEl.style.display = 'none';
+                }
+                
+                const income = filtered.filter(t => t.type === 'income').reduce((s, t) => s + parseFloat(t.amount), 0);
+                const expense = filtered.filter(t => t.type === 'expense').reduce((s, t) => s + parseFloat(t.amount), 0);
+                
+                document.getElementById('monthIncome').textContent = this.formatCurrency(income);
+                document.getElementById('monthExpense').textContent = this.formatCurrency(expense);
+                const mbEl = document.getElementById('monthBalance');
+                mbEl.textContent = this.formatCurrency(monthBalance);
+                mbEl.className = 'summary-value ' + (monthBalance > 0 ? 'income' : monthBalance < 0 ? 'expense' : '');
+                
+                document.getElementById('transactionCount').textContent = `${filtered.length} registro${filtered.length !== 1 ? 's' : ''}`;
+                
+                const listEl = document.getElementById('transactionsList');
+                
+                if (this.transactions.length === 0) {
+                    listEl.innerHTML = `<div class="empty-state"><div class="empty-icon">📊</div><div class="empty-text">Nenhuma transação</div></div>`;
+                    return;
+                }
+                
+                if (filtered.length === 0) {
+                    listEl.innerHTML = `<div class="empty-state"><div class="empty-icon">📅</div><div class="empty-text">Nenhuma transação neste mês</div></div>`;
+                    return;
+                }
+                
+                listEl.innerHTML = filtered.map((tr, i) => `
+                    <div class="transaction-item" style="animation-delay:${i*0.05}s">
+                        <div class="transaction-icon ${tr.type}">${tr.type==='income'?'📥':'📤'}</div>
+                        <div class="transaction-content">
+                            <div class="transaction-description">${tr.description}</div>
+                            <div class="transaction-meta">
+                                <span>🕐 ${this.formatDate(tr.date)}</span>
+                                <span class="transaction-category">${tr.category}</span>
+                            </div>
+                        </div>
+                        <div class="transaction-amount ${tr.type}">
+                            ${tr.type==='income'?'+':'−'} ${this.formatCurrency(parseFloat(tr.amount))}
+                        </div>
+                        <div class="transaction-actions">
+                            <button class="action-btn edit" onclick="app.openEditModal(${i})" title="Editar">✏️</button>
+                            <button class="action-btn delete" onclick="app.deleteTransaction(${i})" title="Excluir">🗑️</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            showToast(msg, type = '') {
+                const existing = document.querySelector('.toast');
+                if (existing) existing.remove();
+                
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.textContent = msg;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => toast.remove(), 3000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.app = new FinanceApp();
+            window.app.init();
+        });
+    </script>
+</body>
+</html>
